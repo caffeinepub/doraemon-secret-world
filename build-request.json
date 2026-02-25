@@ -1,0 +1,38 @@
+{
+  "kind": "build_request",
+  "title": "Set access passphrase to 'Nobita'",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-10",
+      "text": "Update the hardcoded passphrase in the backend actor so that the access verification function accepts exactly 'Nobita' as the valid passphrase. Remove or replace any previously set passphrase value.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "set the password as\"Nobita\""
+        ]
+      },
+      "acceptanceCriteria": [
+        "The verifyPassphrase (or equivalent) function in backend/main.mo returns true only when the input is exactly 'Nobita'.",
+        "Any other input returns false and access is denied.",
+        "The lock screen on the frontend correctly grants access when 'Nobita' is entered and denies access for any other input."
+      ]
+    }
+  ],
+  "constraints": [
+    "The passphrase must be set to exactly 'Nobita' — case-sensitive.",
+    "Do not change any frontend lock screen UI or layout."
+  ],
+  "nonGoals": [
+    "Adding a passphrase change UI or admin panel.",
+    "Encrypting or hashing the passphrase in the backend.",
+    "Any changes to the frontend lock screen design."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "A futuristic, unique Doraemon-themed AI app built as a private gift for a special person. Features include puzzles, mazes, fun games, a Doraemon BGM background, an AI bot that mimics the user's personality, a friendship/love memories section, Nobita & Doraemon friendship content, Doraemon quotes and fun facts, and a colorful futuristic Doraemon UI.",
+  "architectural_notes": [
+    "App must feel futuristic and unique — prioritize custom animations, glowing Doraemon color palette (blue, white, red accents)",
+    "Private app — implement access restriction or passcode/lock feature so only the intended user can access it",
+    "Access passphrase is set to 'Nobita' — hardcoded in backend/app code"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-design-and-implement-a-futuristic-colorful-doraemon-inspired-visual-theme-with-a-never-before-seen-aesthetic-use-doraemon-s-signature-color-palette-electric-blue-white-red-accents-yellow-bell-motifs-glassmorphism-panels-glowing-neon-borders-floating-bubble-animations-and-a-clean-futuristic-typography-the-layout-should-feel-like-a-gadget-from-the-future-immersive-playful-and-unique",
+      "title": "Design and implement a futuristic, colorful Doraemon-inspired visual theme with a never-before-seen aesthetic. Use Doraemon's signature color palette (electric blue, white, red accents, yellow bell motifs), glassmorphism panels, glowing neon borders, floating bubble animations, and a clean futuristic typography. The layout should feel like a gadget from the future — immersive, playful, and unique.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-calming-doraemon-background-music-bgm-player-that-auto-plays-a-calm-looping-doraemon-themed-audio-track-when-the-app-loads-include-a-minimal-floating-music-control-button-play-pause-volume-in-the-corner-so-she-can-control-it-without-breaking-immersion",
+      "title": "Implement a calming Doraemon background music (BGM) player that auto-plays a calm, looping Doraemon-themed audio track when the app loads. Include a minimal floating music control button (play/pause/volume) in the corner so she can control it without breaking immersion.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-private-access-gate-the-app-requires-a-secret-passphrase-or-pin-to-enter-only-the-intended-user-her-can-access-it-store-the-access-credential-in-the-backend-and-verify-it-on-login-no-registration-flow-just-a-single-beautiful-doraemon-themed-lock-screen-with-a-passphrase-input",
+      "title": "Build a private access gate: the app requires a secret passphrase or PIN to enter. Only the intended user ('her') can access it. Store the access credential in the backend and verify it on login. No registration flow — just a single beautiful Doraemon-themed lock screen with a passphrase input.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-our-memories-friendship-section-a-dedicated-page-where-the-user-s-personal-messages-friendship-milestones-love-notes-and-shared-memories-are-displayed-beautifully-prepopulate-it-with-sample-heartfelt-entries-to-be-customized-display-entries-as-animated-memory-cards-with-doraemon-themed-decorations-store-memory-entries-in-the-backend-so-they-can-be-updated",
+      "title": "Create a 'Our Memories & Friendship' section: a dedicated page where the user's personal messages, friendship milestones, love notes, and shared memories are displayed beautifully. Prepopulate it with sample heartfelt entries (to be customized). Display entries as animated memory cards with Doraemon-themed decorations. Store memory entries in the backend so they can be updated.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-nobita-doraemon-friendship-section-a-dedicated-storytelling-page-that-celebrates-the-iconic-friendship-of-nobita-and-doraemon-include-illustrated-friendship-quotes-short-heartfelt-story-snippets-about-their-bond-and-parallels-drawn-to-the-user-s-own-friendship-present-it-with-doraemon-themed-illustrated-panels-in-a-comic-storybook-style-layout",
+      "title": "Create a 'Nobita & Doraemon Friendship' section: a dedicated storytelling page that celebrates the iconic friendship of Nobita and Doraemon. Include illustrated friendship quotes, short heartfelt story snippets about their bond, and parallels drawn to the user's own friendship. Present it with Doraemon-themed illustrated panels in a comic/storybook style layout.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-quotes-fun-facts-section-display-a-rotating-collection-of-doraemon-quotes-inspirational-friendship-quotes-and-fun-interesting-doraemon-facts-include-a-reveal-a-new-quote-fact-button-that-cycles-or-randomly-picks-entries-store-all-quotes-and-facts-in-the-backend",
+      "title": "Create a 'Quotes & Fun Facts' section: display a rotating collection of Doraemon quotes, inspirational friendship quotes, and fun/interesting Doraemon facts. Include a 'Reveal a new quote/fact' button that cycles or randomly picks entries. Store all quotes and facts in the backend.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-games-puzzles-section-with-at-least-3-doraemon-themed-mini-games-1-a-sliding-tile-puzzle-with-a-doraemon-image-2-a-simple-maze-navigation-game-where-the-player-guides-nobita-through-a-doraemon-themed-maze-using-arrow-keys-and-3-a-doraemon-memory-card-matching-game-flip-cards-to-find-pairs-all-games-must-be-playable-entirely-in-the-browser-have-a-score-timer-and-display-a-sweet-congratulatory-message-on-completion",
+      "title": "Build a 'Games & Puzzles' section with at least 3 Doraemon-themed mini-games: (1) A sliding tile puzzle with a Doraemon image, (2) A simple maze navigation game where the player guides Nobita through a Doraemon-themed maze using arrow keys, and (3) A Doraemon memory card matching game (flip cards to find pairs). All games must be playable entirely in the browser, have a score/timer, and display a sweet congratulatory message on completion.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-chat-with-me-ai-bot-section-a-chat-interface-that-simulates-a-bot-mimicking-the-sender-s-the-user-s-personality-the-bot-should-respond-with-warm-caring-playful-messages-as-if-he-is-talking-to-her-pre-program-the-bot-with-a-rich-set-of-personality-traits-affectionate-phrases-and-doraemon-references-store-conversation-history-in-the-backend-the-bot-should-feel-personal-not-generic",
+      "title": "Build a 'Chat with Me' AI bot section: a chat interface that simulates a bot mimicking the sender's (the user's) personality. The bot should respond with warm, caring, playful messages as if 'he' is talking to 'her'. Pre-program the bot with a rich set of personality traits, affectionate phrases, and Doraemon references. Store conversation history in the backend. The bot should feel personal, not generic.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-main-navigation-dashboard-home-screen-that-acts-as-a-futuristic-doraemon-gadget-panel-display-icons-portals-for-each-section-memories-nobita-doraemon-quotes-facts-games-and-chat-bot-make-it-the-first-thing-she-sees-after-unlocking-each-section-portal-should-have-a-glowing-animated-icon-and-a-playful-label",
+      "title": "Create a main navigation dashboard (home screen) that acts as a futuristic Doraemon 'gadget panel'. Display icons/portals for each section: Memories, Nobita & Doraemon, Quotes & Facts, Games, and Chat Bot. Make it the first thing she sees after unlocking. Each section portal should have a glowing animated icon and a playful label.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Doraemon-themed puzzles, mazes, and fun mini-games",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Calm Doraemon BGM background music",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "AI bot that mimics the user's personality, private for her",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Friendship, love, and personal memories section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Nobita & Doraemon friendship content section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Doraemon quotes and fun facts section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Colorful futuristic Doraemon UI theme — unique, neat, never-seen-before aesthetic",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Private access — app is restricted to one specific user (her)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Update the hardcoded passphrase in the backend actor so that the access verification function accepts exactly 'Nobita' as the valid passphrase. Remove or replace any previously set passphrase value.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "2d",
+  "projectName": "Doraemon Secret World",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

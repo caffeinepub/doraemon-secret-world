@@ -1,0 +1,18 @@
+{
+  "frontend/src/components/ui/GlassPanel.tsx": "Reusable glassmorphism panel component with Doraemon-themed neon glow borders, supporting blue/red/yellow/cyan glow colors, optional float animation, and hover lift effects.",
+  "frontend/src/components/ui/StarBackground.tsx": "Fixed-position decorative background component that renders animated twinkling stars and floating bubbles using CSS custom properties for varied timing.",
+  "frontend/src/components/ui/FloatingMusicControl.tsx": "Fixed bottom-right floating music control with play/pause toggle and expandable volume slider, integrated with the useBGM hook.",
+  "frontend/src/pages/GamesPage.tsx": "Games hub page displaying three Doraemon-themed game portals (Sliding Puzzle, Maze Adventure, Memory Match) with descriptions and how-to instructions.",
+  "frontend/src/pages/games/SlidingPuzzlePage.tsx": "3×3 sliding tile puzzle game, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/pages/games/MazePage.tsx": "Grid-based maze game with fully typed WallSide type and MoveMap, fixing the TypeScript optional tuple error and importing GlassPanel from the correct directory.",
+  "frontend/src/pages/games/MemoryMatchPage.tsx": "Memory card matching game with 12 pairs, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/pages/ChatPage.tsx": "Chat interface with bot responses, typing indicator, and message history, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/components/GlassPanel.tsx": "Reusable glassmorphism panel component moved to non-read-only components directory, with Doraemon-themed neon glow borders, optional float animation, hover lift, and style prop support.",
+  "frontend/src/components/StarBackground.tsx": "Fixed-position decorative background component moved to non-read-only components directory, rendering animated twinkling stars and floating bubbles.",
+  "frontend/src/components/FloatingMusicControl.tsx": "Fixed bottom-right floating music control moved to non-read-only components directory, with play/pause toggle and expandable volume slider.",
+  "frontend/src/App.tsx": "Main app router with all routes wired up, now importing FloatingMusicControl and StarBackground from the correct non-read-only components directory.",
+  "frontend/src/pages/LockScreen.tsx": "Doraemon-themed passphrase lock screen with animated decorations, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/pages/MemoriesPage.tsx": "Memories page with grid of memory cards and add-memory form, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/pages/FriendshipPage.tsx": "Nobita & Doraemon friendship storybook page with scroll-reveal panels, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/pages/QuotesPage.tsx": "Quotes and fun facts page with animated reveal, updated to import GlassPanel from the correct components directory."
+}

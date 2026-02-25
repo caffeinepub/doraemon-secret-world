@@ -1,0 +1,23 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-25T18:47:46.964Z",
+  "summary": "The diff correctly updates the hardcoded passphrase in backend/main.mo to 'Nobita' via the `correctCode` constant and the `isCodeCorrect` function, and adds a migration module to migrate existing state. REQ-10 appears to be fully implemented.",
+  "missing_requirements": [],
+  "hallucinated_features": [
+    {
+      "description": "A migration module (backend/migration.mo) was added to handle state migration for the passphrase value change.",
+      "reason": "The build request only asked to update the hardcoded passphrase value in backend/main.mo. No migration module or state migration mechanism was requested.",
+      "evidence": [
+        "backend/migration.mo",
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.88,
+  "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "project_state.json"
+  ]
+}
