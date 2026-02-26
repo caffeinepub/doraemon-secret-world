@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { path: '/friendship', label: 'Friendship', icon: BookOpen },
   { path: '/quotes', label: 'Quotes', icon: Star },
   { path: '/games', label: 'Games', icon: Gamepad2 },
-  { path: '/chat', label: 'Chat', icon: MessageCircle },
+  { path: '/chat', label: 'Chat with Nobita', icon: MessageCircle },
 ];
 
 export default function AppLayout() {
@@ -26,17 +26,24 @@ export default function AppLayout() {
   return (
     <div className="min-h-screen flex flex-col relative z-10">
       {/* Header */}
-      <header className="sticky top-0 z-50 glass-strong border-b border-dora-blue/20">
+      <header className="sticky top-0 z-50 glass border-b border-dora-blue/20 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <button
             onClick={() => navigate({ to: '/dashboard' })}
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-2 group"
           >
-            <div className="w-10 h-10 rounded-full bg-dora-blue/20 border border-dora-blue/40 flex items-center justify-center animate-pulse-glow">
-              <span className="text-xl">🔵</span>
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-dora-blue/40 glow-blue">
+              <img
+                src="/assets/generated/doraemon-sticker.dim_200x200.png"
+                alt="DoraLand"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
             </div>
-            <span className="font-orbitron font-bold text-lg gradient-text-blue hidden sm:block">
+            <span className="font-orbitron font-bold text-lg gradient-text-blue group-hover:opacity-80 transition-opacity">
               DoraLand
             </span>
           </button>
@@ -49,96 +56,96 @@ export default function AppLayout() {
                 <button
                   key={path}
                   onClick={() => navigate({ to: path })}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-space font-medium transition-all duration-300 ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-space transition-all duration-200 ${
                     isActive
-                      ? 'bg-dora-blue/20 text-dora-blue-light border border-dora-blue/40 glow-blue'
-                      : 'text-foreground/70 hover:text-foreground hover:bg-white/5'
+                      ? 'bg-dora-blue/20 text-dora-blue-light border border-dora-blue/30'
+                      : 'text-foreground/60 hover:text-foreground hover:bg-white/5'
                   }`}
                 >
-                  <Icon size={15} />
-                  {label}
+                  <Icon size={14} />
+                  <span>{label}</span>
                 </button>
               );
             })}
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={handleLogout}
-              className="hidden md:flex items-center gap-2 px-3 py-2 rounded-full text-sm text-foreground/60 hover:text-dora-red hover:bg-dora-red/10 transition-all duration-300"
+              className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-space text-foreground/50 hover:text-dora-red hover:bg-dora-red/10 transition-all duration-200"
             >
-              <LogOut size={15} />
-              <span className="font-space">Exit</span>
+              <LogOut size={14} />
+              <span>Exit</span>
             </button>
 
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 rounded-full glass border border-dora-blue/30"
+              className="md:hidden w-9 h-9 rounded-xl glass border border-dora-blue/20 flex items-center justify-center text-foreground/60 hover:text-dora-blue-light transition-colors"
             >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Nav */}
         {mobileOpen && (
-          <div className="md:hidden glass-strong border-t border-dora-blue/20 px-4 py-3 animate-fade-in">
-            <div className="flex flex-col gap-1">
-              {NAV_ITEMS.map(({ path, label, icon: Icon }) => {
-                const isActive = currentPath === path;
-                return (
-                  <button
-                    key={path}
-                    onClick={() => { navigate({ to: path }); setMobileOpen(false); }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-space font-medium transition-all duration-300 ${
-                      isActive
-                        ? 'bg-dora-blue/20 text-dora-blue-light border border-dora-blue/40'
-                        : 'text-foreground/70 hover:bg-white/5'
-                    }`}
-                  >
-                    <Icon size={16} />
-                    {label}
-                  </button>
-                );
-              })}
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-dora-red hover:bg-dora-red/10 transition-all duration-300"
-              >
-                <LogOut size={16} />
-                Exit
-              </button>
-            </div>
+          <div className="md:hidden border-t border-dora-blue/20 px-4 py-3 flex flex-col gap-1">
+            {NAV_ITEMS.map(({ path, label, icon: Icon }) => {
+              const isActive = currentPath === path || (path !== '/dashboard' && currentPath.startsWith(path));
+              return (
+                <button
+                  key={path}
+                  onClick={() => {
+                    navigate({ to: path });
+                    setMobileOpen(false);
+                  }}
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-space transition-all duration-200 text-left ${
+                    isActive
+                      ? 'bg-dora-blue/20 text-dora-blue-light border border-dora-blue/30'
+                      : 'text-foreground/60 hover:text-foreground hover:bg-white/5'
+                  }`}
+                >
+                  <Icon size={16} />
+                  <span>{label}</span>
+                </button>
+              );
+            })}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-space text-foreground/50 hover:text-dora-red hover:bg-dora-red/10 transition-all duration-200 mt-1 border-t border-white/10 pt-3"
+            >
+              <LogOut size={16} />
+              <span>Exit</span>
+            </button>
           </div>
         )}
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 relative z-10">
+      {/* Main content */}
+      <main className="flex-1">
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 glass border-t border-dora-blue/20 py-6 mt-8">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-foreground/40 text-sm font-space">
-            © {new Date().getFullYear()} DoraLand — A Secret World Made With{' '}
-            <span className="text-dora-red animate-pulse">❤️</span>
-          </p>
-          <p className="text-foreground/30 text-xs mt-1 font-space">
-            Built with love using{' '}
-            <a
-              href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname || 'doraland')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-dora-blue-light hover:text-dora-blue transition-colors"
-            >
-              caffeine.ai
-            </a>
-          </p>
-        </div>
+      <footer className="relative z-10 border-t border-dora-blue/10 py-6 px-4 text-center">
+        <p className="text-foreground/30 font-space text-xs">
+          © {new Date().getFullYear()} DoraLand — A magical world 💙
+        </p>
+        <p className="text-foreground/20 font-space text-xs mt-1">
+          Built with{' '}
+          <span className="text-dora-red">♥</span>{' '}
+          using{' '}
+          <a
+            href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== 'undefined' ? window.location.hostname : 'doraland')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-dora-blue-light hover:underline"
+          >
+            caffeine.ai
+          </a>
+        </p>
       </footer>
     </div>
   );

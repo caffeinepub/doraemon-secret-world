@@ -1,38 +1,89 @@
 {
   "kind": "build_request",
-  "title": "Set access passphrase to 'Nobita'",
+  "title": "Add AI Chatbot 'Chat with Nobita' & More Funny Games",
+  "projectName": "Doraemon Secret World",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-10",
-      "text": "Update the hardcoded passphrase in the backend actor so that the access verification function accepts exactly 'Nobita' as the valid passphrase. Remove or replace any previously set passphrase value.",
-      "target": "backend",
+      "id": "REQ-1",
+      "text": "Rename the 'Chat with me' section label to 'Chat with Nobita' everywhere it appears in the app — navigation links, page headings, dashboard portal card, and any route titles.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-latest"
         ],
         "quotes": [
-          "set the password as\"Nobita\""
+          "change it to Chat with Nobita"
         ]
       },
       "acceptanceCriteria": [
-        "The verifyPassphrase (or equivalent) function in backend/main.mo returns true only when the input is exactly 'Nobita'.",
-        "Any other input returns false and access is denied.",
-        "The lock screen on the frontend correctly grants access when 'Nobita' is entered and denies access for any other input."
+        "The navigation item previously labeled 'Chat with me' now reads 'Chat with Nobita'.",
+        "The ChatPage heading displays 'Chat with Nobita'.",
+        "The dashboard portal card for the chat section shows 'Chat with Nobita'."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Replace the current static/canned bot response logic in ChatPage.tsx and botResponses.ts with an intelligent rule-based conversational AI engine that can understand and respond meaningfully to a wide variety of user questions and topics. The bot persona must be 'Nobita' — friendly, funny, childlike, and Doraemon-universe flavored. Implement topic detection (greetings, questions, emotions, school/homework, gadgets, friendship, love, food, weather, general knowledge, jokes, etc.) with contextual, varied, and funny replies for each topic. The bot should never give a generic 'I don't know' — it should always attempt a clever, in-character Nobita-style answer.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "real Chat Bot AI",
+          "whatever I message means it's want to reply with the answer what's they asking to it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Sending a greeting like 'hello' returns a warm Nobita-style greeting.",
+        "Asking a factual question (e.g., 'what is the capital of Japan?') returns a relevant, in-character answer.",
+        "Asking about Doraemon gadgets returns a funny, themed response.",
+        "Asking a joke or funny question returns a humorous reply.",
+        "The bot never returns an empty or undefined response.",
+        "Responses feel varied — sending the same message twice can return different replies."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add at least 3 new funny/entertaining mini-games to the GamesPage and corresponding routes. Suggested games: (1) Doraemon Gadget Clicker — click as many gadgets as possible before time runs out; (2) Nobita's Exam Quiz — funny multiple-choice quiz with Doraemon trivia questions and silly wrong answers; (3) Whack-a-Doraemon — a whack-a-mole style game where Doraemon characters pop up and the player clicks them for points. Each game should have a playful Doraemon-themed UI, a score display, and a restart button.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "add more games to it",
+          "to make funny"
+        ]
+      },
+      "acceptanceCriteria": [
+        "GamesPage shows at least 3 new game cards in addition to the existing 3 games.",
+        "Each new game has its own route and page component.",
+        "Each new game displays a score and a restart/play again button.",
+        "Games have a Doraemon-themed visual style consistent with the rest of the app.",
+        "All new game routes are registered in App.tsx."
       ]
     }
   ],
   "constraints": [
-    "The passphrase must be set to exactly 'Nobita' — case-sensitive.",
-    "Do not change any frontend lock screen UI or layout."
+    "Do not use any external AI/LLM API — the chatbot must be implemented entirely client-side with rule-based NLP/keyword matching logic.",
+    "Preserve the existing passphrase lock ('Nobita') and authentication flow.",
+    "Do not modify files listed in frontend.immutablePaths.",
+    "Maintain the existing Doraemon-themed design system (colors, fonts, glassmorphism, neon glows)."
   ],
   "nonGoals": [
-    "Adding a passphrase change UI or admin panel.",
-    "Encrypting or hashing the passphrase in the backend.",
-    "Any changes to the frontend lock screen design."
+    "Real OpenAI / Anthropic / external AI API integration.",
+    "Backend changes to support chatbot — all logic stays client-side.",
+    "Modifying or removing the three existing games (Sliding Puzzle, Maze, Memory Match).",
+    "Changing the passphrase or authentication mechanism."
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Cute chibi Nobita character avatar with school uniform and glasses, transparent background (nobita-avatar.dim_200x200.png)",
+      "Whack-a-mole style game hole with grass border for game background tile (game-hole.dim_128x128.png)",
+      "Doraemon gadget icon set collage showing 4 gadgets on a starry background (gadget-clicker-bg.dim_400x200.png)"
+    ],
     "edits": []
   }
 }

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User } from 'lucide-react';
+import { Send, User } from 'lucide-react';
 import { useGetAllMessages, useAddMessage } from '../hooks/useQueries';
 import { generateBotResponse } from '../utils/botResponses';
 import GlassPanel from '../components/GlassPanel';
@@ -10,14 +10,14 @@ function TypingIndicator() {
     <div className="flex items-end gap-3 mb-4">
       <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-dora-blue/40 flex-shrink-0 flex items-center justify-center bg-dora-blue/20 relative">
         <img
-          src="/assets/generated/bot-avatar.dim_128x128.png"
-          alt="Bot"
+          src="/assets/generated/nobita-avatar.dim_200x200.png"
+          alt="Nobita"
           className="w-full h-full object-cover"
           onError={(e) => {
-            (e.target as HTMLImageElement).style.display = 'none';
+            const el = e.target as HTMLImageElement;
+            el.style.display = 'none';
           }}
         />
-        <Bot size={16} className="text-dora-blue-light absolute" />
       </div>
       <div className="chat-bubble-bot px-4 py-3">
         <div className="flex gap-1 items-center h-5">
@@ -42,17 +42,18 @@ function MessageBubble({ message, isBot }: { message: Message; isBot: boolean })
         }`}
       >
         {isBot ? (
-          <>
-            <img
-              src="/assets/generated/bot-avatar.dim_128x128.png"
-              alt="Bot"
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
-            />
-            <Bot size={16} className="text-dora-blue-light absolute" />
-          </>
+          <img
+            src="/assets/generated/nobita-avatar.dim_200x200.png"
+            alt="Nobita"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              const el = e.target as HTMLImageElement;
+              el.style.display = 'none';
+              if (el.parentElement) {
+                el.parentElement.innerHTML = '<span style="font-size:1.2rem">🧒</span>';
+              }
+            }}
+          />
         ) : (
           <User size={16} className="text-dora-red" />
         )}
@@ -60,7 +61,7 @@ function MessageBubble({ message, isBot }: { message: Message; isBot: boolean })
 
       {/* Bubble */}
       <div className={`max-w-[75%] ${isBot ? 'chat-bubble-bot' : 'chat-bubble-user'} px-4 py-3`}>
-        <p className="font-nunito text-sm text-foreground/90 leading-relaxed">
+        <p className="font-nunito text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">
           {message.content}
         </p>
         <p className={`text-xs mt-1 font-space ${isBot ? 'text-dora-blue-light/50' : 'text-foreground/30'}`}>
@@ -70,6 +71,15 @@ function MessageBubble({ message, isBot }: { message: Message; isBot: boolean })
     </div>
   );
 }
+
+const QUICK_REPLIES = [
+  'Hey Nobita! 👋',
+  'Tell me a joke 😂',
+  'What is Doraemon? 🔵',
+  'Capital of Japan? 🗾',
+  'I miss you 💙',
+  'Tell me about gadgets! 🎁',
+];
 
 export default function ChatPage() {
   const { data: messages, isLoading } = useGetAllMessages();
@@ -113,7 +123,8 @@ export default function ChatPage() {
     // Show typing indicator
     setIsTyping(true);
 
-    // Generate bot response after delay
+    // Generate bot response after realistic delay
+    const delay = 1000 + Math.random() * 1200;
     setTimeout(async () => {
       const botResponse = generateBotResponse(text);
       const botTimestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -128,7 +139,7 @@ export default function ChatPage() {
       } catch {
         // Continue even if backend fails
       }
-    }, 1200 + Math.random() * 800);
+    }, delay);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -148,28 +159,28 @@ export default function ChatPage() {
           <div className="flex justify-center mb-3">
             <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-dora-blue/40 glow-blue animate-pulse-glow">
               <img
-                src="/assets/generated/bot-avatar.dim_128x128.png"
-                alt="Bot Avatar"
+                src="/assets/generated/nobita-avatar.dim_200x200.png"
+                alt="Nobita Avatar"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   const el = e.target as HTMLImageElement;
                   el.style.display = 'none';
                   if (el.parentElement) {
-                    el.parentElement.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:oklch(0.55 0.22 240 / 0.2)">🔵</div>';
+                    el.parentElement.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:oklch(0.55 0.22 240 / 0.2)">🧒</div>';
                   }
                 }}
               />
             </div>
           </div>
           <h1 className="font-orbitron text-2xl font-bold gradient-text-blue mb-1">
-            Chat With Me
+            Chat with Nobita
           </h1>
           <p className="text-foreground/50 font-space text-sm">
-            I'm always here for you 💙
+            Nobita is always here for you 💙
           </p>
           <div className="flex items-center justify-center gap-2 mt-2">
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-green-400 text-xs font-space">Online</span>
+            <span className="text-green-400 text-xs font-space">Nobita is Online</span>
           </div>
         </div>
 
@@ -183,12 +194,12 @@ export default function ChatPage() {
               </div>
             ) : displayMessages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="text-5xl mb-4 animate-float">💙</div>
+                <div className="text-5xl mb-4 animate-float">🧒</div>
                 <p className="text-foreground/50 font-nunito text-lg">
-                  Say hello! I'm waiting for you 🌟
+                  Say hello to Nobita! He's waiting! 🌟
                 </p>
                 <p className="text-foreground/30 font-space text-sm mt-2">
-                  Type a message below to start chatting
+                  Ask him anything — he'll answer in his own funny way!
                 </p>
               </div>
             ) : (
@@ -217,7 +228,7 @@ export default function ChatPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Type a message... 💙"
+              placeholder="Ask Nobita anything... 💙"
               className="dora-input flex-1 py-3"
               disabled={isTyping}
             />
@@ -233,7 +244,7 @@ export default function ChatPage() {
 
         {/* Quick replies */}
         <div className="mt-4 flex flex-wrap gap-2 justify-center">
-          {['Hey! 👋', 'I miss you 💙', 'Tell me something sweet 🌟', 'I love Doraemon! 🔵'].map((quick) => (
+          {QUICK_REPLIES.map((quick) => (
             <button
               key={quick}
               onClick={() => {

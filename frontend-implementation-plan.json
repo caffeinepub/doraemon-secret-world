@@ -1,6 +1,95 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Set access passphrase to 'Nobita'",
-  "requirements": []
+  "title": "Add AI Chatbot 'Chat with Nobita' & More Funny Games",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Rename 'Chat with me' to 'Chat with Nobita' across all UI touchpoints",
+      "acceptanceCriteria": [
+        "The navigation item previously labeled 'Chat with me' now reads 'Chat with Nobita'.",
+        "The ChatPage heading displays 'Chat with Nobita'.",
+        "The dashboard portal card for the chat section shows 'Chat with Nobita'."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ChatPage.tsx",
+          "operation": "modify",
+          "description": "Update the page heading from 'Chat with me' to 'Chat with Nobita'."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Update the chat portal card title from 'Chat with me' to 'Chat with Nobita'."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Update the navigation link text from 'Chat with me' to 'Chat with Nobita' in both desktop and mobile navigation menus."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Replace static bot responses with an intelligent rule-based conversational AI engine using topic detection and in-character Nobita persona",
+      "acceptanceCriteria": [
+        "Sending a greeting like 'hello' returns a warm Nobita-style greeting.",
+        "Asking a factual question (e.g., 'what is the capital of Japan?') returns a relevant, in-character answer.",
+        "Asking about Doraemon gadgets returns a funny, themed response.",
+        "Asking a joke or funny question returns a humorous reply.",
+        "The bot never returns an empty or undefined response.",
+        "Responses feel varied — sending the same message twice can return different replies."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/botResponses.ts",
+          "operation": "modify",
+          "description": "Replace the current categorized response arrays with a comprehensive rule-based NLP engine that includes topic detection logic (greetings, questions, emotions, school/homework, gadgets, friendship, love, food, weather, general knowledge, jokes, etc.). Implement keyword matching, pattern recognition, and context scoring to determine the best topic category. Add large response pools for each topic with varied, funny, childlike Nobita-style replies. Ensure every input maps to a relevant topic and never returns a generic 'I don't know' — always provide a clever in-character response. Include response randomization to vary replies for repeated inputs."
+        },
+        {
+          "path": "frontend/src/pages/ChatPage.tsx",
+          "operation": "modify",
+          "description": "Update the bot response generation logic to call the new intelligent rule-based engine from botResponses.ts. Remove any static/canned response selection and ensure the bot analyzes user input to determine topic and context before selecting a response. Wire the generated Nobita avatar image (frontend/public/assets/generated/nobita-avatar.dim_200x200.png) into the bot message bubbles to replace or supplement the existing bot-avatar.dim_128x128.png."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add three new funny mini-games: Doraemon Gadget Clicker, Nobita's Exam Quiz, and Whack-a-Doraemon with Doraemon-themed UI, score tracking, and restart functionality",
+      "acceptanceCriteria": [
+        "GamesPage shows at least 3 new game cards in addition to the existing 3 games.",
+        "Each new game has its own route and page component.",
+        "Each new game displays a score and a restart/play again button.",
+        "Games have a Doraemon-themed visual style consistent with the rest of the app.",
+        "All new game routes are registered in App.tsx."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/games/GadgetClickerPage.tsx",
+          "operation": "create",
+          "description": "Create a Doraemon Gadget Clicker game where gadgets spawn randomly on screen and the player clicks them to earn points before time runs out. Use the generated image frontend/public/assets/generated/gadget-clicker-bg.dim_400x200.png as a background or header visual. Display a countdown timer, current score, and high score. Include a restart button that resets the timer and score. Style with GlassPanel components and Doraemon neon glow effects to match the app theme."
+        },
+        {
+          "path": "frontend/src/pages/games/ExamQuizPage.tsx",
+          "operation": "create",
+          "description": "Create Nobita's Exam Quiz, a funny multiple-choice quiz game with Doraemon trivia questions and silly wrong answers. Implement a question pool with at least 10 questions covering Doraemon characters, gadgets, and storylines. Display one question at a time with 4 answer options. Track correct answers and show a final score. Include a restart/play again button. Style with GlassPanel components and Doraemon-themed colors."
+        },
+        {
+          "path": "frontend/src/pages/games/WhackADoraemonPage.tsx",
+          "operation": "create",
+          "description": "Create a Whack-a-Doraemon game where Doraemon characters pop up in holes and the player clicks them to score points. Use the generated image frontend/public/assets/generated/game-hole.dim_128x128.png as the background tile for each hole. Implement a 3x3 grid of holes with random character pop-ups over a timed round (30-60 seconds). Track score and misses. Include a restart button. Style with GlassPanel components and neon glow effects matching the app theme."
+        },
+        {
+          "path": "frontend/src/pages/GamesPage.tsx",
+          "operation": "modify",
+          "description": "Add three new game cards for Gadget Clicker, Exam Quiz, and Whack-a-Doraemon to the existing games grid. Each card should include a title, brief description, icon/emoji, and a Link to the new game route. Maintain the existing Doraemon-themed card styling and layout consistency."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register three new authenticated routes for the new games: /games/gadget-clicker rendering GadgetClickerPage, /games/exam-quiz rendering ExamQuizPage, and /games/whack-a-doraemon rendering WhackADoraemonPage. Wrap each route with the authentication guard and AppLayout to match the existing game routes."
+        }
+      ]
+    }
+  ]
 }

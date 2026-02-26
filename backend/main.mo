@@ -2,9 +2,9 @@ import List "mo:core/List";
 import Array "mo:core/Array";
 import Runtime "mo:core/Runtime";
 import MixinStorage "blob-storage/Mixin";
-import Migration "migration";
 
-(with migration = Migration.run)
+
+
 actor {
   include MixinStorage();
 

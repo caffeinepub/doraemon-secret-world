@@ -1,4 +1,68 @@
 {
   "kind": "feature_evidence_report",
-  "features": []
+  "features": [
+    {
+      "featureId": "feature-rename-the-chat-with-me-section-label-to-chat-with-nobita-everywhere-it-appears-in-the-app-navigation-links-page-headings-dashboard-portal-card-and-any-route-titles",
+      "featureTitle": "Rename the 'Chat with me' section label to 'Chat with Nobita' everywhere it appears in the app — navigation links, page headings, dashboard portal card, and any route titles.",
+      "files": [
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/pages/ChatPage.tsx",
+        "frontend/src/pages/DashboardPage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-replace-the-current-static-canned-bot-response-logic-in-chatpage-tsx-and-botresponses-ts-with-an-intelligent-rule-based-conversational-ai-engine-that-can-understand-and-respond-meaningfully-to-a-wide-variety-of-user-questions-and-topics-the-bot-persona-must-be-nobita-friendly-funny-childlike-and-doraemon-universe-flavored-implement-topic-detection-greetings-questions-emotions-school-homework-gadgets-friendship-love-food-weather-general-knowledge-jokes-etc-with-contextual-varied-and-funny-replies-for-each-topic-the-bot-should-never-give-a-generic-i-don-t-know-it-should-always-attempt-a-clever-in-character-nobita-style-answer",
+      "featureTitle": "Replace the current static/canned bot response logic in ChatPage.tsx and botResponses.ts with an intelligent rule-based conversational AI engine that can understand and respond meaningfully to a wide variety of user questions and topics. The bot persona must be 'Nobita' — friendly, funny, childlike, and Doraemon-universe flavored. Implement topic detection (greetings, questions, emotions, school/homework, gadgets, friendship, love, food, weather, general knowledge, jokes, etc.) with contextual, varied, and funny replies for each topic. The bot should never give a generic 'I don't know' — it should always attempt a clever, in-character Nobita-style answer.",
+      "files": [
+        "frontend/src/pages/ChatPage.tsx",
+        "frontend/src/utils/botResponses.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-at-least-3-new-funny-entertaining-mini-games-to-the-gamespage-and-corresponding-routes-suggested-games-1-doraemon-gadget-clicker-click-as-many-gadgets-as-possible-before-time-runs-out-2-nobita-s-exam-quiz-funny-multiple-choice-quiz-with-doraemon-trivia-questions-and-silly-wrong-answers-3-whack-a-doraemon-a-whack-a-mole-style-game-where-doraemon-characters-pop-up-and-the-player-clicks-them-for-points-each-game-should-have-a-playful-doraemon-themed-ui-a-score-display-and-a-restart-button",
+      "featureTitle": "Add at least 3 new funny/entertaining mini-games to the GamesPage and corresponding routes. Suggested games: (1) Doraemon Gadget Clicker — click as many gadgets as possible before time runs out; (2) Nobita's Exam Quiz — funny multiple-choice quiz with Doraemon trivia questions and silly wrong answers; (3) Whack-a-Doraemon — a whack-a-mole style game where Doraemon characters pop up and the player clicks them for points. Each game should have a playful Doraemon-themed UI, a score display, and a restart button.",
+      "files": [
+        "frontend/src/pages/GamesPage.tsx",
+        "frontend/src/pages/games/ExamQuizPage.tsx",
+        "frontend/src/pages/games/GadgetClickerPage.tsx",
+        "frontend/src/pages/games/WhackADoraemonPage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    }
+  ]
 }

@@ -14,5 +14,6 @@
   "frontend/src/pages/LockScreen.tsx": "Doraemon-themed passphrase lock screen with animated decorations, updated to import GlassPanel from the correct components directory.",
   "frontend/src/pages/MemoriesPage.tsx": "Memories page with grid of memory cards and add-memory form, updated to import GlassPanel from the correct components directory.",
   "frontend/src/pages/FriendshipPage.tsx": "Nobita & Doraemon friendship storybook page with scroll-reveal panels, updated to import GlassPanel from the correct components directory.",
-  "frontend/src/pages/QuotesPage.tsx": "Quotes and fun facts page with animated reveal, updated to import GlassPanel from the correct components directory."
+  "frontend/src/pages/QuotesPage.tsx": "Quotes and fun facts page with animated reveal, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/components/layout/AppLayout.tsx": "Main app layout with sticky header navigation, mobile menu, and footer — the \"Built with caffeine.ai\" attribution line has been removed from the footer, leaving only the copyright line."
 }

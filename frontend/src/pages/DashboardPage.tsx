@@ -55,10 +55,10 @@ const PORTALS = [
   },
   {
     path: '/chat',
-    label: 'Chat With Me',
+    label: 'Chat with Nobita',
     emoji: '💬',
     icon: MessageCircle,
-    description: 'Talk to me anytime',
+    description: 'Talk to Nobita anytime!',
     color: 'blue',
     gradient: 'from-dora-blue/20 to-dora-pink/10',
     border: 'border-dora-blue/40',
