@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
-import { Heart, BookOpen, Star, Gamepad2, MessageCircle, Sparkles } from 'lucide-react';
+import { Heart, BookOpen, Star, Gamepad2, MessageCircle, Sparkles, Camera } from 'lucide-react';
 import { useEffect } from 'react';
 import { useActor } from '../hooks/useActor';
 import { seedDataIfNeeded } from '../utils/seedData';
@@ -11,7 +11,6 @@ const PORTALS = [
     emoji: '💙',
     icon: Heart,
     description: 'Our precious moments together',
-    color: 'red',
     gradient: 'from-dora-red/20 to-dora-pink/10',
     border: 'border-dora-red/40',
     glow: 'glow-red',
@@ -23,7 +22,6 @@ const PORTALS = [
     emoji: '🤝',
     icon: BookOpen,
     description: 'The greatest friendship story',
-    color: 'blue',
     gradient: 'from-dora-blue/20 to-dora-cyan/10',
     border: 'border-dora-blue/40',
     glow: 'glow-blue',
@@ -35,7 +33,6 @@ const PORTALS = [
     emoji: '⭐',
     icon: Star,
     description: 'Wisdom from the future',
-    color: 'yellow',
     gradient: 'from-dora-yellow/20 to-dora-yellow/5',
     border: 'border-dora-yellow/40',
     glow: 'glow-yellow',
@@ -47,7 +44,6 @@ const PORTALS = [
     emoji: '🎮',
     icon: Gamepad2,
     description: 'Play & have fun!',
-    color: 'cyan',
     gradient: 'from-dora-cyan/20 to-dora-blue/10',
     border: 'border-dora-cyan/40',
     glow: 'glow-cyan',
@@ -59,11 +55,21 @@ const PORTALS = [
     emoji: '💬',
     icon: MessageCircle,
     description: 'Talk to Nobita anytime!',
-    color: 'blue',
     gradient: 'from-dora-blue/20 to-dora-pink/10',
     border: 'border-dora-blue/40',
     glow: 'glow-blue',
     textColor: 'text-dora-blue-light',
+  },
+  {
+    path: '/our-memories',
+    label: 'Our Memories 📸',
+    emoji: '🌸',
+    icon: Camera,
+    description: 'Best moments of my life',
+    gradient: 'from-dora-red/20 to-dora-yellow/10',
+    border: 'border-dora-red/40',
+    glow: 'glow-red',
+    textColor: 'text-dora-red',
   },
 ];
 
@@ -71,7 +77,6 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   const { actor } = useActor();
 
-  // Seed data on first load
   useEffect(() => {
     if (actor) {
       seedDataIfNeeded(actor);
@@ -97,7 +102,6 @@ export default function DashboardPage() {
                   }}
                 />
               </div>
-              {/* Orbiting elements */}
               {['⭐', '💙', '✨'].map((emoji, i) => (
                 <div
                   key={i}
@@ -150,11 +154,9 @@ export default function DashboardPage() {
               className={`group relative glass-card rounded-3xl p-6 border ${border} ${glow} hover-lift text-left transition-all duration-300 animate-fade-in-up`}
               style={{ animationDelay: `${i * 0.1}s` }}
             >
-              {/* Background gradient */}
               <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${gradient} opacity-50 group-hover:opacity-80 transition-opacity duration-300`} />
 
               <div className="relative z-10">
-                {/* Icon */}
                 <div className="flex items-center gap-4 mb-4">
                   <div className={`w-14 h-14 rounded-2xl bg-white/5 border ${border} flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300`}>
                     {emoji}
@@ -169,7 +171,6 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Arrow indicator */}
                 <div className={`flex items-center gap-2 ${textColor} text-sm font-space font-medium`}>
                   <Icon size={14} />
                   <span>Explore →</span>

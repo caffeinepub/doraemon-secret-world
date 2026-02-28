@@ -4,6 +4,17 @@ import { Lock, Unlock, Heart, Star } from 'lucide-react';
 import { useVerifyCode } from '../hooks/useQueries';
 import GlassPanel from '../components/GlassPanel';
 
+function playDreamySound() {
+  try {
+    const audio = new Audio('/assets/Dreamy.mp3.m4a');
+    audio.play().catch(() => {
+      // Silently ignore autoplay policy errors
+    });
+  } catch {
+    // Silently ignore audio errors
+  }
+}
+
 export default function LockScreen() {
   const navigate = useNavigate();
   const [code, setCode] = useState('');
@@ -28,6 +39,7 @@ export default function LockScreen() {
       if (isCorrect) {
         setSuccess(true);
         sessionStorage.setItem('dora_authenticated', 'true');
+        playDreamySound();
         setTimeout(() => navigate({ to: '/dashboard' }), 1500);
       } else {
         setError("Oops! That's not the right key! 🔑 Try again~");
@@ -188,7 +200,7 @@ export default function LockScreen() {
               </button>
 
               <p className="text-center text-foreground/30 text-xs font-space">
-                Hint: It's the name of our magical world 🌟
+                Hint: Think of Doraemon's best friend 🌟
               </p>
             </form>
           )}

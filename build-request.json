@@ -1,89 +1,95 @@
 {
   "kind": "build_request",
-  "title": "Add AI Chatbot 'Chat with Nobita' & More Funny Games",
-  "projectName": "Doraemon Secret World",
-  "priority": "normal",
+  "title": "Fix audio playback for all sound effects",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Rename the 'Chat with me' section label to 'Chat with Nobita' everywhere it appears in the app — navigation links, page headings, dashboard portal card, and any route titles.",
+      "text": "Fix the 'Dreamy.mp3' sound effect on the Lock Screen (password entry page) so it plays successfully when the correct passcode is entered. Ensure the audio file is correctly referenced, loaded, and triggered via user interaction to comply with browser autoplay policies.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-7"
         ],
         "quotes": [
-          "change it to Chat with Nobita"
+          "sound not coming"
         ]
       },
       "acceptanceCriteria": [
-        "The navigation item previously labeled 'Chat with me' now reads 'Chat with Nobita'.",
-        "The ChatPage heading displays 'Chat with Nobita'.",
-        "The dashboard portal card for the chat section shows 'Chat with Nobita'."
+        "Dreamy.mp3 plays audibly when the correct password is submitted on the Lock Screen",
+        "No console errors related to audio loading or playback for Dreamy.mp3",
+        "Audio plays in production deployment, not just local dev"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Replace the current static/canned bot response logic in ChatPage.tsx and botResponses.ts with an intelligent rule-based conversational AI engine that can understand and respond meaningfully to a wide variety of user questions and topics. The bot persona must be 'Nobita' — friendly, funny, childlike, and Doraemon-universe flavored. Implement topic detection (greetings, questions, emotions, school/homework, gadgets, friendship, love, food, weather, general knowledge, jokes, etc.) with contextual, varied, and funny replies for each topic. The bot should never give a generic 'I don't know' — it should always attempt a clever, in-character Nobita-style answer.",
+      "text": "Fix the 'Hello.mp3' sound effect on the Chat page so it plays when the Chat section is opened or a message is sent. Ensure the audio file path is correct, the file exists in the public assets, and playback is triggered within a user interaction event handler to avoid autoplay restrictions.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-7"
         ],
         "quotes": [
-          "real Chat Bot AI",
-          "whatever I message means it's want to reply with the answer what's they asking to it"
+          "sound not coming"
         ]
       },
       "acceptanceCriteria": [
-        "Sending a greeting like 'hello' returns a warm Nobita-style greeting.",
-        "Asking a factual question (e.g., 'what is the capital of Japan?') returns a relevant, in-character answer.",
-        "Asking about Doraemon gadgets returns a funny, themed response.",
-        "Asking a joke or funny question returns a humorous reply.",
-        "The bot never returns an empty or undefined response.",
-        "Responses feel varied — sending the same message twice can return different replies."
+        "Hello.mp3 plays audibly when entering or interacting with the Chat page",
+        "No console errors related to audio loading or playback for Hello.mp3",
+        "Audio plays in production deployment"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Add at least 3 new funny/entertaining mini-games to the GamesPage and corresponding routes. Suggested games: (1) Doraemon Gadget Clicker — click as many gadgets as possible before time runs out; (2) Nobita's Exam Quiz — funny multiple-choice quiz with Doraemon trivia questions and silly wrong answers; (3) Whack-a-Doraemon — a whack-a-mole style game where Doraemon characters pop up and the player clicks them for points. Each game should have a playful Doraemon-themed UI, a score display, and a restart button.",
+      "text": "Fix the 'Double Knock.mp3' global click/touch sound in useDoubleKnockSound.ts so it plays on every click or touch event across all pages. Ensure: (1) the MP3 file path resolves correctly in production (use a path relative to the public directory), (2) the Audio object is preloaded, (3) playback is properly triggered, and (4) the 120ms throttle is working without silently suppressing errors.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-7"
         ],
         "quotes": [
-          "add more games to it",
-          "to make funny"
+          "sound not coming"
         ]
       },
       "acceptanceCriteria": [
-        "GamesPage shows at least 3 new game cards in addition to the existing 3 games.",
-        "Each new game has its own route and page component.",
-        "Each new game displays a score and a restart/play again button.",
-        "Games have a Doraemon-themed visual style consistent with the rest of the app.",
-        "All new game routes are registered in App.tsx."
+        "Double Knock.mp3 plays audibly on every click or tap anywhere in the app",
+        "No console errors related to audio loading or playback for Double Knock.mp3",
+        "Sound plays in production deployment",
+        "Throttle of ~120ms between plays still applies"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Audit all three audio file references (Dreamy.mp3, Hello.mp3, Double Knock.mp3) and confirm they are placed under frontend/public/ with correct filenames and extensions. Update all import/reference paths in the hooks and pages to use root-relative public asset paths (e.g. '/assets/audio/Dreamy.mp3') so they resolve correctly after the production build.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-7"
+        ],
+        "quotes": [
+          "sound not coming"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All three audio files exist under frontend/public/ (e.g. frontend/public/assets/audio/)",
+        "All hooks and pages reference audio files using root-relative paths that work in production",
+        "Network tab in browser DevTools shows 200 responses for all audio file requests"
       ]
     }
   ],
   "constraints": [
-    "Do not use any external AI/LLM API — the chatbot must be implemented entirely client-side with rule-based NLP/keyword matching logic.",
-    "Preserve the existing passphrase lock ('Nobita') and authentication flow.",
-    "Do not modify files listed in frontend.immutablePaths.",
-    "Maintain the existing Doraemon-themed design system (colors, fonts, glassmorphism, neon glows)."
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
+    "Do not change backend logic or data models",
+    "Preserve the existing 120ms throttle on the Double Knock global click sound"
   ],
   "nonGoals": [
-    "Real OpenAI / Anthropic / external AI API integration.",
-    "Backend changes to support chatbot — all logic stays client-side.",
-    "Modifying or removing the three existing games (Sliding Puzzle, Maze, Memory Match).",
-    "Changing the passphrase or authentication mechanism."
+    "Adding new sound effects or music",
+    "Changing the background music (BGM) system",
+    "Modifying game pages or other UI components unrelated to audio",
+    "Changing backend functionality"
   ],
   "imageRequirements": {
-    "required": [
-      "Cute chibi Nobita character avatar with school uniform and glasses, transparent background (nobita-avatar.dim_200x200.png)",
-      "Whack-a-mole style game hole with grass border for game background tile (game-hole.dim_128x128.png)",
-      "Doraemon gadget icon set collage showing 4 gadgets on a starry background (gadget-clicker-bg.dim_400x200.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

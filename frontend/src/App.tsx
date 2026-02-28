@@ -9,24 +9,35 @@ import GamesPage from './pages/GamesPage';
 import SlidingPuzzlePage from './pages/games/SlidingPuzzlePage';
 import MazePage from './pages/games/MazePage';
 import MemoryMatchPage from './pages/games/MemoryMatchPage';
+import GadgetClickerPage from './pages/games/GadgetClickerPage';
+import ExamQuizPage from './pages/games/ExamQuizPage';
+import WhackADoraemonPage from './pages/games/WhackADoraemonPage';
 import ChatPage from './pages/ChatPage';
+import OurMemoriesPage from './pages/OurMemoriesPage';
 import AppLayout from './components/layout/AppLayout';
 import FloatingMusicControl from './components/FloatingMusicControl';
 import StarBackground from './components/StarBackground';
+import { useDoubleKnockSound } from './hooks/useDoubleKnockSound';
 
 function isAuthenticated(): boolean {
   return sessionStorage.getItem('dora_authenticated') === 'true';
 }
 
-const rootRoute = createRootRoute({
-  component: () => (
+function RootLayout() {
+  useDoubleKnockSound();
+
+  return (
     <>
       <StarBackground />
       <Outlet />
       <FloatingMusicControl />
       <Toaster />
     </>
-  ),
+  );
+}
+
+const rootRoute = createRootRoute({
+  component: RootLayout,
 });
 
 const lockRoute = createRoute({
@@ -76,9 +87,9 @@ const gamesRoute = createRoute({
   component: GamesPage,
 });
 
-const puzzleRoute = createRoute({
+const slidingPuzzleRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/games/puzzle',
+  path: '/games/sliding-puzzle',
   component: SlidingPuzzlePage,
 });
 
@@ -90,14 +101,38 @@ const mazeRoute = createRoute({
 
 const memoryMatchRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/games/memory',
+  path: '/games/memory-match',
   component: MemoryMatchPage,
+});
+
+const gadgetClickerRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/games/gadget-clicker',
+  component: GadgetClickerPage,
+});
+
+const examQuizRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/games/exam-quiz',
+  component: ExamQuizPage,
+});
+
+const whackADoraemonRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/games/whack-a-doraemon',
+  component: WhackADoraemonPage,
 });
 
 const chatRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/chat',
   component: ChatPage,
+});
+
+const ourMemoriesRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/our-memories',
+  component: OurMemoriesPage,
 });
 
 const routeTree = rootRoute.addChildren([
@@ -108,10 +143,14 @@ const routeTree = rootRoute.addChildren([
     friendshipRoute,
     quotesRoute,
     gamesRoute,
-    puzzleRoute,
+    slidingPuzzleRoute,
     mazeRoute,
     memoryMatchRoute,
+    gadgetClickerRoute,
+    examQuizRoute,
+    whackADoraemonRoute,
     chatRoute,
+    ourMemoriesRoute,
   ]),
 ]);
 

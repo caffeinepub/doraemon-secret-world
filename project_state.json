@@ -1,34 +1,32 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "A Doraemon-themed web app with password protection (passphrase: Nobita). User wants an AI chatbot integrated into the 'Chat with me' section (renamed to 'Chat with Nobita') that can answer any question, plus more fun games added to the app.",
-  "architectural_notes": [
-    "App is password-protected with passphrase 'Nobita'",
-    "App is Doraemon-themed"
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [
+    "Sound not playing in production (Version 8) — affects password entry, Chat section, and general screen touches"
   ],
-  "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Cute chibi Nobita character avatar with school uniform and glasses, transparent background (nobita-avatar.dim_200x200.png)\n- Whack-a-mole style game hole with grass border for game background tile (game-hole.dim_128x128.png)\n- Doraemon gadget icon set collage showing 4 gadgets on a starry background (gadget-clicker-bg.dim_400x200.png)",
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-rename-the-chat-with-me-section-label-to-chat-with-nobita-everywhere-it-appears-in-the-app-navigation-links-page-headings-dashboard-portal-card-and-any-route-titles",
-      "title": "Rename the 'Chat with me' section label to 'Chat with Nobita' everywhere it appears in the app — navigation links, page headings, dashboard portal card, and any route titles.",
+      "id": "feature-fix-the-dreamy-mp3-sound-effect-on-the-lock-screen-password-entry-page-so-it-plays-successfully-when-the-correct-passcode-is-entered-ensure-the-audio-file-is-correctly-referenced-loaded-and-triggered-via-user-interaction-to-comply-with-browser-autoplay-policies",
+      "title": "Fix the 'Dreamy.mp3' sound effect on the Lock Screen (password entry page) so it plays successfully when the correct passcode is entered. Ensure the audio file is correctly referenced, loaded, and triggered via user interaction to comply with browser autoplay policies.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-replace-the-current-static-canned-bot-response-logic-in-chatpage-tsx-and-botresponses-ts-with-an-intelligent-rule-based-conversational-ai-engine-that-can-understand-and-respond-meaningfully-to-a-wide-variety-of-user-questions-and-topics-the-bot-persona-must-be-nobita-friendly-funny-childlike-and-doraemon-universe-flavored-implement-topic-detection-greetings-questions-emotions-school-homework-gadgets-friendship-love-food-weather-general-knowledge-jokes-etc-with-contextual-varied-and-funny-replies-for-each-topic-the-bot-should-never-give-a-generic-i-don-t-know-it-should-always-attempt-a-clever-in-character-nobita-style-answer",
-      "title": "Replace the current static/canned bot response logic in ChatPage.tsx and botResponses.ts with an intelligent rule-based conversational AI engine that can understand and respond meaningfully to a wide variety of user questions and topics. The bot persona must be 'Nobita' — friendly, funny, childlike, and Doraemon-universe flavored. Implement topic detection (greetings, questions, emotions, school/homework, gadgets, friendship, love, food, weather, general knowledge, jokes, etc.) with contextual, varied, and funny replies for each topic. The bot should never give a generic 'I don't know' — it should always attempt a clever, in-character Nobita-style answer.",
+      "id": "feature-fix-the-hello-mp3-sound-effect-on-the-chat-page-so-it-plays-when-the-chat-section-is-opened-or-a-message-is-sent-ensure-the-audio-file-path-is-correct-the-file-exists-in-the-public-assets-and-playback-is-triggered-within-a-user-interaction-event-handler-to-avoid-autoplay-restrictions",
+      "title": "Fix the 'Hello.mp3' sound effect on the Chat page so it plays when the Chat section is opened or a message is sent. Ensure the audio file path is correct, the file exists in the public assets, and playback is triggered within a user interaction event handler to avoid autoplay restrictions.",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-at-least-3-new-funny-entertaining-mini-games-to-the-gamespage-and-corresponding-routes-suggested-games-1-doraemon-gadget-clicker-click-as-many-gadgets-as-possible-before-time-runs-out-2-nobita-s-exam-quiz-funny-multiple-choice-quiz-with-doraemon-trivia-questions-and-silly-wrong-answers-3-whack-a-doraemon-a-whack-a-mole-style-game-where-doraemon-characters-pop-up-and-the-player-clicks-them-for-points-each-game-should-have-a-playful-doraemon-themed-ui-a-score-display-and-a-restart-button",
-      "title": "Add at least 3 new funny/entertaining mini-games to the GamesPage and corresponding routes. Suggested games: (1) Doraemon Gadget Clicker — click as many gadgets as possible before time runs out; (2) Nobita's Exam Quiz — funny multiple-choice quiz with Doraemon trivia questions and silly wrong answers; (3) Whack-a-Doraemon — a whack-a-mole style game where Doraemon characters pop up and the player clicks them for points. Each game should have a playful Doraemon-themed UI, a score display, and a restart button.",
+      "id": "feature-fix-the-double-knock-mp3-global-click-touch-sound-in-usedoubleknocksound-ts-so-it-plays-on-every-click-or-touch-event-across-all-pages-ensure-1-the-mp3-file-path-resolves-correctly-in-production-use-a-path-relative-to-the-public-directory-2-the-audio-object-is-preloaded-3-playback-is-properly-triggered-and-4-the-120ms-throttle-is-working-without-silently-suppressing-errors",
+      "title": "Fix the 'Double Knock.mp3' global click/touch sound in useDoubleKnockSound.ts so it plays on every click or touch event across all pages. Ensure: (1) the MP3 file path resolves correctly in production (use a path relative to the public directory), (2) the Audio object is preloaded, (3) playback is properly triggered, and (4) the 120ms throttle is working without silently suppressing errors.",
       "reqIds": [
         "REQ-3"
       ],
@@ -37,26 +35,15 @@
   ],
   "new_feature_requests": [
     {
-      "id": "AR-1",
-      "summary": "Add a real AI chatbot to the 'Chat with Nobita' section that answers user questions conversationally",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Rename 'Chat with me' section to 'Chat with Nobita'",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Add more funny games to the app",
-      "reqIds": [],
+      "id": "AR-4",
+      "summary": "Audit all three audio file references (Dreamy.mp3, Hello.mp3, Double Knock.mp3) and confirm they are placed under frontend/public/ with correct filenames and extensions. Update all import/reference paths in the hooks and pages to use root-relative public asset paths (e.g. '/assets/audio/Dreamy.mp3') so they resolve correctly after the production build.",
+      "reqIds": [
+        "REQ-4"
+      ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Doraemon Secret World",
+  "projectName": "Fix audio playback for all sound effects",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

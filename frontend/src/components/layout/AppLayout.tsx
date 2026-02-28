@@ -133,19 +133,6 @@ export default function AppLayout() {
         <p className="text-foreground/30 font-space text-xs">
           © {new Date().getFullYear()} DoraLand — A magical world 💙
         </p>
-        <p className="text-foreground/20 font-space text-xs mt-1">
-          Built with{' '}
-          <span className="text-dora-red">♥</span>{' '}
-          using{' '}
-          <a
-            href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== 'undefined' ? window.location.hostname : 'doraland')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-dora-blue-light hover:underline"
-          >
-            caffeine.ai
-          </a>
-        </p>
       </footer>
     </div>
   );

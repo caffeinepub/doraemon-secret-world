@@ -2,7 +2,7 @@ import { useNavigate } from '@tanstack/react-router';
 
 const GAMES = [
   {
-    path: '/games/puzzle',
+    path: '/games/sliding-puzzle',
     title: 'Sliding Puzzle',
     emoji: '🧩',
     description: 'Rearrange the tiles to reveal the Doraemon image!',
@@ -26,7 +26,7 @@ const GAMES = [
     howTo: 'Use arrow keys or WASD to navigate. Reach the ⭐ star to complete the maze!',
   },
   {
-    path: '/games/memory',
+    path: '/games/memory-match',
     title: 'Memory Match',
     emoji: '🃏',
     description: 'Flip cards and find all the matching Doraemon pairs!',
@@ -71,7 +71,7 @@ const GAMES = [
     border: 'border-dora-red/40',
     textColor: 'text-dora-red',
     glowClass: 'glow-red',
-    howTo: 'Click the characters when they pop up from holes. Each hit scores points. Miss too many and it\'s game over!',
+    howTo: "Click the characters when they pop up from holes. Each hit scores points. Miss too many and it's game over!",
   },
 ];
 
@@ -104,12 +104,10 @@ export default function GamesPage() {
               <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-40 group-hover:opacity-70 transition-opacity duration-300`} />
 
               <div className="relative z-10">
-                {/* Emoji icon */}
                 <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300 inline-block">
                   {emoji}
                 </div>
 
-                {/* Badge */}
                 <div className={`inline-block px-2 py-0.5 rounded-full text-xs font-space font-medium border ${border} ${textColor} mb-3 ml-2`}>
                   {badge}
                 </div>

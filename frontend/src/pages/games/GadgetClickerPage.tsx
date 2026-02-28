@@ -1,144 +1,108 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { ArrowLeft, Trophy, Clock, Zap } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Trophy } from 'lucide-react';
 import GlassPanel from '../../components/GlassPanel';
 
-const GADGETS = ['🎁', '🚪', '🚁', '📚', '🔮', '⭐', '🌟', '💎', '🎯', '🔵', '🍩', '🎪', '🎨', '🎭', '🎲'];
+const GADGETS = ['🎁', '🔔', '🌟', '💫', '⭐', '🎀', '🎊', '🔵', '💙', '✨'];
 const GAME_DURATION = 30;
+const MAX_GADGETS = 6;
 
 interface GadgetItem {
   id: number;
   emoji: string;
   x: number;
   y: number;
-  size: number;
-  points: number;
   lifetime: number;
-  born: number;
 }
 
 let nextId = 0;
 
-function createGadget(): GadgetItem {
-  const size = 40 + Math.random() * 30;
-  const points = size < 55 ? 3 : size < 65 ? 2 : 1;
-  return {
-    id: nextId++,
-    emoji: GADGETS[Math.floor(Math.random() * GADGETS.length)],
-    x: 5 + Math.random() * 80,
-    y: 10 + Math.random() * 75,
-    size,
-    points,
-    lifetime: 1500 + Math.random() * 1500,
-    born: Date.now(),
-  };
-}
-
 export default function GadgetClickerPage() {
   const navigate = useNavigate();
-  const [gameState, setGameState] = useState<'idle' | 'playing' | 'over'>('idle');
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(() => {
-    return parseInt(localStorage.getItem('gadget_clicker_hs') || '0', 10);
-  });
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [gadgets, setGadgets] = useState<GadgetItem[]>([]);
-  const [combo, setCombo] = useState(0);
-  const [popEffects, setPopEffects] = useState<{ id: number; x: number; y: number; points: number }[]>([]);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [missed, setMissed] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const spawnRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const cleanupRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const gadgetTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
 
-  const endGame = useCallback((finalScore: number) => {
-    setGameState('over');
-    if (timerRef.current) clearInterval(timerRef.current);
+  const clearAllTimers = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
     if (spawnRef.current) clearInterval(spawnRef.current);
-    if (cleanupRef.current) clearInterval(cleanupRef.current);
-    setGadgets([]);
-    if (finalScore > parseInt(localStorage.getItem('gadget_clicker_hs') || '0', 10)) {
-      localStorage.setItem('gadget_clicker_hs', String(finalScore));
-      setHighScore(finalScore);
-    }
+    gadgetTimers.current.forEach((t) => clearTimeout(t));
+    gadgetTimers.current.clear();
   }, []);
 
-  const startGame = () => {
+  const spawnGadget = useCallback(() => {
+    setGadgets((prev) => {
+      if (prev.length >= MAX_GADGETS) return prev;
+      const id = nextId++;
+      const newGadget: GadgetItem = {
+        id,
+        emoji: GADGETS[Math.floor(Math.random() * GADGETS.length)],
+        x: 5 + Math.random() * 80,
+        y: 10 + Math.random() * 70,
+        lifetime: 1500 + Math.random() * 1500,
+      };
+
+      const timer = setTimeout(() => {
+        setGadgets((g) => {
+          const exists = g.find((item) => item.id === id);
+          if (exists) setMissed((m) => m + 1);
+          return g.filter((item) => item.id !== id);
+        });
+        gadgetTimers.current.delete(id);
+      }, newGadget.lifetime);
+
+      gadgetTimers.current.set(id, timer);
+      return [...prev, newGadget];
+    });
+  }, []);
+
+  const startGame = useCallback(() => {
+    clearAllTimers();
     setScore(0);
-    setCombo(0);
+    setMissed(0);
     setTimeLeft(GAME_DURATION);
     setGadgets([]);
-    setPopEffects([]);
-    setGameState('playing');
-  };
+    setGameOver(false);
+    setGameStarted(true);
 
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    // Timer
-    timerRef.current = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setTimeLeft((t) => {
         if (t <= 1) {
-          setScore((s) => {
-            endGame(s);
-            return s;
-          });
+          clearAllTimers();
+          setGameOver(true);
+          setGameStarted(false);
+          setGadgets([]);
           return 0;
         }
         return t - 1;
       });
     }, 1000);
 
-    // Spawn gadgets
-    spawnRef.current = setInterval(() => {
-      setGadgets((prev) => {
-        if (prev.length >= 8) return prev;
-        return [...prev, createGadget()];
-      });
-    }, 600);
+    spawnRef.current = setInterval(spawnGadget, 700);
+  }, [clearAllTimers, spawnGadget]);
 
-    // Cleanup expired gadgets
-    cleanupRef.current = setInterval(() => {
-      const now = Date.now();
-      setGadgets((prev) => prev.filter((g) => now - g.born < g.lifetime));
-    }, 200);
+  useEffect(() => {
+    return () => clearAllTimers();
+  }, [clearAllTimers]);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (spawnRef.current) clearInterval(spawnRef.current);
-      if (cleanupRef.current) clearInterval(cleanupRef.current);
-    };
-  }, [gameState, endGame]);
-
-  const handleClick = (gadget: GadgetItem, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (gameState !== 'playing') return;
-
-    const newCombo = combo + 1;
-    const bonusMultiplier = newCombo >= 5 ? 2 : 1;
-    const earned = gadget.points * bonusMultiplier;
-
-    setCombo(newCombo);
-    setScore((s) => s + earned);
-    setGadgets((prev) => prev.filter((g) => g.id !== gadget.id));
-
-    // Pop effect
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const container = (e.currentTarget as HTMLElement).closest('.game-area')?.getBoundingClientRect();
-    if (container) {
-      const px = ((rect.left + rect.width / 2 - container.left) / container.width) * 100;
-      const py = ((rect.top + rect.height / 2 - container.top) / container.height) * 100;
-      const effectId = Date.now();
-      setPopEffects((prev) => [...prev, { id: effectId, x: px, y: py, points: earned }]);
-      setTimeout(() => setPopEffects((prev) => prev.filter((p) => p.id !== effectId)), 700);
+  const handleClick = (id: number) => {
+    const timer = gadgetTimers.current.get(id);
+    if (timer) {
+      clearTimeout(timer);
+      gadgetTimers.current.delete(id);
     }
+    setGadgets((prev) => prev.filter((g) => g.id !== id));
+    setScore((s) => s + 10);
   };
 
-  const handleMiss = () => {
-    if (gameState !== 'playing') return;
-    setCombo(0);
-  };
-
-  const timerPercent = (timeLeft / GAME_DURATION) * 100;
-  const timerColor = timeLeft > 15 ? 'bg-dora-cyan' : timeLeft > 8 ? 'bg-dora-yellow' : 'bg-dora-red';
+  const timerColor =
+    timeLeft > 15 ? 'text-dora-cyan' : timeLeft > 7 ? 'text-dora-yellow' : 'text-dora-red';
 
   return (
     <div className="min-h-screen px-4 py-8 page-enter">
@@ -147,169 +111,106 @@ export default function GadgetClickerPage() {
         <div className="flex items-center gap-4 mb-6">
           <button
             onClick={() => navigate({ to: '/games' })}
-            className="w-10 h-10 rounded-xl glass border border-dora-blue/30 flex items-center justify-center text-foreground/60 hover:text-dora-blue-light transition-colors"
+            className="w-10 h-10 rounded-full glass border border-dora-cyan/30 flex items-center justify-center text-foreground/60 hover:text-dora-cyan transition-all"
           >
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 className="font-orbitron text-2xl font-bold gradient-text-blue">Gadget Clicker</h1>
-            <p className="text-foreground/50 font-space text-sm">Click gadgets from Doraemon's pocket! 🎁</p>
+            <h1 className="font-orbitron text-2xl font-bold text-dora-cyan">Gadget Clicker</h1>
+            <p className="text-foreground/50 text-sm font-space">Click gadgets before they vanish! 🎁</p>
           </div>
         </div>
 
-        {/* Stats Bar */}
+        {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-4">
           <GlassPanel glowColor="cyan" className="p-3 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Zap size={14} className="text-dora-cyan" />
-              <span className="text-dora-cyan text-xs font-space">SCORE</span>
-            </div>
-            <div className="font-orbitron text-2xl font-bold text-dora-cyan">{score}</div>
+            <p className="text-foreground/50 text-xs font-space mb-1">SCORE</p>
+            <p className="font-orbitron text-xl font-bold text-dora-cyan">{score}</p>
           </GlassPanel>
           <GlassPanel glowColor="yellow" className="p-3 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Clock size={14} className="text-dora-yellow" />
-              <span className="text-dora-yellow text-xs font-space">TIME</span>
-            </div>
-            <div className="font-orbitron text-2xl font-bold text-dora-yellow">{timeLeft}s</div>
+            <p className="text-foreground/50 text-xs font-space mb-1">TIME</p>
+            <p className={`font-orbitron text-xl font-bold ${timerColor}`}>{timeLeft}s</p>
           </GlassPanel>
-          <GlassPanel glowColor="blue" className="p-3 text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Trophy size={14} className="text-dora-blue-light" />
-              <span className="text-dora-blue-light text-xs font-space">BEST</span>
-            </div>
-            <div className="font-orbitron text-2xl font-bold text-dora-blue-light">{highScore}</div>
+          <GlassPanel glowColor="red" className="p-3 text-center">
+            <p className="text-foreground/50 text-xs font-space mb-1">MISSED</p>
+            <p className="font-orbitron text-xl font-bold text-dora-red">{missed}</p>
           </GlassPanel>
         </div>
 
-        {/* Timer bar */}
-        {gameState === 'playing' && (
-          <div className="w-full h-2 bg-white/10 rounded-full mb-4 overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-1000 ${timerColor}`}
-              style={{ width: `${timerPercent}%` }}
-            />
-          </div>
-        )}
-
-        {/* Combo indicator */}
-        {combo >= 3 && gameState === 'playing' && (
-          <div className="text-center mb-2">
-            <span className="font-orbitron text-sm font-bold text-dora-yellow animate-pulse">
-              🔥 {combo}x COMBO! {combo >= 5 ? '2× POINTS!' : ''}
-            </span>
-          </div>
-        )}
-
         {/* Game Area */}
-        <GlassPanel glowColor="cyan" className="relative overflow-hidden game-area" style={{ height: '380px' }}>
-          {/* Background image */}
-          <div
-            className="absolute inset-0 opacity-20"
-            style={{
-              backgroundImage: 'url(/assets/generated/gadget-clicker-bg.dim_400x200.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          />
-
-          {gameState === 'idle' && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-              <div className="text-6xl mb-4 animate-float">🎁</div>
-              <h2 className="font-orbitron text-xl font-bold text-dora-cyan mb-2">Gadget Clicker!</h2>
-              <p className="text-foreground/60 font-space text-sm mb-6 max-w-xs">
-                Gadgets will pop up from Doraemon's pocket! Click them fast to score points. Smaller gadgets = more points!
+        <GlassPanel glowColor="cyan" className="relative overflow-hidden mb-4" style={{ height: '380px' }}>
+          {!gameStarted && !gameOver && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+              <div className="text-6xl animate-bounce">🎁</div>
+              <p className="font-orbitron text-xl text-dora-cyan font-bold">Ready to Click?</p>
+              <p className="text-foreground/50 font-space text-sm text-center px-8">
+                Gadgets will pop up randomly. Click them fast before they disappear!
               </p>
-              <button
-                onClick={startGame}
-                className="px-8 py-3 rounded-2xl bg-dora-cyan/30 border border-dora-cyan/60 text-dora-cyan font-orbitron font-bold text-lg hover:bg-dora-cyan/50 transition-all duration-300 glow-cyan"
-              >
+              <button onClick={startGame} className="dora-btn dora-btn-primary mt-2">
                 Start Game!
               </button>
             </div>
           )}
 
-          {gameState === 'over' && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-20">
-              <div className="text-5xl mb-3">
-                {score >= highScore && score > 0 ? '🏆' : '😅'}
-              </div>
-              <h2 className="font-orbitron text-xl font-bold text-dora-yellow mb-1">
-                {score >= highScore && score > 0 ? 'New High Score!' : 'Time\'s Up!'}
-              </h2>
-              <p className="text-foreground/60 font-space text-sm mb-1">Final Score</p>
-              <div className="font-orbitron text-4xl font-bold text-dora-cyan mb-4">{score}</div>
-              {score >= highScore && score > 0 && (
-                <p className="text-dora-yellow font-space text-sm mb-4">🌟 Even Doraemon is impressed!</p>
-              )}
-              <div className="flex gap-3">
-                <button
-                  onClick={startGame}
-                  className="px-6 py-2.5 rounded-2xl bg-dora-cyan/30 border border-dora-cyan/60 text-dora-cyan font-orbitron font-bold hover:bg-dora-cyan/50 transition-all duration-300"
-                >
-                  Play Again!
-                </button>
-                <button
-                  onClick={() => navigate({ to: '/games' })}
-                  className="px-6 py-2.5 rounded-2xl glass border border-white/20 text-foreground/60 font-space hover:text-foreground transition-all duration-300"
-                >
-                  Back
-                </button>
-              </div>
-            </div>
-          )}
-
-          {gameState === 'playing' && (
-            <div
-              className="absolute inset-0 cursor-crosshair"
-              onClick={handleMiss}
+          {gameStarted && gadgets.map((g) => (
+            <button
+              key={g.id}
+              onClick={() => handleClick(g.id)}
+              className="absolute text-4xl hover:scale-125 active:scale-90 transition-transform duration-100"
+              style={{ left: `${g.x}%`, top: `${g.y}%`, transform: 'translate(-50%, -50%)' }}
             >
-              {gadgets.map((gadget) => {
-                const age = Date.now() - gadget.born;
-                const opacity = Math.max(0.3, 1 - age / gadget.lifetime);
-                return (
-                  <button
-                    key={gadget.id}
-                    onClick={(e) => handleClick(gadget, e)}
-                    className="absolute transform -translate-x-1/2 -translate-y-1/2 hover:scale-125 active:scale-90 transition-transform duration-100 select-none"
-                    style={{
-                      left: `${gadget.x}%`,
-                      top: `${gadget.y}%`,
-                      fontSize: `${gadget.size}px`,
-                      opacity,
-                      filter: 'drop-shadow(0 0 8px oklch(0.7 0.2 200))',
-                    }}
-                  >
-                    {gadget.emoji}
-                  </button>
-                );
-              })}
+              {g.emoji}
+            </button>
+          ))}
 
-              {/* Pop effects */}
-              {popEffects.map((effect) => (
-                <div
-                  key={effect.id}
-                  className="absolute pointer-events-none font-orbitron font-bold text-dora-yellow text-lg animate-ping"
-                  style={{
-                    left: `${effect.x}%`,
-                    top: `${effect.y}%`,
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 30,
-                  }}
-                >
-                  +{effect.points}
-                </div>
-              ))}
+          {gameStarted && gadgets.length === 0 && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <p className="text-foreground/30 font-space text-sm">Gadgets incoming...</p>
             </div>
           )}
         </GlassPanel>
 
-        {/* Tips */}
-        <div className="mt-4 glass rounded-2xl p-3 border border-dora-cyan/20 text-center">
-          <p className="text-foreground/40 font-space text-xs">
-            💡 Smaller gadgets = more points! Build combos for 2× bonus! 🔥
-          </p>
-        </div>
+        {gameStarted && (
+          <button
+            onClick={startGame}
+            className="dora-btn dora-btn-primary w-full flex items-center justify-center gap-2"
+          >
+            <RefreshCw size={16} />
+            Restart
+          </button>
+        )}
+
+        {/* Game Over Modal */}
+        {gameOver && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <GlassPanel glowColor="yellow" className="p-8 text-center max-w-sm mx-4">
+              <div className="text-6xl mb-4">🎊</div>
+              <Trophy className="text-dora-yellow mx-auto mb-3" size={32} />
+              <h2 className="font-orbitron text-2xl font-bold text-dora-yellow mb-2">Time's Up!</h2>
+              <p className="text-foreground/70 font-nunito mb-2">
+                Final Score: <span className="text-dora-cyan font-bold text-2xl">{score}</span>
+              </p>
+              <p className="text-foreground/50 font-space text-sm mb-6">
+                Missed: {missed} gadgets
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={startGame}
+                  className="dora-btn dora-btn-primary flex-1 flex items-center justify-center gap-2"
+                >
+                  <RefreshCw size={14} />
+                  Play Again
+                </button>
+                <button
+                  onClick={() => navigate({ to: '/games' })}
+                  className="dora-btn dora-btn-yellow flex-1"
+                >
+                  Games Hub
+                </button>
+              </div>
+            </GlassPanel>
+          </div>
+        )}
       </div>
     </div>
   );

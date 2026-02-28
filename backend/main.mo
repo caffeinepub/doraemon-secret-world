@@ -3,8 +3,6 @@ import Array "mo:core/Array";
 import Runtime "mo:core/Runtime";
 import MixinStorage "blob-storage/Mixin";
 
-
-
 actor {
   include MixinStorage();
 

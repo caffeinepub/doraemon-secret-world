@@ -88,176 +88,180 @@ export default function ChatPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Sync backend messages to local state
+  // Play Hello sound once on mount (triggered by user interaction via click on nav)
   useEffect(() => {
-    if (messages && messages.length > 0) {
+    const playHello = () => {
+      try {
+        const audio = new Audio('/assets/Hello.mp3.m4a');
+        audio.play().catch(() => {
+          // Silently ignore autoplay policy errors
+        });
+      } catch {
+        // Silently ignore audio errors
+      }
+    };
+
+    // Small delay to ensure we're within a user-gesture context from navigation click
+    const timer = setTimeout(playHello, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (messages) {
       setLocalMessages(messages);
     }
   }, [messages]);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [localMessages, isTyping]);
 
-  const handleSend = async () => {
-    const text = input.trim();
-    if (!text || addMessage.isPending || isTyping) return;
+  const sendMessage = async (text: string) => {
+    if (!text.trim()) return;
 
-    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const userMsg: Message = {
+      sender: 'user',
+      content: text.trim(),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
 
-    // Add user message locally immediately
-    const userMsg: Message = { sender: 'user', content: text, timestamp };
     setLocalMessages((prev) => [...prev, userMsg]);
     setInput('');
-
-    // Save user message to backend
-    try {
-      await addMessage.mutateAsync({ sender: 'user', content: text, timestamp });
-    } catch {
-      // Continue even if backend fails
-    }
-
-    // Show typing indicator
     setIsTyping(true);
 
-    // Generate bot response after realistic delay
-    const delay = 1000 + Math.random() * 1200;
-    setTimeout(async () => {
-      const botResponse = generateBotResponse(text);
-      const botTimestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const botMsg: Message = { sender: 'bot', content: botResponse, timestamp: botTimestamp };
+    // Save user message to backend
+    addMessage.mutate({
+      sender: 'user',
+      content: text.trim(),
+      timestamp: userMsg.timestamp,
+    });
 
-      setIsTyping(false);
+    // Simulate bot typing delay
+    const delay = 800 + Math.random() * 800;
+    setTimeout(() => {
+      const botResponse = generateBotResponse(text.trim());
+      const botMsg: Message = {
+        sender: 'bot',
+        content: botResponse,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
       setLocalMessages((prev) => [...prev, botMsg]);
+      setIsTyping(false);
 
       // Save bot message to backend
-      try {
-        await addMessage.mutateAsync({ sender: 'bot', content: botResponse, timestamp: botTimestamp });
-      } catch {
-        // Continue even if backend fails
-      }
+      addMessage.mutate({
+        sender: 'bot',
+        content: botResponse,
+        timestamp: botMsg.timestamp,
+      });
     }, delay);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    sendMessage(input);
   };
 
-  const displayMessages = localMessages.length > 0 ? localMessages : (messages ?? []);
-
   return (
-    <div className="min-h-screen px-4 py-8 page-enter">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <div className="flex justify-center mb-3">
-            <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-dora-blue/40 glow-blue animate-pulse-glow">
-              <img
-                src="/assets/generated/nobita-avatar.dim_200x200.png"
-                alt="Nobita Avatar"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const el = e.target as HTMLImageElement;
-                  el.style.display = 'none';
-                  if (el.parentElement) {
-                    el.parentElement.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:oklch(0.55 0.22 240 / 0.2)">🧒</div>';
-                  }
-                }}
-              />
+    <div className="max-w-2xl mx-auto px-4 py-6 h-[calc(100vh-80px)] flex flex-col">
+      {/* Header */}
+      <GlassPanel glowColor="blue" className="p-4 mb-4 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-dora-blue/50 flex-shrink-0 relative">
+            <img
+              src="/assets/generated/nobita-avatar.dim_200x200.png"
+              alt="Nobita"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const el = e.target as HTMLImageElement;
+                el.style.display = 'none';
+                if (el.parentElement) {
+                  el.parentElement.innerHTML = '<span style="font-size:2rem; display:flex; align-items:center; justify-content:center; height:100%">🧒</span>';
+                }
+              }}
+            />
+          </div>
+          <div>
+            <h2 className="font-orbitron font-bold text-foreground">Chat with Nobita</h2>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-xs text-foreground/50 font-space">Online • Ready to chat!</span>
             </div>
           </div>
-          <h1 className="font-orbitron text-2xl font-bold gradient-text-blue mb-1">
-            Chat with Nobita
-          </h1>
-          <p className="text-foreground/50 font-space text-sm">
-            Nobita is always here for you 💙
-          </p>
-          <div className="flex items-center justify-center gap-2 mt-2">
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-green-400 text-xs font-space">Nobita is Online</span>
-          </div>
+          <div className="ml-auto text-2xl">🧒</div>
         </div>
+      </GlassPanel>
 
-        {/* Chat Container */}
-        <GlassPanel glowColor="blue" className="flex flex-col" style={{ height: '60vh' }}>
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 chat-scroll custom-scrollbar">
-            {isLoading ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="w-8 h-8 border-2 border-dora-blue/30 border-t-dora-blue rounded-full animate-spin" />
+      {/* Messages area */}
+      <GlassPanel glowColor="cyan" className="flex-1 overflow-hidden flex flex-col p-4 min-h-0">
+        <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="w-8 h-8 border-2 border-dora-blue/30 border-t-dora-blue rounded-full animate-spin mx-auto mb-2" />
+                <p className="text-foreground/40 text-sm font-space">Loading messages...</p>
               </div>
-            ) : displayMessages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="text-5xl mb-4 animate-float">🧒</div>
-                <p className="text-foreground/50 font-nunito text-lg">
-                  Say hello to Nobita! He's waiting! 🌟
-                </p>
-                <p className="text-foreground/30 font-space text-sm mt-2">
-                  Ask him anything — he'll answer in his own funny way!
+            </div>
+          ) : localMessages.length === 0 ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="text-5xl mb-3">🧒</div>
+                <p className="text-foreground/50 font-nunito text-sm">
+                  Say hi to Nobita! He's waiting... 💙
                 </p>
               </div>
-            ) : (
-              <>
-                {displayMessages.map((msg, i) => (
-                  <MessageBubble
-                    key={i}
-                    message={msg}
-                    isBot={msg.sender === 'bot'}
-                  />
-                ))}
-                {isTyping && <TypingIndicator />}
-                <div ref={messagesEndRef} />
-              </>
-            )}
-          </div>
-
-          {/* Divider */}
-          <div className="border-t border-dora-blue/20" />
-
-          {/* Input Area */}
-          <div className="p-4 flex items-center gap-3">
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask Nobita anything... 💙"
-              className="dora-input flex-1 py-3"
-              disabled={isTyping}
-            />
-            <button
-              onClick={handleSend}
-              disabled={!input.trim() || isTyping || addMessage.isPending}
-              className="w-12 h-12 rounded-full bg-dora-blue/30 border border-dora-blue/50 flex items-center justify-center text-dora-blue-light hover:bg-dora-blue/50 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed glow-blue"
-            >
-              <Send size={18} />
-            </button>
-          </div>
-        </GlassPanel>
-
-        {/* Quick replies */}
-        <div className="mt-4 flex flex-wrap gap-2 justify-center">
-          {QUICK_REPLIES.map((quick) => (
-            <button
-              key={quick}
-              onClick={() => {
-                setInput(quick);
-                inputRef.current?.focus();
-              }}
-              className="px-3 py-1.5 rounded-full glass border border-dora-blue/30 text-xs font-space text-foreground/60 hover:text-dora-blue-light hover:border-dora-blue/60 transition-all duration-300"
-            >
-              {quick}
-            </button>
-          ))}
+            </div>
+          ) : (
+            <>
+              {localMessages.map((msg, idx) => (
+                <MessageBubble
+                  key={idx}
+                  message={msg}
+                  isBot={msg.sender === 'bot'}
+                />
+              ))}
+              {isTyping && <TypingIndicator />}
+              <div ref={messagesEndRef} />
+            </>
+          )}
         </div>
+      </GlassPanel>
+
+      {/* Quick replies */}
+      <div className="flex gap-2 overflow-x-auto py-3 flex-shrink-0 custom-scrollbar">
+        {QUICK_REPLIES.map((reply) => (
+          <button
+            key={reply}
+            onClick={() => sendMessage(reply)}
+            className="flex-shrink-0 px-3 py-1.5 rounded-full bg-dora-blue/10 border border-dora-blue/30 text-xs font-nunito text-foreground/70 hover:bg-dora-blue/20 hover:text-foreground transition-all"
+          >
+            {reply}
+          </button>
+        ))}
       </div>
+
+      {/* Input */}
+      <GlassPanel glowColor="blue" className="p-3 flex-shrink-0">
+        <form onSubmit={handleSubmit} className="flex gap-3 items-center">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type a message to Nobita... 💬"
+            className="dora-input flex-1 text-sm"
+            disabled={isTyping}
+          />
+          <button
+            type="submit"
+            disabled={!input.trim() || isTyping}
+            className="dora-btn dora-btn-primary px-4 py-2 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Send size={16} />
+            <span className="hidden sm:inline">Send</span>
+          </button>
+        </form>
+      </GlassPanel>
     </div>
   );
 }

@@ -2,12 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-rename-the-chat-with-me-section-label-to-chat-with-nobita-everywhere-it-appears-in-the-app-navigation-links-page-headings-dashboard-portal-card-and-any-route-titles",
-      "featureTitle": "Rename the 'Chat with me' section label to 'Chat with Nobita' everywhere it appears in the app — navigation links, page headings, dashboard portal card, and any route titles.",
+      "featureId": "feature-fix-the-dreamy-mp3-sound-effect-on-the-lock-screen-password-entry-page-so-it-plays-successfully-when-the-correct-passcode-is-entered-ensure-the-audio-file-is-correctly-referenced-loaded-and-triggered-via-user-interaction-to-comply-with-browser-autoplay-policies",
+      "featureTitle": "Fix the 'Dreamy.mp3' sound effect on the Lock Screen (password entry page) so it plays successfully when the correct passcode is entered. Ensure the audio file is correctly referenced, loaded, and triggered via user interaction to comply with browser autoplay policies.",
       "files": [
-        "frontend/src/components/layout/AppLayout.tsx",
-        "frontend/src/pages/ChatPage.tsx",
-        "frontend/src/pages/DashboardPage.tsx"
+        "frontend/src/pages/LockScreen.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -23,11 +21,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-replace-the-current-static-canned-bot-response-logic-in-chatpage-tsx-and-botresponses-ts-with-an-intelligent-rule-based-conversational-ai-engine-that-can-understand-and-respond-meaningfully-to-a-wide-variety-of-user-questions-and-topics-the-bot-persona-must-be-nobita-friendly-funny-childlike-and-doraemon-universe-flavored-implement-topic-detection-greetings-questions-emotions-school-homework-gadgets-friendship-love-food-weather-general-knowledge-jokes-etc-with-contextual-varied-and-funny-replies-for-each-topic-the-bot-should-never-give-a-generic-i-don-t-know-it-should-always-attempt-a-clever-in-character-nobita-style-answer",
-      "featureTitle": "Replace the current static/canned bot response logic in ChatPage.tsx and botResponses.ts with an intelligent rule-based conversational AI engine that can understand and respond meaningfully to a wide variety of user questions and topics. The bot persona must be 'Nobita' — friendly, funny, childlike, and Doraemon-universe flavored. Implement topic detection (greetings, questions, emotions, school/homework, gadgets, friendship, love, food, weather, general knowledge, jokes, etc.) with contextual, varied, and funny replies for each topic. The bot should never give a generic 'I don't know' — it should always attempt a clever, in-character Nobita-style answer.",
+      "featureId": "feature-fix-the-hello-mp3-sound-effect-on-the-chat-page-so-it-plays-when-the-chat-section-is-opened-or-a-message-is-sent-ensure-the-audio-file-path-is-correct-the-file-exists-in-the-public-assets-and-playback-is-triggered-within-a-user-interaction-event-handler-to-avoid-autoplay-restrictions",
+      "featureTitle": "Fix the 'Hello.mp3' sound effect on the Chat page so it plays when the Chat section is opened or a message is sent. Ensure the audio file path is correct, the file exists in the public assets, and playback is triggered within a user interaction event handler to avoid autoplay restrictions.",
       "files": [
-        "frontend/src/pages/ChatPage.tsx",
-        "frontend/src/utils/botResponses.ts"
+        "frontend/src/pages/ChatPage.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -43,13 +40,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-at-least-3-new-funny-entertaining-mini-games-to-the-gamespage-and-corresponding-routes-suggested-games-1-doraemon-gadget-clicker-click-as-many-gadgets-as-possible-before-time-runs-out-2-nobita-s-exam-quiz-funny-multiple-choice-quiz-with-doraemon-trivia-questions-and-silly-wrong-answers-3-whack-a-doraemon-a-whack-a-mole-style-game-where-doraemon-characters-pop-up-and-the-player-clicks-them-for-points-each-game-should-have-a-playful-doraemon-themed-ui-a-score-display-and-a-restart-button",
-      "featureTitle": "Add at least 3 new funny/entertaining mini-games to the GamesPage and corresponding routes. Suggested games: (1) Doraemon Gadget Clicker — click as many gadgets as possible before time runs out; (2) Nobita's Exam Quiz — funny multiple-choice quiz with Doraemon trivia questions and silly wrong answers; (3) Whack-a-Doraemon — a whack-a-mole style game where Doraemon characters pop up and the player clicks them for points. Each game should have a playful Doraemon-themed UI, a score display, and a restart button.",
+      "featureId": "feature-fix-the-double-knock-mp3-global-click-touch-sound-in-usedoubleknocksound-ts-so-it-plays-on-every-click-or-touch-event-across-all-pages-ensure-1-the-mp3-file-path-resolves-correctly-in-production-use-a-path-relative-to-the-public-directory-2-the-audio-object-is-preloaded-3-playback-is-properly-triggered-and-4-the-120ms-throttle-is-working-without-silently-suppressing-errors",
+      "featureTitle": "Fix the 'Double Knock.mp3' global click/touch sound in useDoubleKnockSound.ts so it plays on every click or touch event across all pages. Ensure: (1) the MP3 file path resolves correctly in production (use a path relative to the public directory), (2) the Audio object is preloaded, (3) playback is properly triggered, and (4) the 120ms throttle is working without silently suppressing errors.",
       "files": [
-        "frontend/src/pages/GamesPage.tsx",
-        "frontend/src/pages/games/ExamQuizPage.tsx",
-        "frontend/src/pages/games/GadgetClickerPage.tsx",
-        "frontend/src/pages/games/WhackADoraemonPage.tsx"
+        "frontend/src/hooks/useDoubleKnockSound.ts"
       ],
       "components": [
         "blob-storage@4.0.0",

@@ -1,405 +1,253 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { ArrowLeft, Trophy, Clock, Heart } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Trophy } from 'lucide-react';
 import GlassPanel from '../../components/GlassPanel';
 
-const GAME_DURATION = 45;
-const GRID_SIZE = 9; // 3x3
+const GRID_SIZE = 9;
+const GAME_DURATION = 30;
+const CHARACTERS = ['🔵', '⭐', '🎁', '💙', '🌟'];
+const MOLE_SHOW_TIME = 900;
+const SPAWN_INTERVAL = 600;
 
-const CHARACTERS = [
-  { emoji: '🔵', name: 'Doraemon', points: 1 },
-  { emoji: '🧒', name: 'Nobita', points: 2 },
-  { emoji: '🌸', name: 'Shizuka', points: 3 },
-  { emoji: '💪', name: 'Gian', points: 1 },
-  { emoji: '🤑', name: 'Suneo', points: 2 },
-];
-
-const BOMB = { emoji: '💣', name: 'Bomb', points: -3 };
-
-interface HoleState {
+interface Hole {
+  id: number;
   active: boolean;
-  character: typeof CHARACTERS[0] | typeof BOMB | null;
-  hit: boolean;
-  miss: boolean;
-}
-
-function createHoles(): HoleState[] {
-  return Array.from({ length: GRID_SIZE }, () => ({
-    active: false,
-    character: null,
-    hit: false,
-    miss: false,
-  }));
+  character: string;
 }
 
 export default function WhackADoraemonPage() {
   const navigate = useNavigate();
-  const [gameState, setGameState] = useState<'idle' | 'playing' | 'over'>('idle');
-  const [holes, setHoles] = useState<HoleState[]>(createHoles());
-  const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
-  const [highScore, setHighScore] = useState(() =>
-    parseInt(localStorage.getItem('whack_hs') || '0', 10)
+  const [holes, setHoles] = useState<Hole[]>(
+    Array.from({ length: GRID_SIZE }, (_, i) => ({
+      id: i,
+      active: false,
+      character: '🔵',
+    }))
   );
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
   const [combo, setCombo] = useState(0);
-  const [lastHit, setLastHit] = useState<string | null>(null);
+  const [lastHit, setLastHit] = useState<number | null>(null);
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const spawnRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const activeTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
+  const moleTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
 
-  const endGame = useCallback((finalScore: number) => {
-    setGameState('over');
+  const clearAll = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     if (spawnRef.current) clearInterval(spawnRef.current);
-    activeTimers.current.forEach((t) => clearTimeout(t));
-    activeTimers.current.clear();
-    setHoles(createHoles());
-    if (finalScore > parseInt(localStorage.getItem('whack_hs') || '0', 10)) {
-      localStorage.setItem('whack_hs', String(finalScore));
-      setHighScore(finalScore);
-    }
+    moleTimers.current.forEach((t) => clearTimeout(t));
+    moleTimers.current.clear();
   }, []);
 
-  const startGame = () => {
+  const hideMole = useCallback((id: number) => {
+    setHoles((prev) =>
+      prev.map((h) => (h.id === id ? { ...h, active: false } : h))
+    );
+    moleTimers.current.delete(id);
+  }, []);
+
+  const spawnMole = useCallback(() => {
+    setHoles((prev) => {
+      const inactive = prev.filter((h) => !h.active);
+      if (inactive.length === 0) return prev;
+      const target = inactive[Math.floor(Math.random() * inactive.length)];
+      const character = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+
+      const timer = setTimeout(() => hideMole(target.id), MOLE_SHOW_TIME);
+      moleTimers.current.set(target.id, timer);
+
+      return prev.map((h) =>
+        h.id === target.id ? { ...h, active: true, character } : h
+      );
+    });
+  }, [hideMole]);
+
+  const startGame = useCallback(() => {
+    clearAll();
     setScore(0);
-    setLives(3);
     setCombo(0);
     setTimeLeft(GAME_DURATION);
-    setHoles(createHoles());
+    setGameOver(false);
+    setGameStarted(true);
     setLastHit(null);
-    setGameState('playing');
-  };
+    setHoles(
+      Array.from({ length: GRID_SIZE }, (_, i) => ({
+        id: i,
+        active: false,
+        character: '🔵',
+      }))
+    );
 
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    // Countdown timer
     timerRef.current = setInterval(() => {
       setTimeLeft((t) => {
         if (t <= 1) {
-          setScore((s) => {
-            endGame(s);
-            return s;
-          });
+          clearAll();
+          setGameOver(true);
+          setGameStarted(false);
+          setHoles(
+            Array.from({ length: GRID_SIZE }, (_, i) => ({
+              id: i,
+              active: false,
+              character: '🔵',
+            }))
+          );
           return 0;
         }
         return t - 1;
       });
     }, 1000);
 
-    // Spawn characters
-    spawnRef.current = setInterval(() => {
-      setHoles((prev) => {
-        const inactive = prev.map((h, i) => (!h.active ? i : -1)).filter((i) => i >= 0);
-        if (inactive.length === 0) return prev;
+    spawnRef.current = setInterval(spawnMole, SPAWN_INTERVAL);
+  }, [clearAll, spawnMole]);
 
-        const holeIdx = inactive[Math.floor(Math.random() * inactive.length)];
-        const isBomb = Math.random() < 0.15;
-        const char = isBomb ? BOMB : CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+  useEffect(() => {
+    return () => clearAll();
+  }, [clearAll]);
 
-        const newHoles = prev.map((h, i) =>
-          i === holeIdx ? { ...h, active: true, character: char, hit: false, miss: false } : h
-        );
+  const handleWhack = (id: number) => {
+    const hole = holes.find((h) => h.id === id);
+    if (!hole || !hole.active || !gameStarted) return;
 
-        // Auto-hide after duration
-        const hideDelay = 1200 + Math.random() * 800;
-        const t = setTimeout(() => {
-          setHoles((current) =>
-            current.map((h, i) => {
-              if (i === holeIdx && h.active && !h.hit) {
-                // Missed a character (not bomb)
-                if (!isBomb) {
-                  setCombo(0);
-                }
-                return { ...h, active: false, character: null, miss: !isBomb };
-              }
-              return h;
-            })
-          );
-          // Clear miss indicator
-          setTimeout(() => {
-            setHoles((current) =>
-              current.map((h, i) => (i === holeIdx ? { ...h, miss: false } : h))
-            );
-          }, 400);
-          activeTimers.current.delete(holeIdx);
-        }, hideDelay);
-
-        activeTimers.current.set(holeIdx, t);
-        return newHoles;
-      });
-    }, 700);
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (spawnRef.current) clearInterval(spawnRef.current);
-      activeTimers.current.forEach((t) => clearTimeout(t));
-      activeTimers.current.clear();
-    };
-  }, [gameState, endGame]);
-
-  const handleWhack = (idx: number) => {
-    if (gameState !== 'playing') return;
-    const hole = holes[idx];
-    if (!hole.active || hole.hit) return;
-
-    const char = hole.character;
-    if (!char) return;
-
-    // Clear the auto-hide timer
-    const t = activeTimers.current.get(idx);
-    if (t) {
-      clearTimeout(t);
-      activeTimers.current.delete(idx);
+    const timer = moleTimers.current.get(id);
+    if (timer) {
+      clearTimeout(timer);
+      moleTimers.current.delete(id);
     }
 
-    if (char === BOMB) {
-      // Hit a bomb!
-      setLives((l) => {
-        const newLives = l - 1;
-        if (newLives <= 0) {
-          setScore((s) => {
-            endGame(s);
-            return s;
-          });
-        }
-        return newLives;
-      });
-      setCombo(0);
-      setLastHit('💥 BOMB! -1 Life!');
-      setHoles((prev) =>
-        prev.map((h, i) => (i === idx ? { ...h, active: false, character: null, hit: true } : h))
-      );
-    } else {
-      const newCombo = combo + 1;
-      const bonus = newCombo >= 5 ? 2 : 1;
-      const earned = char.points * bonus;
-      setCombo(newCombo);
-      setScore((s) => s + earned);
-      setLastHit(`+${earned} ${char.name}!${newCombo >= 5 ? ' 🔥' : ''}`);
-      setHoles((prev) =>
-        prev.map((h, i) => (i === idx ? { ...h, hit: true } : h))
-      );
-      setTimeout(() => {
-        setHoles((prev) =>
-          prev.map((h, i) => (i === idx ? { ...h, active: false, character: null, hit: false } : h))
-        );
-      }, 300);
-    }
-
-    setTimeout(() => setLastHit(null), 800);
+    setHoles((prev) =>
+      prev.map((h) => (h.id === id ? { ...h, active: false } : h))
+    );
+    setScore((s) => s + 10 + combo * 2);
+    setCombo((c) => c + 1);
+    setLastHit(id);
+    setTimeout(() => setLastHit(null), 300);
   };
 
-  const timerPercent = (timeLeft / GAME_DURATION) * 100;
-  const timerColor = timeLeft > 20 ? 'bg-dora-cyan' : timeLeft > 10 ? 'bg-dora-yellow' : 'bg-dora-red';
+  const timerColor =
+    timeLeft > 15 ? 'text-dora-cyan' : timeLeft > 7 ? 'text-dora-yellow' : 'text-dora-red';
 
   return (
     <div className="min-h-screen px-4 py-8 page-enter">
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <button
             onClick={() => navigate({ to: '/games' })}
-            className="w-10 h-10 rounded-xl glass border border-dora-red/30 flex items-center justify-center text-foreground/60 hover:text-dora-red transition-colors"
+            className="w-10 h-10 rounded-full glass border border-dora-red/30 flex items-center justify-center text-foreground/60 hover:text-dora-red transition-all"
           >
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 className="font-orbitron text-2xl font-bold text-dora-red">Whack-a-Doraemon!</h1>
-            <p className="text-foreground/50 font-space text-sm">Whack characters, avoid bombs! 🔨</p>
+            <h1 className="font-orbitron text-2xl font-bold text-dora-red">Whack-a-Doraemon</h1>
+            <p className="text-foreground/50 text-sm font-space">Whack them before they hide! 🔨</p>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-2 mb-4">
-          <GlassPanel glowColor="red" className="p-2 text-center">
-            <div className="text-dora-red text-xs font-space mb-0.5">SCORE</div>
-            <div className="font-orbitron text-xl font-bold text-dora-red">{score}</div>
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          <GlassPanel glowColor="red" className="p-3 text-center">
+            <p className="text-foreground/50 text-xs font-space mb-1">SCORE</p>
+            <p className="font-orbitron text-xl font-bold text-dora-red">{score}</p>
           </GlassPanel>
-          <GlassPanel glowColor="yellow" className="p-2 text-center">
-            <div className="flex items-center justify-center gap-1 mb-0.5">
-              <Clock size={10} className="text-dora-yellow" />
-              <span className="text-dora-yellow text-xs font-space">TIME</span>
-            </div>
-            <div className="font-orbitron text-xl font-bold text-dora-yellow">{timeLeft}s</div>
+          <GlassPanel glowColor="yellow" className="p-3 text-center">
+            <p className="text-foreground/50 text-xs font-space mb-1">TIME</p>
+            <p className={`font-orbitron text-xl font-bold ${timerColor}`}>{timeLeft}s</p>
           </GlassPanel>
-          <GlassPanel glowColor="blue" className="p-2 text-center">
-            <div className="flex items-center justify-center gap-1 mb-0.5">
-              <Heart size={10} className="text-dora-red" />
-              <span className="text-dora-red text-xs font-space">LIVES</span>
-            </div>
-            <div className="font-orbitron text-xl font-bold text-dora-red">
-              {'❤️'.repeat(lives)}{'🖤'.repeat(Math.max(0, 3 - lives))}
-            </div>
+          <GlassPanel glowColor="cyan" className="p-3 text-center">
+            <p className="text-foreground/50 text-xs font-space mb-1">COMBO</p>
+            <p className="font-orbitron text-xl font-bold text-dora-cyan">x{combo}</p>
           </GlassPanel>
-          <GlassPanel glowColor="blue" className="p-2 text-center">
-            <div className="flex items-center justify-center gap-1 mb-0.5">
-              <Trophy size={10} className="text-dora-blue-light" />
-              <span className="text-dora-blue-light text-xs font-space">BEST</span>
-            </div>
-            <div className="font-orbitron text-xl font-bold text-dora-blue-light">{highScore}</div>
-          </GlassPanel>
-        </div>
-
-        {/* Timer bar */}
-        {gameState === 'playing' && (
-          <div className="w-full h-2 bg-white/10 rounded-full mb-3 overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-1000 ${timerColor}`}
-              style={{ width: `${timerPercent}%` }}
-            />
-          </div>
-        )}
-
-        {/* Hit feedback */}
-        <div className="h-6 text-center mb-2">
-          {lastHit && (
-            <span className="font-orbitron text-sm font-bold text-dora-yellow animate-bounce">
-              {lastHit}
-            </span>
-          )}
-          {combo >= 3 && gameState === 'playing' && !lastHit && (
-            <span className="font-orbitron text-sm font-bold text-dora-cyan">
-              🔥 {combo}x COMBO!
-            </span>
-          )}
         </div>
 
         {/* Game Grid */}
-        <GlassPanel glowColor="red" className="p-4">
-          {gameState === 'idle' && (
-            <div className="text-center py-8">
-              <div className="text-6xl mb-4 animate-float">🔨</div>
-              <h2 className="font-orbitron text-xl font-bold text-dora-red mb-2">Whack-a-Doraemon!</h2>
-              <p className="text-foreground/60 font-space text-sm mb-2">
-                Characters pop up from holes — whack them to score!
+        <GlassPanel glowColor="red" className="p-6 mb-4">
+          {!gameStarted && !gameOver && (
+            <div className="flex flex-col items-center justify-center gap-4 py-8">
+              <div className="text-6xl animate-bounce">🔨</div>
+              <p className="font-orbitron text-xl text-dora-red font-bold">Ready to Whack?</p>
+              <p className="text-foreground/50 font-space text-sm text-center">
+                Characters pop up from holes. Click them fast!
               </p>
-              <p className="text-dora-red/70 font-space text-xs mb-6">
-                ⚠️ Avoid the 💣 bombs or lose a life!
-              </p>
-              <div className="grid grid-cols-3 gap-2 mb-6 text-xs font-space text-center">
-                {CHARACTERS.map((c) => (
-                  <div key={c.name} className="glass rounded-xl p-2 border border-white/10">
-                    <div className="text-2xl">{c.emoji}</div>
-                    <div className="text-foreground/60">{c.name}</div>
-                    <div className="text-dora-yellow font-bold">+{c.points} pts</div>
-                  </div>
-                ))}
-                <div className="glass rounded-xl p-2 border border-dora-red/30">
-                  <div className="text-2xl">{BOMB.emoji}</div>
-                  <div className="text-foreground/60">{BOMB.name}</div>
-                  <div className="text-dora-red font-bold">-1 Life!</div>
-                </div>
-              </div>
-              <button
-                onClick={startGame}
-                className="px-8 py-3 rounded-2xl bg-dora-red/30 border border-dora-red/60 text-dora-red font-orbitron font-bold text-lg hover:bg-dora-red/50 transition-all duration-300 glow-red"
-              >
-                Start Whacking! 🔨
+              <button onClick={startGame} className="dora-btn dora-btn-red mt-2">
+                Start Game!
               </button>
             </div>
           )}
 
-          {gameState === 'over' && (
-            <div className="text-center py-8">
-              <div className="text-5xl mb-3">
-                {score >= highScore && score > 0 ? '🏆' : lives <= 0 ? '💔' : '⏰'}
-              </div>
-              <h2 className="font-orbitron text-xl font-bold text-dora-yellow mb-1">
-                {lives <= 0 ? 'No More Lives!' : 'Time\'s Up!'}
-              </h2>
-              {score >= highScore && score > 0 && (
-                <p className="text-dora-yellow font-space text-sm mb-2">🌟 New High Score!</p>
-              )}
-              <div className="font-orbitron text-4xl font-bold text-dora-red mb-4">{score}</div>
-              <div className="flex gap-3 justify-center">
+          {(gameStarted || gameOver) && (
+            <div className="grid grid-cols-3 gap-4">
+              {holes.map((hole) => (
                 <button
-                  onClick={startGame}
-                  className="px-6 py-2.5 rounded-2xl bg-dora-red/30 border border-dora-red/60 text-dora-red font-orbitron font-bold hover:bg-dora-red/50 transition-all duration-300"
+                  key={hole.id}
+                  onClick={() => handleWhack(hole.id)}
+                  className={`
+                    aspect-square rounded-2xl border-2 flex items-center justify-center
+                    transition-all duration-150 relative overflow-hidden
+                    ${hole.active
+                      ? 'border-dora-red/60 bg-dora-red/10 cursor-pointer hover:bg-dora-red/20 active:scale-90'
+                      : 'border-white/10 bg-white/5 cursor-default'
+                    }
+                    ${lastHit === hole.id ? 'scale-90 bg-dora-yellow/20 border-dora-yellow/60' : ''}
+                  `}
                 >
-                  Play Again! 🔨
-                </button>
-                <button
-                  onClick={() => navigate({ to: '/games' })}
-                  className="px-6 py-2.5 rounded-2xl glass border border-white/20 text-foreground/60 font-space hover:text-foreground transition-all duration-300"
-                >
-                  Back
-                </button>
-              </div>
-            </div>
-          )}
-
-          {gameState === 'playing' && (
-            <div className="grid grid-cols-3 gap-3">
-              {holes.map((hole, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleWhack(idx)}
-                  className="relative aspect-square rounded-2xl overflow-hidden transition-all duration-150 select-none"
-                  style={{ cursor: hole.active ? 'pointer' : 'default' }}
-                >
-                  {/* Hole background */}
-                  <div
-                    className="absolute inset-0 rounded-2xl border-2 border-dora-blue/20"
-                    style={{
-                      backgroundImage: 'url(/assets/generated/game-hole.dim_128x128.png)',
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/40 rounded-2xl" />
-
-                  {/* Character */}
-                  {hole.active && hole.character && (
-                    <div
-                      className={`absolute inset-0 flex items-center justify-center transition-all duration-150 ${
-                        hole.hit ? 'scale-150 opacity-0' : 'scale-100 opacity-100'
-                      }`}
-                    >
-                      <span
-                        className="text-4xl drop-shadow-lg"
-                        style={{
-                          filter: hole.character === BOMB
-                            ? 'drop-shadow(0 0 8px oklch(0.6 0.25 30))'
-                            : 'drop-shadow(0 0 8px oklch(0.7 0.2 200))',
-                        }}
-                      >
-                        {hole.character.emoji}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Miss indicator */}
-                  {hole.miss && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-dora-red text-2xl font-bold opacity-70">✗</span>
-                    </div>
-                  )}
-
-                  {/* Hole number (when empty) */}
-                  {!hole.active && !hole.miss && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-8 h-4 rounded-full bg-black/60 border border-white/10" />
-                    </div>
-                  )}
+                  <div className="absolute inset-0 flex items-end justify-center pb-1">
+                    <div className="w-3/4 h-1/3 rounded-full bg-black/30" />
+                  </div>
+                  <span
+                    className={`text-4xl relative z-10 transition-all duration-150 ${
+                      hole.active ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                    }`}
+                  >
+                    {hole.character}
+                  </span>
                 </button>
               ))}
             </div>
           )}
         </GlassPanel>
 
-        {/* Legend */}
-        {gameState === 'playing' && (
-          <div className="mt-3 glass rounded-xl p-2 border border-white/10 flex flex-wrap gap-2 justify-center">
-            {CHARACTERS.map((c) => (
-              <span key={c.name} className="text-xs font-space text-foreground/40">
-                {c.emoji} +{c.points}
-              </span>
-            ))}
-            <span className="text-xs font-space text-dora-red/60">💣 -1 Life</span>
-            <span className="text-xs font-space text-dora-yellow/60">🔥 5+ combo = 2×</span>
+        {gameStarted && (
+          <button
+            onClick={startGame}
+            className="dora-btn dora-btn-red w-full flex items-center justify-center gap-2"
+          >
+            <RefreshCw size={16} />
+            Restart
+          </button>
+        )}
+
+        {/* Game Over Modal */}
+        {gameOver && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+            <GlassPanel glowColor="yellow" className="p-8 text-center max-w-sm mx-4">
+              <div className="text-6xl mb-4">🏆</div>
+              <Trophy className="text-dora-yellow mx-auto mb-3" size={32} />
+              <h2 className="font-orbitron text-2xl font-bold text-dora-yellow mb-2">Time's Up!</h2>
+              <p className="text-foreground/70 font-nunito mb-2">
+                Final Score: <span className="text-dora-red font-bold text-2xl">{score}</span>
+              </p>
+              <p className="text-foreground/50 font-space text-sm mb-6">
+                Max Combo: x{combo}
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={startGame}
+                  className="dora-btn dora-btn-primary flex-1 flex items-center justify-center gap-2"
+                >
+                  <RefreshCw size={14} />
+                  Play Again
+                </button>
+                <button
+                  onClick={() => navigate({ to: '/games' })}
+                  className="dora-btn dora-btn-yellow flex-1"
+                >
+                  Games Hub
+                </button>
+              </div>
+            </GlassPanel>
           </div>
         )}
       </div>

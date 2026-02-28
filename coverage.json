@@ -1,80 +1,69 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-26T18:50:19.193Z",
+  "generatedAt": "2026-02-28T12:51:47.987Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
+    "total": 4,
     "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Rename the 'Chat with me' section label to 'Chat with Nobita' everywhere it appears in the app — navigation links, page headings, dashboard portal card, and any route titles.",
+        "summary": "Fix the 'Dreamy.mp3' sound effect on the Lock Screen (password entry page) so it plays successfully when the correct passcode is entered. Ensure the audio file is correctly referenced, loaded, and triggered via user interaction to comply with browser autoplay policies.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/ChatPage.tsx",
-          "frontend/src/pages/DashboardPage.tsx",
-          "frontend/src/components/layout/AppLayout.tsx"
+          "frontend/src/pages/LockScreen.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/ChatPage.tsx",
-          "frontend/src/pages/DashboardPage.tsx",
-          "frontend/src/components/layout/AppLayout.tsx"
+          "frontend/src/pages/LockScreen.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "Replace the current static/canned bot response logic in ChatPage.tsx and botResponses.ts with an intelligent rule-based conversational AI engine that can understand and respond meaningfully to a wide variety of user questions and topics. The bot persona must be 'Nobita' — friendly, funny, childlike, and Doraemon-universe flavored. Implement topic detection (greetings, questions, emotions, school/homework, gadgets, friendship, love, food, weather, general knowledge, jokes, etc.) with contextual, varied, and funny replies for each topic. The bot should never give a generic 'I don't know' — it should always attempt a clever, in-character Nobita-style answer.",
+        "summary": "Fix the 'Hello.mp3' sound effect on the Chat page so it plays when the Chat section is opened or a message is sent. Ensure the audio file path is correct, the file exists in the public assets, and playback is triggered within a user interaction event handler to avoid autoplay restrictions.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/utils/botResponses.ts",
           "frontend/src/pages/ChatPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/utils/botResponses.ts",
           "frontend/src/pages/ChatPage.tsx"
         ]
       },
       {
         "id": "REQ-3",
-        "summary": "Add at least 3 new funny/entertaining mini-games to the GamesPage and corresponding routes. Suggested games: (1) Doraemon Gadget Clicker — click as many gadgets as possible before time runs out; (2) Nobita's Exam Quiz — funny multiple-choice quiz with Doraemon trivia questions and silly wrong answers; (3) Whack-a-Doraemon — a whack-a-mole style game where Doraemon characters pop up and the player clicks them for points. Each game should have a playful Doraemon-themed UI, a score display, and a restart button.",
+        "summary": "Fix the 'Double Knock.mp3' global click/touch sound in useDoubleKnockSound.ts so it plays on every click or touch event across all pages. Ensure: (1) the MP3 file path resolves correctly in production (use a path relative to the public directory), (2) the Audio object is preloaded, (3) playback is properly triggered, and (4) the 120ms throttle is working without silently suppressing errors.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/games/GadgetClickerPage.tsx",
-          "frontend/src/pages/games/ExamQuizPage.tsx",
-          "frontend/src/pages/games/WhackADoraemonPage.tsx",
-          "frontend/src/pages/GamesPage.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/hooks/useDoubleKnockSound.ts"
         ],
         "matchedFiles": [
-          "frontend/src/pages/games/GadgetClickerPage.tsx",
-          "frontend/src/pages/games/ExamQuizPage.tsx",
-          "frontend/src/pages/games/WhackADoraemonPage.tsx",
-          "frontend/src/pages/GamesPage.tsx"
+          "frontend/src/hooks/useDoubleKnockSound.ts"
         ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Audit all three audio file references (Dreamy.mp3, Hello.mp3, Double Knock.mp3) and confirm they are placed under frontend/public/ with correct filenames and extensions. Update all import/reference paths in the hooks and pages to use root-relative public asset paths (e.g. '/assets/audio/Dreamy.mp3') so they resolve correctly after the production build.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/public/assets/audio/Dreamy.mp3",
+          "frontend/public/assets/audio/Hello.mp3",
+          "frontend/public/assets/audio/Double Knock.mp3"
+        ],
+        "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
-    "build-template/README.md",
-    "caffeine.lock.json",
     "feature_evidence.json",
+    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/gadget-clicker-bg.dim_400x200.png",
-    "frontend/public/assets/generated/game-hole.dim_128x128.png",
-    "frontend/public/assets/generated/nobita-avatar.dim_200x200.png",
-    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/hooks/useDoubleKnockSound.ts",
     "frontend/src/pages/ChatPage.tsx",
-    "frontend/src/pages/DashboardPage.tsx",
-    "frontend/src/pages/GamesPage.tsx",
-    "frontend/src/pages/games/ExamQuizPage.tsx",
-    "frontend/src/pages/games/GadgetClickerPage.tsx",
-    "frontend/src/pages/games/WhackADoraemonPage.tsx",
-    "frontend/src/utils/botResponses.ts",
+    "frontend/src/pages/LockScreen.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
