@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Heart, BookOpen, Star, Gamepad2, MessageCircle, Sparkles, Camera } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useActor } from '../hooks/useActor';
 import { seedDataIfNeeded } from '../utils/seedData';
 
@@ -76,12 +76,53 @@ const PORTALS = [
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { actor } = useActor();
+  const bgmRef = useRef<HTMLAudioElement | null>(null);
+  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
 
+  // Seed data on mount
   useEffect(() => {
     if (actor) {
       seedDataIfNeeded(actor);
     }
   }, [actor]);
+
+  // Background BGM — loop Doremon_theme while on this page
+  useEffect(() => {
+    const audio = new Audio('/assets/audio/Doremon_theme');
+    audio.loop = true;
+    audio.volume = 0.4;
+    bgmRef.current = audio;
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay blocked — play on first user interaction
+        const resumeOnInteraction = () => {
+          audio.play().catch(() => {});
+          document.removeEventListener('click', resumeOnInteraction);
+          document.removeEventListener('touchstart', resumeOnInteraction);
+        };
+        document.addEventListener('click', resumeOnInteraction);
+        document.addEventListener('touchstart', resumeOnInteraction);
+      });
+    }
+
+    return () => {
+      audio.pause();
+      audio.src = '';
+      bgmRef.current = null;
+    };
+  }, []);
+
+  // Click sound for Doraemon hero image
+  const handleDoraemonClick = () => {
+    if (!clickSoundRef.current) {
+      clickSoundRef.current = new Audio('/assets/audio/VID_20260301_052016.MP4');
+    }
+    const sound = clickSoundRef.current;
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  };
 
   return (
     <div className="min-h-screen px-4 py-8 page-enter">
@@ -90,7 +131,11 @@ export default function DashboardPage() {
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <div className="relative">
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-dora-blue/40 glow-blue animate-pulse-glow">
+              <div
+                className="w-48 h-48 rounded-full overflow-hidden border-4 border-dora-blue/40 glow-blue animate-pulse-glow cursor-pointer hover:scale-105 transition-transform duration-200"
+                onClick={handleDoraemonClick}
+                title="Click me! 🔔"
+              >
                 <img
                   src="/assets/generated/doraemon-hero.dim_400x400.png"
                   alt="Doraemon"
@@ -105,7 +150,7 @@ export default function DashboardPage() {
               {['⭐', '💙', '✨'].map((emoji, i) => (
                 <div
                   key={i}
-                  className="absolute text-xl"
+                  className="absolute text-xl pointer-events-none"
                   style={{
                     top: '50%',
                     left: '50%',

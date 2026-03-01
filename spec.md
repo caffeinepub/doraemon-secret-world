@@ -1,14 +1,13 @@
 # Specification
 
 ## Summary
-**Goal:** Fix all broken sound effects (Dreamy.mp3, Hello.mp3, Double Knock.mp3) so they play correctly across the app in both development and production.
+**Goal:** Add auto-randomised quotes on page load, remove the 6th memory photo, add Home page BGM, and attach audio triggers for the Doraemon image click and Our Memories page entry.
 
 **Planned changes:**
-- Ensure all three audio files (Dreamy.mp3, Hello.mp3, Double Knock.mp3) are placed under `frontend/public/assets/audio/` with correct filenames and extensions
-- Update all audio file references in hooks and pages to use root-relative paths (e.g. `/assets/audio/Dreamy.mp3`) so they resolve correctly after production build
-- Fix `Dreamy.mp3` playback on the Lock Screen so it triggers when the correct passcode is entered, complying with browser autoplay policies
-- Fix `Hello.mp3` playback on the Chat page so it triggers on entering or interacting with the Chat section
-- Fix `Double Knock.mp3` in `useDoubleKnockSound.ts` so it plays on every click/touch across all pages, with the Audio object preloaded and the 120ms throttle preserved
-- Ensure no console errors related to audio loading or playback for any of the three files
+- On the Quotes & Fun Facts page, automatically load a randomly selected quote and fun fact on every page refresh/navigation, without requiring the user to click the refresh button.
+- In the Our Memories gallery, remove the 6th photo (index 5) from the photo array so only the remaining photos are shown.
+- On the Home/Dashboard page, play `Doremon_theme` as looping background BGM automatically when the page is active, and pause/stop it when navigating away.
+- On the Home/Dashboard page, clicking the central Doraemon image plays `VID_20260301_052016.MP4` from the start on each click.
+- On the Our Memories page, automatically play `VID_20260301_052623.MP4` once on page entry and stop it when navigating away.
 
-**User-visible outcome:** All three sound effects play audibly as intended — the unlock sound on the Lock Screen, the greeting sound on the Chat page, and the click sound on every tap/click throughout the app — in both development and production environments.
+**User-visible outcome:** The Quotes page always shows fresh random content on load; the Memories gallery has one fewer photo; the Home page plays background music; clicking Doraemon triggers a sound effect; and visiting Our Memories plays an audio clip automatically.

@@ -1,49 +1,88 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
-  "architectural_notes": [],
-  "known_issues": [
-    "Sound not playing in production (Version 8) — affects password entry, Chat section, and general screen touches"
+  "summary": "A personal memory/scrapbook app featuring Quotes & Fun Facts, Our Memories photo gallery, and Doraemon-themed home page with interactive audio and background music.",
+  "architectural_notes": [
+    "App uses audio assets: Doremon_theme (BGM), VID_20260301_052016.MP4 (click sound), VID_20260301_052623.MP4 (Our Memories section sound)"
   ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-fix-the-dreamy-mp3-sound-effect-on-the-lock-screen-password-entry-page-so-it-plays-successfully-when-the-correct-passcode-is-entered-ensure-the-audio-file-is-correctly-referenced-loaded-and-triggered-via-user-interaction-to-comply-with-browser-autoplay-policies",
-      "title": "Fix the 'Dreamy.mp3' sound effect on the Lock Screen (password entry page) so it plays successfully when the correct passcode is entered. Ensure the audio file is correctly referenced, loaded, and triggered via user interaction to comply with browser autoplay policies.",
+      "id": "feature-on-the-quotes-fun-facts-page-quotespage-tsx-ensure-that-every-full-page-refresh-loads-a-freshly-randomised-quote-and-fun-fact-automatically-without-requiring-the-user-to-click-the-refresh-button-the-random-selection-must-differ-from-the-previous-value-on-each-reload",
+      "title": "On the Quotes & Fun Facts page (QuotesPage.tsx), ensure that every full page refresh loads a freshly randomised quote and fun fact automatically — without requiring the user to click the refresh button. The random selection must differ from the previous value on each reload.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-fix-the-hello-mp3-sound-effect-on-the-chat-page-so-it-plays-when-the-chat-section-is-opened-or-a-message-is-sent-ensure-the-audio-file-path-is-correct-the-file-exists-in-the-public-assets-and-playback-is-triggered-within-a-user-interaction-event-handler-to-avoid-autoplay-restrictions",
-      "title": "Fix the 'Hello.mp3' sound effect on the Chat page so it plays when the Chat section is opened or a message is sent. Ensure the audio file path is correct, the file exists in the public assets, and playback is triggered within a user interaction event handler to avoid autoplay restrictions.",
+      "id": "feature-in-ourmemoriespage-tsx-remove-the-6th-image-index-5-zero-based-from-the-curated-photo-array-so-that-gallery-only-shows-the-remaining-photos",
+      "title": "In OurMemoriesPage.tsx, remove the 6th image (index 5, zero-based) from the curated photo array so that gallery only shows the remaining photos.",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-fix-the-double-knock-mp3-global-click-touch-sound-in-usedoubleknocksound-ts-so-it-plays-on-every-click-or-touch-event-across-all-pages-ensure-1-the-mp3-file-path-resolves-correctly-in-production-use-a-path-relative-to-the-public-directory-2-the-audio-object-is-preloaded-3-playback-is-properly-triggered-and-4-the-120ms-throttle-is-working-without-silently-suppressing-errors",
-      "title": "Fix the 'Double Knock.mp3' global click/touch sound in useDoubleKnockSound.ts so it plays on every click or touch event across all pages. Ensure: (1) the MP3 file path resolves correctly in production (use a path relative to the public directory), (2) the Audio object is preloaded, (3) playback is properly triggered, and (4) the 120ms throttle is working without silently suppressing errors.",
+      "id": "feature-add-continuous-background-bgm-using-the-file-doremon-theme-served-from-frontend-public-assets-audio-doremon-theme-that-starts-playing-automatically-when-the-user-is-on-the-home-dashboard-page-and-stops-or-pauses-when-they-navigate-away-from-it-the-music-should-loop-and-play-at-a-comfortable-default-volume",
+      "title": "Add continuous background BGM using the file 'Doremon_theme' (served from frontend/public/assets/audio/Doremon_theme) that starts playing automatically when the user is on the Home / Dashboard page and stops (or pauses) when they navigate away from it. The music should loop and play at a comfortable default volume.",
       "reqIds": [
         "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-on-the-home-dashboard-page-attach-a-click-handler-to-the-central-doraemon-image-so-that-clicking-it-plays-the-audio-file-vid-20260301-052016-mp4-served-from-frontend-public-assets-audio-vid-20260301-052016-mp4-the-sound-should-play-from-the-start-on-each-click",
+      "title": "On the Home / Dashboard page, attach a click handler to the central Doraemon image so that clicking it plays the audio file 'VID_20260301_052016.MP4' (served from frontend/public/assets/audio/VID_20260301_052016.MP4). The sound should play from the start on each click.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-play-the-audio-file-vid-20260301-052623-mp4-served-from-frontend-public-assets-audio-vid-20260301-052623-mp4-automatically-when-the-user-navigates-to-the-our-memories-page-ourmemoriespage-tsx-the-sound-should-play-once-on-page-entry-and-stop-when-the-user-leaves-the-page",
+      "title": "Play the audio file 'VID_20260301_052623.MP4' (served from frontend/public/assets/audio/VID_20260301_052623.MP4) automatically when the user navigates to the Our Memories page (OurMemoriesPage.tsx). The sound should play once on page entry and stop when the user leaves the page.",
+      "reqIds": [
+        "REQ-5"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [
     {
+      "id": "AR-1",
+      "summary": "Quotes & Fun Facts section should show new/random content on every refresh",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Remove the 6th picture from the Our Memories section",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add background BGM (Doremon_theme) that plays continuously on the Home page",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
       "id": "AR-4",
-      "summary": "Audit all three audio file references (Dreamy.mp3, Hello.mp3, Double Knock.mp3) and confirm they are placed under frontend/public/ with correct filenames and extensions. Update all import/reference paths in the hooks and pages to use root-relative public asset paths (e.g. '/assets/audio/Dreamy.mp3') so they resolve correctly after the production build.",
-      "reqIds": [
-        "REQ-4"
-      ],
+      "summary": "Play sound VID_20260301_052016.MP4 when the Doraemon image at the centre of the Home page is clicked",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Play sound VID_20260301_052623.MP4 when navigating to the Our Memories section",
+      "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Fix audio playback for all sound effects",
+  "gameProjectType": "none",
+  "projectName": "Doraemon Secret World",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

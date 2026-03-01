@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RefreshCw, Star, Lightbulb } from 'lucide-react';
 import { useGetRandomQuote, useGetRandomFunFact } from '../hooks/useQueries';
 import { useQueryClient } from '@tanstack/react-query';
@@ -41,6 +41,22 @@ export default function QuotesPage() {
   const { data: fact, isLoading: factLoading } = useGetRandomFunFact();
   const [quoteVisible, setQuoteVisible] = useState(true);
   const [factVisible, setFactVisible] = useState(true);
+
+  // Auto-refresh both quote and fun fact on every page mount / refresh
+  useEffect(() => {
+    setQuoteVisible(false);
+    setFactVisible(false);
+    const timer = setTimeout(() => {
+      queryClient.invalidateQueries({ queryKey: ['random-quote'] });
+      queryClient.refetchQueries({ queryKey: ['random-quote'] });
+      queryClient.invalidateQueries({ queryKey: ['random-fact'] });
+      queryClient.refetchQueries({ queryKey: ['random-fact'] });
+      setQuoteVisible(true);
+      setFactVisible(true);
+    }, 200);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const refreshQuote = () => {
     setQuoteVisible(false);
@@ -110,11 +126,10 @@ export default function QuotesPage() {
 
               <button
                 onClick={refreshQuote}
-                disabled={quoteLoading}
-                className="dora-btn dora-btn-primary mt-6 flex items-center justify-center gap-2 w-full disabled:opacity-50"
+                className="mt-6 flex items-center gap-2 text-dora-blue-light/60 hover:text-dora-blue-light transition-colors text-sm font-space group"
               >
-                <RefreshCw size={16} className={quoteLoading ? 'animate-spin' : ''} />
-                New Quote
+                <RefreshCw size={14} className="group-hover:rotate-180 transition-transform duration-500" />
+                <span>New Quote</span>
               </button>
             </GlassPanel>
           </div>
@@ -139,34 +154,29 @@ export default function QuotesPage() {
                 <FactCard text={fact} visible={factVisible} />
               ) : (
                 <div className="text-center text-foreground/50 font-nunito py-8">
-                  No fun facts available yet! 🌟
+                  No fun facts available yet. Check back soon! ⭐
                 </div>
               )}
 
               <button
                 onClick={refreshFact}
-                disabled={factLoading}
-                className="dora-btn dora-btn-yellow mt-6 flex items-center justify-center gap-2 w-full disabled:opacity-50"
+                className="mt-6 flex items-center gap-2 text-dora-yellow/60 hover:text-dora-yellow transition-colors text-sm font-space group"
               >
-                <RefreshCw size={16} className={factLoading ? 'animate-spin' : ''} />
-                New Fun Fact
+                <RefreshCw size={14} className="group-hover:rotate-180 transition-transform duration-500" />
+                <span>New Fact</span>
               </button>
             </GlassPanel>
           </div>
         </div>
 
-        {/* Decorative bottom */}
-        <div className="text-center mt-12">
-          <div className="flex justify-center gap-4">
-            {['🔵', '⭐', '💡', '⭐', '🔵'].map((e, i) => (
-              <span key={i} className="text-2xl animate-float" style={{ animationDelay: `${i * 0.3}s` }}>
-                {e}
-              </span>
-            ))}
+        {/* Decorative bottom section */}
+        <div className="mt-12 text-center">
+          <div className="glass rounded-2xl px-8 py-5 inline-block border border-dora-blue/20">
+            <p className="text-foreground/60 font-nunito italic text-lg">
+              "Even if you can't change the past, you can always change the future" 💙
+            </p>
+            <p className="text-dora-blue-light text-sm font-space mt-1">— Doraemon</p>
           </div>
-          <p className="text-foreground/30 text-sm font-space mt-3">
-            More wisdom from Doraemon's pocket ✨
-          </p>
         </div>
       </div>
     </div>

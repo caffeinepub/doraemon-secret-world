@@ -14,13 +14,13 @@
   "frontend/src/pages/LockScreen.tsx": "Doraemon-themed passphrase lock screen that plays `Dreamy.mp3.m4a` (from the correct `/assets/` path) on successful password verification before navigating to the dashboard.",
   "frontend/src/pages/MemoriesPage.tsx": "Memories page with grid of memory cards and add-memory form, updated to import GlassPanel from the correct components directory.",
   "frontend/src/pages/FriendshipPage.tsx": "Nobita & Doraemon friendship storybook page with scroll-reveal panels, updated to import GlassPanel from the correct components directory.",
-  "frontend/src/pages/QuotesPage.tsx": "Quotes and fun facts page with animated reveal, updated to import GlassPanel from the correct components directory.",
+  "frontend/src/pages/QuotesPage.tsx": "Quotes and fun facts page that now auto-invalidates and refetches both the random quote and random fun fact on every page mount/refresh, ensuring new content appears each time the page is visited.",
   "frontend/src/components/layout/AppLayout.tsx": "Main app layout with sticky header navigation and mobile menu; the \"Built with caffeine.ai\" attribution line has been fully removed from the footer, leaving only the copyright line.",
   "frontend/src/pages/games/GadgetClickerPage.tsx": "New Gadget Clicker mini-game where players click randomly appearing emoji gadgets within a 30-second timer to earn points, with score/missed/time stats and a game-over modal.",
   "frontend/src/pages/games/ExamQuizPage.tsx": "New Nobita's Exam Quiz game with 10 Doraemon trivia multiple-choice questions, answer tracking, correct/wrong feedback, and a results screen comparing the player's score to Nobita's legendary 0.",
   "frontend/src/pages/games/WhackADoraemonPage.tsx": "New Whack-a-Doraemon game with a 3×3 grid of holes where characters pop up randomly; players click them for points with a combo multiplier, 30-second timer, and game-over modal.",
-  "frontend/src/pages/OurMemoriesPage.tsx": "Our Memories photo gallery page now shows only the 7 middle photos (first and last removed via slice(1, -1)), with masonry grid layout, hover overlays, captions, and lightbox viewer intact.",
-  "frontend/src/pages/DashboardPage.tsx": "Dashboard portal grid updated to include a new \"Our Memories 📸\" portal card navigating to /our-memories, alongside the existing 5 portals, with Camera icon and red/pink theme styling.",
+  "frontend/src/pages/OurMemoriesPage.tsx": "Our Memories photo gallery with masonry grid and lightbox; the 6th displayed photo (memory-photo-7) has been removed, and VID_20260301_052623.MP4 plays once automatically when the page is entered.",
+  "frontend/src/pages/DashboardPage.tsx": "Dashboard home page with portal grid; now plays Doremon_theme BGM on loop while on the page (pauses on unmount), and plays VID_20260301_052016.MP4 when the central Doraemon hero image is clicked.",
   "frontend/src/hooks/useClickSound.ts": "Custom React hook that synthesizes a Doraemon-style two-note bell chime using the Web Audio API, playing it on every global click and touchstart event with 120ms throttling to prevent audio spam.",
   "frontend/src/hooks/useDoubleKnockSound.ts": "Custom hook that loads `Double Knock.mp3.m4a` from the correct `/assets/` public path and plays it on every global click/touchstart event, throttled to 120ms."
 }

@@ -2,10 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-fix-the-dreamy-mp3-sound-effect-on-the-lock-screen-password-entry-page-so-it-plays-successfully-when-the-correct-passcode-is-entered-ensure-the-audio-file-is-correctly-referenced-loaded-and-triggered-via-user-interaction-to-comply-with-browser-autoplay-policies",
-      "featureTitle": "Fix the 'Dreamy.mp3' sound effect on the Lock Screen (password entry page) so it plays successfully when the correct passcode is entered. Ensure the audio file is correctly referenced, loaded, and triggered via user interaction to comply with browser autoplay policies.",
+      "featureId": "feature-on-the-quotes-fun-facts-page-quotespage-tsx-ensure-that-every-full-page-refresh-loads-a-freshly-randomised-quote-and-fun-fact-automatically-without-requiring-the-user-to-click-the-refresh-button-the-random-selection-must-differ-from-the-previous-value-on-each-reload",
+      "featureTitle": "On the Quotes & Fun Facts page (QuotesPage.tsx), ensure that every full page refresh loads a freshly randomised quote and fun fact automatically — without requiring the user to click the refresh button. The random selection must differ from the previous value on each reload.",
       "files": [
-        "frontend/src/pages/LockScreen.tsx"
+        "frontend/src/pages/QuotesPage.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -21,10 +21,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-fix-the-hello-mp3-sound-effect-on-the-chat-page-so-it-plays-when-the-chat-section-is-opened-or-a-message-is-sent-ensure-the-audio-file-path-is-correct-the-file-exists-in-the-public-assets-and-playback-is-triggered-within-a-user-interaction-event-handler-to-avoid-autoplay-restrictions",
-      "featureTitle": "Fix the 'Hello.mp3' sound effect on the Chat page so it plays when the Chat section is opened or a message is sent. Ensure the audio file path is correct, the file exists in the public assets, and playback is triggered within a user interaction event handler to avoid autoplay restrictions.",
+      "featureId": "feature-in-ourmemoriespage-tsx-remove-the-6th-image-index-5-zero-based-from-the-curated-photo-array-so-that-gallery-only-shows-the-remaining-photos",
+      "featureTitle": "In OurMemoriesPage.tsx, remove the 6th image (index 5, zero-based) from the curated photo array so that gallery only shows the remaining photos.",
       "files": [
-        "frontend/src/pages/ChatPage.tsx"
+        "frontend/src/pages/OurMemoriesPage.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -40,10 +40,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-fix-the-double-knock-mp3-global-click-touch-sound-in-usedoubleknocksound-ts-so-it-plays-on-every-click-or-touch-event-across-all-pages-ensure-1-the-mp3-file-path-resolves-correctly-in-production-use-a-path-relative-to-the-public-directory-2-the-audio-object-is-preloaded-3-playback-is-properly-triggered-and-4-the-120ms-throttle-is-working-without-silently-suppressing-errors",
-      "featureTitle": "Fix the 'Double Knock.mp3' global click/touch sound in useDoubleKnockSound.ts so it plays on every click or touch event across all pages. Ensure: (1) the MP3 file path resolves correctly in production (use a path relative to the public directory), (2) the Audio object is preloaded, (3) playback is properly triggered, and (4) the 120ms throttle is working without silently suppressing errors.",
+      "featureId": "feature-add-continuous-background-bgm-using-the-file-doremon-theme-served-from-frontend-public-assets-audio-doremon-theme-that-starts-playing-automatically-when-the-user-is-on-the-home-dashboard-page-and-stops-or-pauses-when-they-navigate-away-from-it-the-music-should-loop-and-play-at-a-comfortable-default-volume",
+      "featureTitle": "Add continuous background BGM using the file 'Doremon_theme' (served from frontend/public/assets/audio/Doremon_theme) that starts playing automatically when the user is on the Home / Dashboard page and stops (or pauses) when they navigate away from it. The music should loop and play at a comfortable default volume.",
       "files": [
-        "frontend/src/hooks/useDoubleKnockSound.ts"
+        "frontend/src/pages/DashboardPage.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -55,6 +55,44 @@
       ],
       "testIds": [
         "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-on-the-home-dashboard-page-attach-a-click-handler-to-the-central-doraemon-image-so-that-clicking-it-plays-the-audio-file-vid-20260301-052016-mp4-served-from-frontend-public-assets-audio-vid-20260301-052016-mp4-the-sound-should-play-from-the-start-on-each-click",
+      "featureTitle": "On the Home / Dashboard page, attach a click handler to the central Doraemon image so that clicking it plays the audio file 'VID_20260301_052016.MP4' (served from frontend/public/assets/audio/VID_20260301_052016.MP4). The sound should play from the start on each click.",
+      "files": [
+        "frontend/src/pages/DashboardPage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-play-the-audio-file-vid-20260301-052623-mp4-served-from-frontend-public-assets-audio-vid-20260301-052623-mp4-automatically-when-the-user-navigates-to-the-our-memories-page-ourmemoriespage-tsx-the-sound-should-play-once-on-page-entry-and-stop-when-the-user-leaves-the-page",
+      "featureTitle": "Play the audio file 'VID_20260301_052623.MP4' (served from frontend/public/assets/audio/VID_20260301_052623.MP4) automatically when the user navigates to the Our Memories page (OurMemoriesPage.tsx). The sound should play once on page entry and stop when the user leaves the page.",
+      "files": [
+        "frontend/src/pages/OurMemoriesPage.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
       ],
       "confidence": "high"
     }

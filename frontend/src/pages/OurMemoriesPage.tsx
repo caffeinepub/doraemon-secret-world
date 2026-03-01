@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { ArrowLeft, X, Heart } from 'lucide-react';
 
@@ -32,10 +32,7 @@ const ALL_PHOTOS: Photo[] = [
     src: '/assets/generated/memory-photo-6.dim_800x1000.jpg',
     caption: 'Nee Kavithaigala 🎵',
   },
-  {
-    src: '/assets/generated/memory-photo-7.dim_800x1200.jpg',
-    caption: 'Standing tall 🌿',
-  },
+  // memory-photo-7 (6th displayed photo) has been removed per user request
   {
     src: '/assets/generated/memory-photo-8.dim_800x1200.jpg',
     caption: 'Blue vibes 💙',
@@ -46,12 +43,38 @@ const ALL_PHOTOS: Photo[] = [
   },
 ];
 
-// Remove first and last photos — show only the middle 7
+// Remove first and last photos — show only the middle photos
 const PHOTOS = ALL_PHOTOS.slice(1, -1);
 
 export default function OurMemoriesPage() {
   const navigate = useNavigate();
   const [lightbox, setLightbox] = useState<Photo | null>(null);
+
+  // Play entry sound once when navigating to this page
+  useEffect(() => {
+    const audio = new Audio('/assets/audio/VID_20260301_052623.MP4');
+    audio.loop = false;
+    audio.volume = 0.8;
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay blocked — play on first user interaction
+        const resumeOnInteraction = () => {
+          audio.play().catch(() => {});
+          document.removeEventListener('click', resumeOnInteraction);
+          document.removeEventListener('touchstart', resumeOnInteraction);
+        };
+        document.addEventListener('click', resumeOnInteraction);
+        document.addEventListener('touchstart', resumeOnInteraction);
+      });
+    }
+
+    return () => {
+      audio.pause();
+      audio.src = '';
+    };
+  }, []);
 
   return (
     <div className="min-h-screen px-4 py-8 page-enter">

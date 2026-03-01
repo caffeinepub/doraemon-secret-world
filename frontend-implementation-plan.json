@@ -1,80 +1,87 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix audio playback for all sound effects",
+  "title": "Quotes randomisation on refresh, remove 6th memory photo, and audio updates for Home & Our Memories",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Fix the 'Dreamy.mp3' sound effect on the Lock Screen so it plays successfully when the correct passcode is entered",
+      "summary": "Randomise quote and fun fact on every page refresh in QuotesPage.tsx",
       "acceptanceCriteria": [
-        "Dreamy.mp3 plays audibly when the correct password is submitted on the Lock Screen",
-        "No console errors related to audio loading or playback for Dreamy.mp3",
-        "Audio plays in production deployment, not just local dev"
+        "Navigating to or refreshing the Quotes & Fun Facts page shows a randomly selected quote each time.",
+        "Navigating to or refreshing the Quotes & Fun Facts page shows a randomly selected fun fact each time.",
+        "The random pick is seeded by the current timestamp or Math.random() so it differs across refreshes."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/LockScreen.tsx",
+          "path": "frontend/src/pages/QuotesPage.tsx",
           "operation": "modify",
-          "description": "Update the Dreamy.mp3 audio reference to use a root-relative public asset path (e.g., '/assets/audio/Dreamy.mp3'). Ensure the Audio object is created and preloaded correctly. Verify the play() call is wrapped in proper error handling and triggered within the user interaction event handler (form submit) to comply with browser autoplay policies. Add .catch() to handle any playback failures gracefully."
+          "description": "Modify the component to automatically invalidate and refetch both quote and fun fact data on mount using useEffect, ensuring fresh random values appear on every page load or refresh without requiring user interaction with the refresh button."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Fix the 'Hello.mp3' sound effect on the Chat page so it plays when the Chat section is opened or a message is sent",
+      "summary": "Remove the 6th image from the Our Memories photo gallery",
       "acceptanceCriteria": [
-        "Hello.mp3 plays audibly when entering or interacting with the Chat page",
-        "No console errors related to audio loading or playback for Hello.mp3",
-        "Audio plays in production deployment"
+        "The Our Memories gallery renders one fewer photo than before.",
+        "The photo that was previously in the 6th position is no longer visible.",
+        "All remaining photos display and open in the lightbox correctly."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/ChatPage.tsx",
+          "path": "frontend/src/pages/OurMemoriesPage.tsx",
           "operation": "modify",
-          "description": "Update the Hello.mp3 audio reference to use a root-relative public asset path (e.g., '/assets/audio/Hello.mp3'). Ensure the Audio object is preloaded on component mount. Trigger playback within a user interaction event handler (e.g., when opening chat or sending a message) to avoid autoplay restrictions. Add proper error handling with .catch() on the play() promise to prevent unhandled rejections."
+          "description": "Remove the 6th photo (index 5, zero-based) from the curated photo array that defines the gallery images, ensuring the remaining photos continue to display correctly in the masonry grid and lightbox modal."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Fix the 'Double Knock.mp3' global click/touch sound so it plays on every click or touch event across all pages",
+      "summary": "Add continuous looping background BGM on the Home page using Doremon_theme audio file",
       "acceptanceCriteria": [
-        "Double Knock.mp3 plays audibly on every click or tap anywhere in the app",
-        "No console errors related to audio loading or playback for Double Knock.mp3",
-        "Sound plays in production deployment",
-        "Throttle of ~120ms between plays still applies"
+        "Opening or navigating to the Dashboard/Home page automatically starts playing Doremon_theme in a loop.",
+        "The BGM pauses or stops when navigating away from the Home page.",
+        "The audio file path resolves to /assets/audio/Doremon_theme (with its original extension).",
+        "Music does not double-play if the user returns to the Home page while it is already running."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useDoubleKnockSound.ts",
+          "path": "frontend/src/pages/DashboardPage.tsx",
           "operation": "modify",
-          "description": "Update the Double Knock.mp3 audio file path to use a root-relative public asset path (e.g., '/assets/audio/Double Knock.mp3') so it resolves correctly in production builds. Ensure the Audio object is properly instantiated and preloaded on hook initialization. Add error handling to the play() promise with .catch() to log failures without breaking the throttle logic. Verify the 120ms throttle timing remains unchanged. Consider adding a loaded state check before attempting playback."
+          "description": "Add a useEffect hook that creates an Audio element pointing to /assets/audio/Doremon_theme (with the correct file extension), sets it to loop, plays it on mount, and pauses/cleans it up on unmount when navigating away from the Dashboard. Ensure the audio doesn't overlap if the component remounts while already playing."
         }
       ]
     },
     {
       "id": "REQ-4",
-      "summary": "Audit and relocate all three audio files to frontend/public/assets/audio/ and update all reference paths to use production-safe root-relative URLs",
+      "summary": "Play VID_20260301_052016.MP4 audio on click of the central Doraemon image on Home page",
       "acceptanceCriteria": [
-        "All three audio files exist under frontend/public/ (e.g. frontend/public/assets/audio/)",
-        "All hooks and pages reference audio files using root-relative paths that work in production",
-        "Network tab in browser DevTools shows 200 responses for all audio file requests"
+        "Clicking the central Doraemon image on the Dashboard page plays VID_20260301_052016.MP4.",
+        "Each click restarts the audio from the beginning.",
+        "The audio file path resolves correctly from the public assets directory."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/audio/Dreamy.mp3",
-          "operation": "create",
-          "description": "Copy or move the Dreamy.mp3 audio file from the assets directory to frontend/public/assets/audio/Dreamy.mp3. Verify the file is a valid MP3 format and not corrupted. This file will be served as a static asset and referenced via '/assets/audio/Dreamy.mp3' in the LockScreen component."
-        },
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Add a click handler to the central Doraemon hero image that creates or reuses an Audio element pointing to /assets/audio/VID_20260301_052016.MP4, resets currentTime to 0, and plays the audio from the start on each click."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Automatically play VID_20260301_052623.MP4 audio once when entering Our Memories page",
+      "acceptanceCriteria": [
+        "Navigating to the Our Memories page automatically plays VID_20260301_052623.MP4.",
+        "The sound plays once (non-looping) on page entry.",
+        "The audio stops and is cleaned up when the user navigates away from Our Memories.",
+        "The audio file path resolves correctly from the public assets directory."
+      ],
+      "file_operations": [
         {
-          "path": "frontend/public/assets/audio/Hello.mp3",
-          "operation": "create",
-          "description": "Copy or move the Hello.mp3 audio file from the assets directory to frontend/public/assets/audio/Hello.mp3. Verify the file is a valid MP3 format and not corrupted. This file will be served as a static asset and referenced via '/assets/audio/Hello.mp3' in the ChatPage component."
-        },
-        {
-          "path": "frontend/public/assets/audio/Double Knock.mp3",
-          "operation": "create",
-          "description": "Copy or move the 'Double Knock.mp3' audio file from the assets directory to frontend/public/assets/audio/Double Knock.mp3. Note the filename includes a space. Verify the file is a valid MP3 format and not corrupted. This file will be served as a static asset and referenced via '/assets/audio/Double Knock.mp3' in the useDoubleKnockSound hook. Consider URL-encoding the space in the path reference or renaming the file to 'double-knock.mp3' for better compatibility."
+          "path": "frontend/src/pages/OurMemoriesPage.tsx",
+          "operation": "modify",
+          "description": "Add a useEffect hook that creates an Audio element pointing to /assets/audio/VID_20260301_052623.MP4, plays it once (non-looping) on mount, and pauses/cleans it up on unmount when the user navigates away from the page."
         }
       ]
     }
