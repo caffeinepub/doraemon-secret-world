@@ -1,68 +1,67 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T00:10:29.345Z",
+  "generatedAt": "2026-03-01T09:45:09.752Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 5,
-    "implemented": 5,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "On the Quotes & Fun Facts page (QuotesPage.tsx), ensure that every full page refresh loads a freshly randomised quote and fun fact automatically — without requiring the user to click the refresh button. The random selection must differ from the previous value on each reload.",
+        "summary": "Fix the background music (BGM) so it reliably starts playing when the user enters the Dashboard page. Ensure the useBGM hook correctly loads and plays the audio file, handles autoplay policy by resuming on first user interaction, and that the FloatingMusicControl component reflects the correct play/pause state.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/QuotesPage.tsx"
+          "frontend/src/hooks/useBGM.ts",
+          "frontend/src/components/FloatingMusicControl.tsx",
+          "frontend/src/pages/DashboardPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/QuotesPage.tsx"
+          "frontend/src/hooks/useBGM.ts",
+          "frontend/src/pages/DashboardPage.tsx"
         ]
       },
       {
         "id": "REQ-2",
-        "summary": "In OurMemoriesPage.tsx, remove the 6th image (index 5, zero-based) from the curated photo array so that gallery only shows the remaining photos.",
+        "summary": "Fix the click/tap sound effects so they play on every user interaction across all pages. The useDoubleKnockSound hook (used in RootLayout) and any page-specific sounds (e.g., hello sound in ChatPage, unlock sound in LockScreen, OurMemoriesPage audio) must correctly load their audio files, respect browser autoplay restrictions by triggering only on user gesture, and not throw errors when audio is unavailable.",
         "status": "implemented",
         "plannedFiles": [
+          "frontend/src/hooks/useDoubleKnockSound.ts",
+          "frontend/src/hooks/useClickSound.ts",
+          "frontend/src/pages/ChatPage.tsx",
+          "frontend/src/pages/LockScreen.tsx",
           "frontend/src/pages/OurMemoriesPage.tsx"
         ],
         "matchedFiles": [
+          "frontend/src/hooks/useDoubleKnockSound.ts",
+          "frontend/src/hooks/useClickSound.ts",
+          "frontend/src/pages/ChatPage.tsx",
+          "frontend/src/pages/LockScreen.tsx",
           "frontend/src/pages/OurMemoriesPage.tsx"
         ]
       },
       {
         "id": "REQ-3",
-        "summary": "Add continuous background BGM using the file 'Doremon_theme' (served from frontend/public/assets/audio/Doremon_theme) that starts playing automatically when the user is on the Home / Dashboard page and stops (or pauses) when they navigate away from it. The music should loop and play at a comfortable default volume.",
+        "summary": "Audit all audio file references across hooks and pages (useBGM.ts, useDoubleKnockSound.ts, useClickSound.ts, ChatPage.tsx, LockScreen.tsx, OurMemoriesPage.tsx) and ensure every referenced audio file exists in the correct public assets directory. Replace any missing or broken audio files with working alternatives or synthesize sounds via the Web Audio API where appropriate.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/DashboardPage.tsx"
+          "frontend/src/hooks/useBGM.ts",
+          "frontend/src/hooks/useDoubleKnockSound.ts",
+          "frontend/src/pages/ChatPage.tsx",
+          "frontend/src/pages/LockScreen.tsx",
+          "frontend/src/pages/OurMemoriesPage.tsx",
+          "frontend/src/hooks/useClickSound.ts"
         ],
         "matchedFiles": [
-          "frontend/src/pages/DashboardPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-4",
-        "summary": "On the Home / Dashboard page, attach a click handler to the central Doraemon image so that clicking it plays the audio file 'VID_20260301_052016.MP4' (served from frontend/public/assets/audio/VID_20260301_052016.MP4). The sound should play from the start on each click.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/DashboardPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/DashboardPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-5",
-        "summary": "Play the audio file 'VID_20260301_052623.MP4' (served from frontend/public/assets/audio/VID_20260301_052623.MP4) automatically when the user navigates to the Our Memories page (OurMemoriesPage.tsx). The sound should play once on page entry and stop when the user leaves the page.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/OurMemoriesPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/OurMemoriesPage.tsx"
+          "frontend/src/hooks/useBGM.ts",
+          "frontend/src/hooks/useDoubleKnockSound.ts",
+          "frontend/src/pages/ChatPage.tsx",
+          "frontend/src/pages/LockScreen.tsx",
+          "frontend/src/pages/OurMemoriesPage.tsx",
+          "frontend/src/hooks/useClickSound.ts"
         ]
       }
     ]
@@ -72,9 +71,13 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/src/hooks/useBGM.ts",
+    "frontend/src/hooks/useClickSound.ts",
+    "frontend/src/hooks/useDoubleKnockSound.ts",
+    "frontend/src/pages/ChatPage.tsx",
     "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/LockScreen.tsx",
     "frontend/src/pages/OurMemoriesPage.tsx",
-    "frontend/src/pages/QuotesPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

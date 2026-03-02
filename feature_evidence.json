@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-on-the-quotes-fun-facts-page-quotespage-tsx-ensure-that-every-full-page-refresh-loads-a-freshly-randomised-quote-and-fun-fact-automatically-without-requiring-the-user-to-click-the-refresh-button-the-random-selection-must-differ-from-the-previous-value-on-each-reload",
-      "featureTitle": "On the Quotes & Fun Facts page (QuotesPage.tsx), ensure that every full page refresh loads a freshly randomised quote and fun fact automatically — without requiring the user to click the refresh button. The random selection must differ from the previous value on each reload.",
+      "featureId": "feature-fix-the-background-music-bgm-so-it-reliably-starts-playing-when-the-user-enters-the-dashboard-page-ensure-the-usebgm-hook-correctly-loads-and-plays-the-audio-file-handles-autoplay-policy-by-resuming-on-first-user-interaction-and-that-the-floatingmusiccontrol-component-reflects-the-correct-play-pause-state",
+      "featureTitle": "Fix the background music (BGM) so it reliably starts playing when the user enters the Dashboard page. Ensure the useBGM hook correctly loads and plays the audio file, handles autoplay policy by resuming on first user interaction, and that the FloatingMusicControl component reflects the correct play/pause state.",
       "files": [
-        "frontend/src/pages/QuotesPage.tsx"
+        "frontend/src/hooks/useBGM.ts",
+        "frontend/src/pages/DashboardPage.tsx"
       ],
       "components": [
         "blob-storage@4.0.0",
@@ -21,9 +22,13 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-in-ourmemoriespage-tsx-remove-the-6th-image-index-5-zero-based-from-the-curated-photo-array-so-that-gallery-only-shows-the-remaining-photos",
-      "featureTitle": "In OurMemoriesPage.tsx, remove the 6th image (index 5, zero-based) from the curated photo array so that gallery only shows the remaining photos.",
+      "featureId": "feature-fix-the-click-tap-sound-effects-so-they-play-on-every-user-interaction-across-all-pages-the-usedoubleknocksound-hook-used-in-rootlayout-and-any-page-specific-sounds-e-g-hello-sound-in-chatpage-unlock-sound-in-lockscreen-ourmemoriespage-audio-must-correctly-load-their-audio-files-respect-browser-autoplay-restrictions-by-triggering-only-on-user-gesture-and-not-throw-errors-when-audio-is-unavailable",
+      "featureTitle": "Fix the click/tap sound effects so they play on every user interaction across all pages. The useDoubleKnockSound hook (used in RootLayout) and any page-specific sounds (e.g., hello sound in ChatPage, unlock sound in LockScreen, OurMemoriesPage audio) must correctly load their audio files, respect browser autoplay restrictions by triggering only on user gesture, and not throw errors when audio is unavailable.",
       "files": [
+        "frontend/src/hooks/useClickSound.ts",
+        "frontend/src/hooks/useDoubleKnockSound.ts",
+        "frontend/src/pages/ChatPage.tsx",
+        "frontend/src/pages/LockScreen.tsx",
         "frontend/src/pages/OurMemoriesPage.tsx"
       ],
       "components": [
@@ -40,47 +45,14 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-continuous-background-bgm-using-the-file-doremon-theme-served-from-frontend-public-assets-audio-doremon-theme-that-starts-playing-automatically-when-the-user-is-on-the-home-dashboard-page-and-stops-or-pauses-when-they-navigate-away-from-it-the-music-should-loop-and-play-at-a-comfortable-default-volume",
-      "featureTitle": "Add continuous background BGM using the file 'Doremon_theme' (served from frontend/public/assets/audio/Doremon_theme) that starts playing automatically when the user is on the Home / Dashboard page and stops (or pauses) when they navigate away from it. The music should loop and play at a comfortable default volume.",
+      "featureId": "feature-audit-all-audio-file-references-across-hooks-and-pages-usebgm-ts-usedoubleknocksound-ts-useclicksound-ts-chatpage-tsx-lockscreen-tsx-ourmemoriespage-tsx-and-ensure-every-referenced-audio-file-exists-in-the-correct-public-assets-directory-replace-any-missing-or-broken-audio-files-with-working-alternatives-or-synthesize-sounds-via-the-web-audio-api-where-appropriate",
+      "featureTitle": "Audit all audio file references across hooks and pages (useBGM.ts, useDoubleKnockSound.ts, useClickSound.ts, ChatPage.tsx, LockScreen.tsx, OurMemoriesPage.tsx) and ensure every referenced audio file exists in the correct public assets directory. Replace any missing or broken audio files with working alternatives or synthesize sounds via the Web Audio API where appropriate.",
       "files": [
-        "frontend/src/pages/DashboardPage.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-on-the-home-dashboard-page-attach-a-click-handler-to-the-central-doraemon-image-so-that-clicking-it-plays-the-audio-file-vid-20260301-052016-mp4-served-from-frontend-public-assets-audio-vid-20260301-052016-mp4-the-sound-should-play-from-the-start-on-each-click",
-      "featureTitle": "On the Home / Dashboard page, attach a click handler to the central Doraemon image so that clicking it plays the audio file 'VID_20260301_052016.MP4' (served from frontend/public/assets/audio/VID_20260301_052016.MP4). The sound should play from the start on each click.",
-      "files": [
-        "frontend/src/pages/DashboardPage.tsx"
-      ],
-      "components": [
-        "blob-storage@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-play-the-audio-file-vid-20260301-052623-mp4-served-from-frontend-public-assets-audio-vid-20260301-052623-mp4-automatically-when-the-user-navigates-to-the-our-memories-page-ourmemoriespage-tsx-the-sound-should-play-once-on-page-entry-and-stop-when-the-user-leaves-the-page",
-      "featureTitle": "Play the audio file 'VID_20260301_052623.MP4' (served from frontend/public/assets/audio/VID_20260301_052623.MP4) automatically when the user navigates to the Our Memories page (OurMemoriesPage.tsx). The sound should play once on page entry and stop when the user leaves the page.",
-      "files": [
+        "frontend/src/hooks/useBGM.ts",
+        "frontend/src/hooks/useClickSound.ts",
+        "frontend/src/hooks/useDoubleKnockSound.ts",
+        "frontend/src/pages/ChatPage.tsx",
+        "frontend/src/pages/LockScreen.tsx",
         "frontend/src/pages/OurMemoriesPage.tsx"
       ],
       "components": [
@@ -92,7 +64,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-5"
+        "REQ-3"
       ],
       "confidence": "high"
     }

@@ -1,30 +1,37 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Plays a Doraemon-style chime sound on every click/touch using the Web Audio API.
- * The sound is synthesized (no external file needed) — a cheerful bell chime
- * reminiscent of Doraemon's gadget sounds.
+ * Synthesizes a Doraemon-style two-note bell chime using the Web Audio API.
+ * No external audio file required — fully synthesized.
+ * Plays on every global click and touchstart event with 120ms throttling.
  */
 export function useClickSound() {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const lastPlayRef = useRef<number>(0);
 
   useEffect(() => {
-    function getCtx(): AudioContext {
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+    function getCtx(): AudioContext | null {
+      try {
+        if (!audioCtxRef.current) {
+          audioCtxRef.current = new (
+            window.AudioContext ||
+            (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+          )();
+        }
+        return audioCtxRef.current;
+      } catch {
+        return null;
       }
-      return audioCtxRef.current;
     }
 
     function playDoraemonChime() {
       const now = Date.now();
-      // Throttle: don't play more than once every 120ms to avoid audio spam
       if (now - lastPlayRef.current < 120) return;
       lastPlayRef.current = now;
 
       try {
         const ctx = getCtx();
+        if (!ctx) return;
 
         // Resume context if suspended (browser autoplay policy)
         if (ctx.state === 'suspended') {
@@ -45,7 +52,6 @@ export function useClickSound() {
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, currentTime + i * 0.07);
 
-          // Quick attack, fast decay — bell-like
           gainNode.gain.setValueAtTime(0, currentTime + i * 0.07);
           gainNode.gain.linearRampToValueAtTime(0.18, currentTime + i * 0.07 + 0.01);
           gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + i * 0.07 + 0.35);
@@ -54,7 +60,7 @@ export function useClickSound() {
           osc.stop(currentTime + i * 0.07 + 0.4);
         });
 
-        // Add a tiny sparkle overtone (higher harmonic)
+        // Sparkle overtone
         const sparkle = ctx.createOscillator();
         const sparkleGain = ctx.createGain();
         sparkle.connect(sparkleGain);
@@ -66,9 +72,8 @@ export function useClickSound() {
         sparkleGain.gain.exponentialRampToValueAtTime(0.001, currentTime + 0.18);
         sparkle.start(currentTime);
         sparkle.stop(currentTime + 0.2);
-
       } catch {
-        // Silently ignore audio errors (e.g., browser restrictions)
+        // Silently ignore audio errors
       }
     }
 

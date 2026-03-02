@@ -1,112 +1,75 @@
 {
   "kind": "build_request",
-  "title": "Quotes randomisation on refresh, remove 6th memory photo, and audio updates for Home & Our Memories",
-  "projectName": "Doraemon Secret World",
-  "priority": "normal",
+  "title": "Fix sound playback — BGM and click/tap sounds not playing",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "On the Quotes & Fun Facts page (QuotesPage.tsx), ensure that every full page refresh loads a freshly randomised quote and fun fact automatically — without requiring the user to click the refresh button. The random selection must differ from the previous value on each reload.",
+      "text": "Fix the background music (BGM) so it reliably starts playing when the user enters the Dashboard page. Ensure the useBGM hook correctly loads and plays the audio file, handles autoplay policy by resuming on first user interaction, and that the FloatingMusicControl component reflects the correct play/pause state.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-6"
         ],
         "quotes": [
-          "everytime when I refresh that means it wants to give new things in section called 'Quotes & Fun Facts'"
+          "Why the sound is not coming. plz play the sounds"
         ]
       },
       "acceptanceCriteria": [
-        "Navigating to or refreshing the Quotes & Fun Facts page shows a randomly selected quote each time.",
-        "Navigating to or refreshing the Quotes & Fun Facts page shows a randomly selected fun fact each time.",
-        "The random pick is seeded by the current timestamp or Math.random() so it differs across refreshes."
+        "Background music begins playing on the Dashboard page after the first user interaction (click or tap).",
+        "The FloatingMusicControl button correctly shows the playing state when music is active.",
+        "Pausing and resuming via the FloatingMusicControl works without errors.",
+        "No console errors related to audio playback or missing audio files."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "In OurMemoriesPage.tsx, remove the 6th image (index 5, zero-based) from the curated photo array so that gallery only shows the remaining photos.",
+      "text": "Fix the click/tap sound effects so they play on every user interaction across all pages. The useDoubleKnockSound hook (used in RootLayout) and any page-specific sounds (e.g., hello sound in ChatPage, unlock sound in LockScreen, OurMemoriesPage audio) must correctly load their audio files, respect browser autoplay restrictions by triggering only on user gesture, and not throw errors when audio is unavailable.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-6"
         ],
         "quotes": [
-          "Remove the 6th picture of 'Our Memories'"
+          "Why the sound is not coming. plz play the sounds"
         ]
       },
       "acceptanceCriteria": [
-        "The Our Memories gallery renders one fewer photo than before.",
-        "The photo that was previously in the 6th position is no longer visible.",
-        "All remaining photos display and open in the lightbox correctly."
+        "A click/tap sound plays on every click or tap interaction throughout the app.",
+        "Page-specific sounds (chat hello sound, lock screen unlock sound, memories page audio) play correctly on their respective triggers.",
+        "Audio files are correctly referenced with valid public asset paths.",
+        "No 404 errors for audio files in the browser network tab.",
+        "Sound hooks gracefully handle cases where audio cannot be played (e.g., permission denied) without crashing the app."
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Add continuous background BGM using the file 'Doremon_theme' (served from frontend/public/assets/audio/Doremon_theme) that starts playing automatically when the user is on the Home / Dashboard page and stops (or pauses) when they navigate away from it. The music should loop and play at a comfortable default volume.",
+      "text": "Audit all audio file references across hooks and pages (useBGM.ts, useDoubleKnockSound.ts, useClickSound.ts, ChatPage.tsx, LockScreen.tsx, OurMemoriesPage.tsx) and ensure every referenced audio file exists in the correct public assets directory. Replace any missing or broken audio files with working alternatives or synthesize sounds via the Web Audio API where appropriate.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-6"
         ],
         "quotes": [
-          "Background bgm when in Home page the sound should play all the time . this one 'Doremon_theme'"
+          "Why the sound is not coming. plz play the sounds"
         ]
       },
       "acceptanceCriteria": [
-        "Opening or navigating to the Dashboard/Home page automatically starts playing Doremon_theme in a loop.",
-        "The BGM pauses or stops when navigating away from the Home page.",
-        "The audio file path resolves to /assets/audio/Doremon_theme (with its original extension).",
-        "Music does not double-play if the user returns to the Home page while it is already running."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "On the Home / Dashboard page, attach a click handler to the central Doraemon image so that clicking it plays the audio file 'VID_20260301_052016.MP4' (served from frontend/public/assets/audio/VID_20260301_052016.MP4). The sound should play from the start on each click.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ],
-        "quotes": [
-          "when I hit or click the Doremon image at the centre that in the home page this sound wants to come 'VID_20260301_052016.MP4'"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Clicking the central Doraemon image on the Dashboard page plays VID_20260301_052016.MP4.",
-        "Each click restarts the audio from the beginning.",
-        "The audio file path resolves correctly from the public assets directory."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Play the audio file 'VID_20260301_052623.MP4' (served from frontend/public/assets/audio/VID_20260301_052623.MP4) automatically when the user navigates to the Our Memories page (OurMemoriesPage.tsx). The sound should play once on page entry and stop when the user leaves the page.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-latest"
-        ],
-        "quotes": [
-          "when I went to 'Our Memories' this sound wants to come 'VID_20260301_052623.MP4'"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Navigating to the Our Memories page automatically plays VID_20260301_052623.MP4.",
-        "The sound plays once (non-looping) on page entry.",
-        "The audio stops and is cleaned up when the user navigates away from Our Memories.",
-        "The audio file path resolves correctly from the public assets directory."
+        "All audio file paths used in hooks and pages resolve to existing files.",
+        "If a file is missing, it is either added to public assets or replaced with a Web Audio API synthesized equivalent.",
+        "No 404 network errors for any audio resource."
       ]
     }
   ],
   "constraints": [
-    "Audio files Doremon_theme, VID_20260301_052016.MP4, and VID_20260301_052623.MP4 must be referenced by their exact provided filenames under frontend/public/assets/audio/.",
-    "Do not modify files listed in frontend.immutablePaths.",
-    "Do not alter the backend schema or Motoko actor."
+    "Do not modify files in frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
+    "Do not alter backend logic or data models.",
+    "Preserve the existing Doraemon theme and visual design."
   ],
   "nonGoals": [
-    "Re-implementing or restyling the Quotes & Fun Facts page beyond randomisation behaviour.",
-    "Adding upload functionality for new memory photos.",
-    "Changing any other audio files or sound hooks already in place (Dreamy.mp3, Hello.mp3, Double Knock.mp3).",
-    "Modifying authentication or lock screen logic."
+    "Adding new sound effects not already present in the app.",
+    "Changing the visual design or layout.",
+    "Modifying backend functionality."
   ],
   "imageRequirements": {
     "required": [],

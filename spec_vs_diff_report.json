@@ -1,33 +1,48 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T00:10:29.340Z",
-  "summary": "All five requirements are addressed in the diff. REQ-1 (auto-randomise quotes on mount), REQ-3 (BGM on Dashboard), REQ-4 (click sound on Doraemon image), and REQ-5 (entry sound on Our Memories) are implemented. REQ-2 is partially addressed but the implementation is questionable: instead of removing only the 6th item (index 5, zero-based) from the curated array, the code removes both the first and last elements via slice(1,-1), which removes two photos and may not remove the correct photo.",
+  "generatedAt": "2026-03-01T09:45:09.749Z",
+  "summary": "The diff implements fixes for BGM playback (useBGM.ts), click/tap sounds (useClickSound.ts synthesized via Web Audio API, useDoubleKnockSound.ts via audio pool), page-specific sounds (ChatPage.tsx, LockScreen.tsx, OurMemoriesPage.tsx), and references audio files in public assets. Most requirements are addressed, but REQ-3's audit of physical file existence cannot be confirmed from the diff alone since no audio files were added to the repository and the diff shows no ADDED FILES.",
   "missing_requirements": [
     {
-      "id": "REQ-2",
-      "requirement": "Remove the 6th image (index 5, zero-based) from the curated photo array so that gallery only shows the remaining photos.",
-      "reason": "The implementation uses ALL_PHOTOS.slice(1, -1) which removes both the first and last items from the array (two photos removed), not just the 6th item (index 5). This does not satisfy the AC of rendering exactly one fewer photo while keeping all remaining photos intact.",
+      "id": "REQ-3",
+      "requirement": "Ensure every referenced audio file exists in the correct public assets directory. If a file is missing, it is either added to public assets or replaced with a Web Audio API synthesized equivalent.",
+      "reason": "The diff shows 0 added files. Audio files referenced in hooks and pages (/assets/Dreamy.mp3.m4a, /assets/Double Knock.mp3.m4a, /assets/Hello.mp3.m4a, /assets/Blip Bleep.mp3.m4a) are not confirmed to exist in the public assets directory. No new audio files were added, and useDoubleKnockSound.ts still relies on /assets/Double Knock.mp3.m4a existing as a physical file rather than synthesizing it.",
       "evidence": [
+        "frontend/src/hooks/useDoubleKnockSound.ts",
+        "frontend/src/hooks/useBGM.ts",
+        "frontend/src/pages/ChatPage.tsx",
+        "frontend/src/pages/LockScreen.tsx",
         "frontend/src/pages/OurMemoriesPage.tsx"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Removing both the first and last photos from the gallery array via slice(1, -1), eliminating two photos instead of one.",
-      "reason": "The build request only asks to remove the single 6th image (index 5). The diff removes two photos (first and last of ALL_PHOTOS) which was not requested.",
+      "description": "DashboardPage plays a separate Blip Bleep.mp3.m4a sound when the Doraemon hero image is clicked via a handleDoraemonClick function.",
+      "reason": "The build request does not mention adding a click sound specifically to the Doraemon hero image on the Dashboard page. This is an additional interaction not specified in any requirement.",
+      "evidence": [
+        "frontend/src/pages/DashboardPage.tsx"
+      ]
+    },
+    {
+      "description": "OurMemoriesPage slices ALL_PHOTOS to remove first and last photos, changing the displayed photo set.",
+      "reason": "The build request is exclusively about fixing audio playback. Modifying which photos are displayed on OurMemoriesPage is not part of any stated requirement.",
       "evidence": [
         "frontend/src/pages/OurMemoriesPage.tsx"
       ]
     }
   ],
-  "confidence": 0.82,
+  "confidence": 0.78,
   "changed_files": [
     "frontend-file-summaries.txt",
+    "frontend/src/hooks/useBGM.ts",
+    "frontend/src/hooks/useClickSound.ts",
+    "frontend/src/hooks/useDoubleKnockSound.ts",
+    "frontend/src/pages/ChatPage.tsx",
     "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/LockScreen.tsx",
     "frontend/src/pages/OurMemoriesPage.tsx",
-    "frontend/src/pages/QuotesPage.tsx",
     "project_state.json"
   ]
 }

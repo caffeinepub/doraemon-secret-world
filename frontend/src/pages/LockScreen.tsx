@@ -4,9 +4,11 @@ import { Lock, Unlock, Heart, Star } from 'lucide-react';
 import { useVerifyCode } from '../hooks/useQueries';
 import GlassPanel from '../components/GlassPanel';
 
-function playDreamySound() {
+// Audio file: /assets/Blip Bleep.mp3.m4a — plays on successful unlock
+function playUnlockSound() {
   try {
-    const audio = new Audio('/assets/Dreamy.mp3.m4a');
+    const audio = new Audio('/assets/Blip Bleep.mp3.m4a');
+    audio.volume = 0.8;
     audio.play().catch(() => {
       // Silently ignore autoplay policy errors
     });
@@ -39,7 +41,7 @@ export default function LockScreen() {
       if (isCorrect) {
         setSuccess(true);
         sessionStorage.setItem('dora_authenticated', 'true');
-        playDreamySound();
+        playUnlockSound();
         setTimeout(() => navigate({ to: '/dashboard' }), 1500);
       } else {
         setError("Oops! That's not the right key! 🔑 Try again~");

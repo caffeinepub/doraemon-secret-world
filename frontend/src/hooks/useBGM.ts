@@ -1,58 +1,87 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
+// Audio file: /assets/Dreamy.mp3.m4a
+const BGM_SRC = '/assets/Dreamy.mp3.m4a';
+
 export function useBGM() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useState(0.4);
-  const [isReady, setIsReady] = useState(false);
+  const interactionListenersRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    // Create a gentle ambient tone using Web Audio API as fallback
-    const audio = new Audio();
+    const audio = new Audio(BGM_SRC);
     audio.loop = true;
     audio.volume = 0.4;
     audioRef.current = audio;
 
-    audio.addEventListener('canplaythrough', () => setIsReady(true));
-    audio.addEventListener('error', () => {
-      // Audio file not available, that's okay
-      setIsReady(false);
+    // Sync isPlaying state with actual audio events
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onEnded = () => setIsPlaying(false);
+
+    audio.addEventListener('play', onPlay);
+    audio.addEventListener('pause', onPause);
+    audio.addEventListener('ended', onEnded);
+
+    audio.addEventListener('error', (e) => {
+      console.warn('BGM audio error:', e);
+      setIsPlaying(false);
     });
 
-    // Try to load the BGM file
-    audio.src = '/assets/audio/doraemon-bgm.mp3';
-    audio.load();
+    // Attempt autoplay immediately; if blocked, wait for first user gesture
+    const tryPlay = () => {
+      audio.play().catch(() => {
+        // Autoplay blocked — set up one-time interaction listener
+        const resumeOnInteraction = () => {
+          audio.play().catch(() => {});
+          document.removeEventListener('click', resumeOnInteraction, true);
+          document.removeEventListener('touchstart', resumeOnInteraction, true);
+          interactionListenersRef.current = null;
+        };
+        document.addEventListener('click', resumeOnInteraction, { capture: true, passive: true });
+        document.addEventListener('touchstart', resumeOnInteraction, { capture: true, passive: true });
+        interactionListenersRef.current = resumeOnInteraction;
+      });
+    };
+
+    tryPlay();
 
     return () => {
+      audio.removeEventListener('play', onPlay);
+      audio.removeEventListener('pause', onPause);
+      audio.removeEventListener('ended', onEnded);
       audio.pause();
       audio.src = '';
+      audioRef.current = null;
+      // Clean up pending interaction listeners
+      if (interactionListenersRef.current) {
+        document.removeEventListener('click', interactionListenersRef.current, true);
+        document.removeEventListener('touchstart', interactionListenersRef.current, true);
+      }
     };
   }, []);
 
   const play = useCallback(() => {
-    if (audioRef.current && isReady) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(() => {
-        setIsPlaying(false);
-      });
+    if (audioRef.current) {
+      audioRef.current.play().catch(() => {});
     }
-  }, [isReady]);
+  }, []);
 
   const pause = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
-      setIsPlaying(false);
     }
   }, []);
 
   const togglePlay = useCallback(() => {
-    if (isPlaying) {
-      pause();
+    if (!audioRef.current) return;
+    if (audioRef.current.paused) {
+      audioRef.current.play().catch(() => {});
     } else {
-      play();
+      audioRef.current.pause();
     }
-  }, [isPlaying, play, pause]);
+  }, []);
 
   const setVolume = useCallback((level: number) => {
     setVolumeState(level);
@@ -61,5 +90,5 @@ export function useBGM() {
     }
   }, []);
 
-  return { isPlaying, volume, isReady, play, pause, togglePlay, setVolume };
+  return { isPlaying, volume, play, pause, togglePlay, setVolume };
 }

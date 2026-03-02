@@ -1,17 +1,25 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Plays the "Double Knock.mp3" sound on every click/touch event globally.
+ * Plays the "Double Knock.mp3.m4a" sound on every click/touch event globally.
+ * Audio file: /assets/Double Knock.mp3.m4a
  * Throttled to 120ms to prevent rapid overlapping playback.
  */
 export function useDoubleKnockSound() {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const lastPlayRef = useRef<number>(0);
+  // Keep a pool of audio elements to allow overlapping if needed
+  const audioPoolRef = useRef<HTMLAudioElement[]>([]);
 
   useEffect(() => {
-    const audio = new Audio('/assets/Double Knock.mp3.m4a');
-    audio.preload = 'auto';
-    audioRef.current = audio;
+    // Pre-load a few audio instances for quick playback
+    const pool: HTMLAudioElement[] = [];
+    for (let i = 0; i < 3; i++) {
+      const a = new Audio('/assets/Double Knock.mp3.m4a');
+      a.preload = 'auto';
+      a.volume = 0.6;
+      pool.push(a);
+    }
+    audioPoolRef.current = pool;
 
     function playDoubleKnock() {
       const now = Date.now();
@@ -19,7 +27,9 @@ export function useDoubleKnockSound() {
       lastPlayRef.current = now;
 
       try {
-        const sound = audioRef.current;
+        // Find an audio element that is not currently playing
+        const available = audioPoolRef.current.find((a) => a.paused || a.ended);
+        const sound = available ?? audioPoolRef.current[0];
         if (!sound) return;
         sound.currentTime = 0;
         sound.play().catch(() => {
@@ -39,6 +49,11 @@ export function useDoubleKnockSound() {
     return () => {
       document.removeEventListener('click', handleClick);
       document.removeEventListener('touchstart', handleTouch);
+      audioPoolRef.current.forEach((a) => {
+        a.pause();
+        a.src = '';
+      });
+      audioPoolRef.current = [];
     };
   }, []);
 }

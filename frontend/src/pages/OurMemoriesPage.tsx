@@ -50,29 +50,37 @@ export default function OurMemoriesPage() {
   const navigate = useNavigate();
   const [lightbox, setLightbox] = useState<Photo | null>(null);
 
-  // Play entry sound once when navigating to this page
+  // Play ambient music when entering this page
+  // Audio file: /assets/Dreamy.mp3.m4a
   useEffect(() => {
-    const audio = new Audio('/assets/audio/VID_20260301_052623.MP4');
-    audio.loop = false;
-    audio.volume = 0.8;
+    let audio: HTMLAudioElement | null = null;
+    try {
+      audio = new Audio('/assets/Dreamy.mp3.m4a');
+      audio.loop = true;
+      audio.volume = 0.5;
 
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Autoplay blocked — play on first user interaction
-        const resumeOnInteraction = () => {
-          audio.play().catch(() => {});
-          document.removeEventListener('click', resumeOnInteraction);
-          document.removeEventListener('touchstart', resumeOnInteraction);
-        };
-        document.addEventListener('click', resumeOnInteraction);
-        document.addEventListener('touchstart', resumeOnInteraction);
-      });
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay blocked — play on first user interaction
+          const resumeOnInteraction = () => {
+            audio?.play().catch(() => {});
+            document.removeEventListener('click', resumeOnInteraction, true);
+            document.removeEventListener('touchstart', resumeOnInteraction, true);
+          };
+          document.addEventListener('click', resumeOnInteraction, { capture: true, passive: true });
+          document.addEventListener('touchstart', resumeOnInteraction, { capture: true, passive: true });
+        });
+      }
+    } catch {
+      // Silently ignore audio errors
     }
 
     return () => {
-      audio.pause();
-      audio.src = '';
+      if (audio) {
+        audio.pause();
+        audio.src = '';
+      }
     };
   }, []);
 

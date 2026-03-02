@@ -1,8 +1,9 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Heart, BookOpen, Star, Gamepad2, MessageCircle, Sparkles, Camera } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useActor } from '../hooks/useActor';
 import { seedDataIfNeeded } from '../utils/seedData';
+import { useBGM } from '../hooks/useBGM';
 
 const PORTALS = [
   {
@@ -76,8 +77,8 @@ const PORTALS = [
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { actor } = useActor();
-  const bgmRef = useRef<HTMLAudioElement | null>(null);
-  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+  // Use the shared BGM hook — FloatingMusicControl also uses this hook
+  const { play, pause } = useBGM();
 
   // Seed data on mount
   useEffect(() => {
@@ -86,42 +87,24 @@ export default function DashboardPage() {
     }
   }, [actor]);
 
-  // Background BGM — loop Doremon_theme while on this page
+  // Start BGM when entering dashboard, pause when leaving
   useEffect(() => {
-    const audio = new Audio('/assets/audio/Doremon_theme');
-    audio.loop = true;
-    audio.volume = 0.4;
-    bgmRef.current = audio;
-
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Autoplay blocked — play on first user interaction
-        const resumeOnInteraction = () => {
-          audio.play().catch(() => {});
-          document.removeEventListener('click', resumeOnInteraction);
-          document.removeEventListener('touchstart', resumeOnInteraction);
-        };
-        document.addEventListener('click', resumeOnInteraction);
-        document.addEventListener('touchstart', resumeOnInteraction);
-      });
-    }
-
+    play();
     return () => {
-      audio.pause();
-      audio.src = '';
-      bgmRef.current = null;
+      pause();
     };
-  }, []);
+  }, [play, pause]);
 
-  // Click sound for Doraemon hero image
+  // Play a fun sound when Doraemon hero image is clicked
   const handleDoraemonClick = () => {
-    if (!clickSoundRef.current) {
-      clickSoundRef.current = new Audio('/assets/audio/VID_20260301_052016.MP4');
+    try {
+      // Audio file: /assets/Blip Bleep.mp3.m4a
+      const sound = new Audio('/assets/Blip Bleep.mp3.m4a');
+      sound.volume = 0.7;
+      sound.play().catch(() => {});
+    } catch {
+      // Silently ignore
     }
-    const sound = clickSoundRef.current;
-    sound.currentTime = 0;
-    sound.play().catch(() => {});
   };
 
   return (
