@@ -31,6 +31,30 @@ const photos = [
     src: "/assets/generated/memory-photo-9.dim_800x1200.jpg",
     caption: "Love and joy ❤️",
   },
+  {
+    src: "/assets/uploads/IMG_20260303_044148-1.jpg",
+    caption: "Our special moment 💙",
+  },
+  {
+    src: "/assets/uploads/IMG_20260303_044227-2.jpg",
+    caption: "Beautiful memories 🌸",
+  },
+  {
+    src: "/assets/uploads/Screenshot_2026-03-03-05-04-50-89_92460851df6f172a4592fca41cc2d2e6-3.jpg",
+    caption: "Always in my heart 💫",
+  },
+  {
+    src: "/assets/uploads/IMG_20260303_044148-1-4.jpg",
+    caption: "Unforgettable times ✨",
+  },
+  {
+    src: "/assets/uploads/IMG_20260303_044227-1-5.jpg",
+    caption: "Precious moments 🌟",
+  },
+  {
+    src: "/assets/uploads/IMG_20260303_044148-2-6.jpg",
+    caption: "Forever friends 🤍",
+  },
 ];
 
 export default function OurMemoriesPage() {
