@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Lock, Unlock } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import lockScreenImg from "/assets/generated/lock-screen.dim_800x600.png";
 import GlassPanel from "../components/GlassPanel";
 import StarBackground from "../components/StarBackground";
 import { useIsCodeCorrect } from "../hooks/useQueries";
@@ -17,7 +18,7 @@ export default function LockScreen() {
   const unlockSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    unlockSoundRef.current = new Audio("/assets/Blip Bleep.mp3.m4a");
+    unlockSoundRef.current = new Audio("/assets/Dreamy.mp3.m4a");
     unlockSoundRef.current.volume = 0.7;
     return () => {
       if (unlockSoundRef.current) {
@@ -51,23 +52,94 @@ export default function LockScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-doraemon-sky via-doraemon-blue/30 to-doraemon-navy flex items-center justify-center relative overflow-hidden">
+    <div
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(180deg, #04081a 0%, #0a102e 50%, #060d1f 100%)",
+      }}
+    >
       <StarBackground />
 
+      {/* Floating decorative hearts & stars */}
+      <div className="absolute left-8 top-1/3 text-4xl animate-float opacity-80 pointer-events-none select-none">
+        💙
+      </div>
+      <div className="absolute right-8 top-1/3 text-4xl animate-float-slow opacity-80 pointer-events-none select-none">
+        💙
+      </div>
+      <div className="absolute left-1/4 top-1/4 text-2xl animate-float opacity-60 pointer-events-none select-none">
+        ⭐
+      </div>
+      <div className="absolute right-1/4 top-1/4 text-2xl animate-float-slow opacity-60 pointer-events-none select-none">
+        ⭐
+      </div>
+      <div className="absolute left-1/3 bottom-1/4 text-xl animate-float opacity-50 pointer-events-none select-none">
+        🌟
+      </div>
+      <div className="absolute right-1/3 bottom-1/3 text-xl animate-float-slow opacity-50 pointer-events-none select-none">
+        🌟
+      </div>
+      <div className="absolute left-16 bottom-1/3 text-3xl animate-float opacity-40 pointer-events-none select-none">
+        💫
+      </div>
+      <div className="absolute right-16 top-1/4 text-3xl animate-float-slow opacity-40 pointer-events-none select-none">
+        ✨
+      </div>
+
       <div className="relative z-10 w-full max-w-md px-4">
-        <GlassPanel glow="blue" float className="p-8">
-          <div className="text-center mb-8">
-            <img
-              src="/assets/generated/lock-screen.dim_800x600.png"
-              alt="Doraemon Lock Screen"
-              className="w-48 h-36 object-cover rounded-xl mx-auto mb-4 shadow-lg"
-            />
-            <h1 className="font-display text-3xl font-bold text-white mb-2">
-              🔐 Secret World
-            </h1>
-            <p className="text-white/60 text-sm">
-              Enter the secret code to enter Doraemon's world
+        {/* Main title above card */}
+        <div className="text-center mb-6">
+          <h1
+            className="font-orbitron text-5xl md:text-6xl font-black tracking-wider text-white"
+            style={{
+              textShadow:
+                "0 0 20px #00d4ff, 0 0 40px #0099ff, 0 0 80px #0066cc, 0 0 120px #0044aa",
+            }}
+          >
+            DoraLand
+          </h1>
+          <p className="text-white/70 mt-2 text-sm tracking-widest uppercase font-space">
+            A Secret World Made Just For You 💙
+          </p>
+          <div className="flex items-center justify-center gap-1 mt-2">
+            {["❤️", "❤️", "❤️", "❤️", "❤️"].map((h, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: static decorative row
+              <span key={i} className="text-lg">
+                {h}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <GlassPanel
+          glow="blue"
+          float
+          className="p-8 border-2 border-blue-400/70 shadow-[0_0_50px_10px_rgba(0,150,255,0.35)]"
+        >
+          {/* Lock icon */}
+          <div className="flex flex-col items-center mb-6">
+            <div className="w-16 h-16 rounded-full border-2 border-cyan-400/60 bg-blue-500/20 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(0,200,255,0.4)]">
+              <Lock className="w-7 h-7 text-cyan-300" />
+            </div>
+            <h2
+              className="font-orbitron text-2xl font-bold text-white text-center"
+              style={{ textShadow: "0 0 12px rgba(0,200,255,0.7)" }}
+            >
+              Enter Secret Code
+            </h2>
+            <p className="text-white/50 text-sm mt-1 text-center">
+              Only you know the way in 🗝️
             </p>
+          </div>
+
+          {/* Doraemon image */}
+          <div className="flex justify-center mb-5">
+            <img
+              src={lockScreenImg}
+              alt="Doraemon Lock Screen"
+              className="w-36 h-28 object-cover rounded-xl shadow-lg border border-blue-400/30"
+            />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -79,13 +151,21 @@ export default function LockScreen() {
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="Enter secret code..."
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/40 text-center text-lg tracking-widest"
+                className="border-blue-400/50 text-white placeholder:text-white/40 text-center text-lg tracking-widest focus:border-cyan-400/80 focus:ring-cyan-400/30"
+                style={{
+                  background: "rgba(4, 8, 30, 0.85)",
+                  boxShadow: "inset 0 0 10px rgba(0, 120, 255, 0.08)",
+                }}
+                data-ocid="lock.input"
                 autoFocus
               />
             </div>
 
             {error && (
-              <p className="text-red-400 text-sm text-center animate-pulse">
+              <p
+                className="text-red-400 text-sm text-center animate-pulse"
+                data-ocid="lock.error_state"
+              >
                 {error}
               </p>
             )}
@@ -93,7 +173,14 @@ export default function LockScreen() {
             <Button
               type="submit"
               disabled={isPending || !code.trim()}
-              className="w-full bg-doraemon-blue hover:bg-doraemon-blue/80 text-white font-semibold py-3"
+              className="w-full font-orbitron font-semibold py-3 tracking-wide"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(0,140,255,1), rgba(0,80,200,1))",
+                boxShadow: "0 4px 20px rgba(0,140,255,0.5)",
+                color: "white",
+              }}
+              data-ocid="lock.submit_button"
             >
               {isPending ? (
                 <span className="flex items-center gap-2">
@@ -109,8 +196,8 @@ export default function LockScreen() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <div className="flex items-center justify-center gap-2 text-white/30 text-xs">
+          <div className="mt-5 text-center">
+            <div className="flex items-center justify-center gap-2 text-white/25 text-xs">
               <Lock className="w-3 h-3" />
               <span>Protected by Doraemon's gadgets</span>
             </div>

@@ -69,7 +69,13 @@ export default function GamesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <div className="text-center mb-10">
-        <h1 className="font-display text-4xl font-bold text-white mb-3">
+        <h1
+          className="font-display text-4xl font-bold text-white mb-3"
+          style={{
+            textShadow:
+              "0 0 15px #00d4ff, 0 0 30px #0099ff, 0 0 60px rgba(0,100,255,0.4)",
+          }}
+        >
           🎮 Games Hub
         </h1>
         <p className="text-white/60 text-lg">

@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&display=swap");
 
+/* Orbitron font-face fallback */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,37 +10,37 @@
   :root {
     --radius: 0.75rem;
 
-    /* Doraemon Color Palette */
+    /* Doraemon Color Palette — Deep Night Blue */
     --dora-blue: 0.55 0.22 240;
     --dora-blue-light: 0.72 0.18 230;
-    --dora-blue-dark: 0.35 0.2 245;
+    --dora-blue-dark: 0.25 0.15 248;
     --dora-red: 0.58 0.22 25;
     --dora-yellow: 0.88 0.18 85;
     --dora-white: 0.98 0.01 240;
-    --dora-navy: 0.18 0.12 250;
-    --dora-cyan: 0.75 0.15 210;
+    --dora-navy: 0.1 0.1 252;
+    --dora-cyan: 0.82 0.2 205;
     --dora-pink: 0.72 0.18 355;
 
-    /* Semantic tokens */
-    --background: 0.1 0.08 250;
+    /* Semantic tokens — deep dark night blue */
+    --background: 0.07 0.09 252;
     --foreground: 0.97 0.02 240;
-    --card: 0.16 0.06 245;
+    --card: 0.1 0.08 250;
     --card-foreground: 0.97 0.02 240;
-    --popover: 0.16 0.06 245;
+    --popover: 0.1 0.08 250;
     --popover-foreground: 0.97 0.02 240;
-    --primary: 0.55 0.22 240;
-    --primary-foreground: 0.98 0.01 240;
-    --secondary: 0.22 0.08 245;
+    --primary: 0.65 0.22 210;
+    --primary-foreground: 0.97 0.02 240;
+    --secondary: 0.14 0.08 250;
     --secondary-foreground: 0.97 0.02 240;
-    --muted: 0.22 0.06 245;
-    --muted-foreground: 0.65 0.06 240;
+    --muted: 0.14 0.06 250;
+    --muted-foreground: 0.6 0.08 230;
     --accent: 0.58 0.22 25;
     --accent-foreground: 0.98 0.01 240;
     --destructive: 0.58 0.22 25;
     --destructive-foreground: 0.98 0.01 240;
-    --border: 0.3 0.1 245;
-    --input: 0.22 0.08 245;
-    --ring: 0.55 0.22 240;
+    --border: 0.25 0.12 240;
+    --input: 0.14 0.08 250;
+    --ring: 0.65 0.22 210;
 
     --chart-1: 0.55 0.22 240;
     --chart-2: 0.58 0.22 25;
@@ -46,14 +48,14 @@
     --chart-4: 0.72 0.15 210;
     --chart-5: 0.72 0.18 355;
 
-    --sidebar: 0.14 0.08 248;
+    --sidebar: 0.09 0.09 252;
     --sidebar-foreground: 0.97 0.02 240;
-    --sidebar-primary: 0.55 0.22 240;
-    --sidebar-primary-foreground: 0.98 0.01 240;
-    --sidebar-accent: 0.22 0.08 245;
+    --sidebar-primary: 0.65 0.22 210;
+    --sidebar-primary-foreground: 0.97 0.02 240;
+    --sidebar-accent: 0.14 0.08 250;
     --sidebar-accent-foreground: 0.97 0.02 240;
-    --sidebar-border: 0.3 0.1 245;
-    --sidebar-ring: 0.55 0.22 240;
+    --sidebar-border: 0.25 0.12 240;
+    --sidebar-ring: 0.65 0.22 210;
   }
 }
 
@@ -65,22 +67,22 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Space Grotesk", sans-serif;
-    background-color: oklch(0.1 0.08 250);
+    background-color: #04081a;
     background-image: radial-gradient(
-        ellipse at 20% 20%,
-        oklch(0.55 0.22 240 / 0.15) 0%,
-        transparent 50%
+        ellipse at 15% 15%,
+        oklch(0.45 0.22 230 / 0.12) 0%,
+        transparent 45%
       ),
       radial-gradient(
-        ellipse at 80% 80%,
-        oklch(0.35 0.2 245 / 0.2) 0%,
-        transparent 50%
+        ellipse at 85% 20%,
+        oklch(0.55 0.22 210 / 0.1) 0%,
+        transparent 40%
       ),
       radial-gradient(
-        ellipse at 50% 50%,
-        oklch(0.18 0.12 250 / 0.8) 0%,
-        transparent 100%
-      );
+        ellipse at 50% 90%,
+        oklch(0.35 0.18 250 / 0.15) 0%,
+        transparent 50%
+      ), linear-gradient(180deg, #04081a 0%, #0a102e 50%, #060d1f 100%);
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -93,52 +95,59 @@
 }
 
 @layer utilities {
-  /* Glassmorphism */
+  /* Glassmorphism — deep navy glass */
   .glass {
-    background: oklch(0.55 0.22 240 / 0.08);
+    background: oklch(0.12 0.1 250 / 0.7);
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid oklch(0.55 0.22 240 / 0.25);
+    border: 1px solid oklch(0.65 0.22 210 / 0.25);
   }
 
   .glass-strong {
-    background: oklch(0.55 0.22 240 / 0.15);
+    background: oklch(0.12 0.1 250 / 0.85);
     backdrop-filter: blur(24px) saturate(200%);
     -webkit-backdrop-filter: blur(24px) saturate(200%);
-    border: 1px solid oklch(0.55 0.22 240 / 0.35);
+    border: 1px solid oklch(0.65 0.22 210 / 0.4);
   }
 
   .glass-card {
-    background: oklch(0.16 0.06 245 / 0.85);
+    background: oklch(0.1 0.08 250 / 0.85);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid oklch(0.55 0.22 240 / 0.3);
+    border: 1px solid oklch(0.65 0.22 210 / 0.35);
   }
 
-  /* Neon Glow Effects */
+  /* Neon Glow Effects — intensified */
   .glow-blue {
-    box-shadow: 0 0 10px oklch(0.55 0.22 240 / 0.5), 0 0 30px
-      oklch(0.55 0.22 240 / 0.3), 0 0 60px oklch(0.55 0.22 240 / 0.15);
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.6), 0 0 40px
+      rgba(0, 120, 255, 0.35), 0 0 80px rgba(0, 100, 255, 0.15);
   }
 
   .glow-red {
-    box-shadow: 0 0 10px oklch(0.58 0.22 25 / 0.5), 0 0 30px
-      oklch(0.58 0.22 25 / 0.3), 0 0 60px oklch(0.58 0.22 25 / 0.15);
+    box-shadow: 0 0 15px oklch(0.58 0.22 25 / 0.6), 0 0 40px
+      oklch(0.58 0.22 25 / 0.35), 0 0 80px oklch(0.58 0.22 25 / 0.15);
   }
 
   .glow-yellow {
-    box-shadow: 0 0 10px oklch(0.88 0.18 85 / 0.5), 0 0 30px
-      oklch(0.88 0.18 85 / 0.3), 0 0 60px oklch(0.88 0.18 85 / 0.15);
+    box-shadow: 0 0 15px oklch(0.88 0.18 85 / 0.6), 0 0 40px
+      oklch(0.88 0.18 85 / 0.35), 0 0 80px oklch(0.88 0.18 85 / 0.15);
   }
 
   .glow-cyan {
-    box-shadow: 0 0 10px oklch(0.75 0.15 210 / 0.5), 0 0 30px
-      oklch(0.75 0.15 210 / 0.3), 0 0 60px oklch(0.75 0.15 210 / 0.15);
+    box-shadow: 0 0 15px rgba(0, 220, 255, 0.65), 0 0 40px
+      rgba(0, 200, 255, 0.4), 0 0 80px rgba(0, 180, 255, 0.2);
+  }
+
+  /* Electric cyan text glow — the signature look */
+  .text-glow-cyan {
+    text-shadow: 0 0 20px rgba(0, 212, 255, 1.0), 0 0 40px
+      rgba(0, 153, 255, 0.9), 0 0 80px rgba(0, 102, 204, 0.6), 0 0 120px
+      rgba(0, 80, 180, 0.3);
   }
 
   .text-glow-blue {
-    text-shadow: 0 0 10px oklch(0.72 0.18 230 / 0.8), 0 0 30px
-      oklch(0.55 0.22 240 / 0.5);
+    text-shadow: 0 0 15px rgba(0, 180, 255, 0.9), 0 0 35px
+      rgba(0, 150, 255, 0.6), 0 0 60px rgba(0, 120, 255, 0.3);
   }
 
   .text-glow-yellow {
@@ -153,9 +162,15 @@
 
   /* Neon border */
   .neon-border-blue {
-    border: 1px solid oklch(0.55 0.22 240 / 0.6);
-    box-shadow: 0 0 8px oklch(0.55 0.22 240 / 0.4), inset 0 0 8px
-      oklch(0.55 0.22 240 / 0.1);
+    border: 1px solid rgba(0, 160, 255, 0.65);
+    box-shadow: 0 0 12px rgba(0, 150, 255, 0.45), inset 0 0 10px
+      rgba(0, 130, 255, 0.08);
+  }
+
+  .neon-border-cyan {
+    border: 1px solid rgba(0, 220, 255, 0.65);
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.5), inset 0 0 10px
+      rgba(0, 190, 255, 0.08);
   }
 
   .neon-border-red {
@@ -224,12 +239,12 @@
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 10px oklch(0.55 0.22 240 / 0.4), 0 0 30px
-      oklch(0.55 0.22 240 / 0.2);
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.5), 0 0 40px
+      rgba(0, 120, 255, 0.25);
   }
   50% {
-    box-shadow: 0 0 20px oklch(0.55 0.22 240 / 0.7), 0 0 60px
-      oklch(0.55 0.22 240 / 0.4);
+    box-shadow: 0 0 30px rgba(0, 200, 255, 0.8), 0 0 70px rgba(0, 160, 255, 0.5),
+      0 0 120px rgba(0, 130, 255, 0.25);
   }
 }
 
@@ -523,17 +538,18 @@
 .star {
   position: absolute;
   border-radius: 50%;
-  background: oklch(0.97 0.02 240);
+  background: rgba(180, 230, 255, 0.95);
   animation: twinkle var(--duration, 2s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
+  box-shadow: 0 0 4px rgba(0, 200, 255, 0.6);
 }
 
 /* Bubble decorations */
 .bubble {
   position: absolute;
   border-radius: 50%;
-  background: oklch(0.55 0.22 240 / 0.1);
-  border: 1px solid oklch(0.55 0.22 240 / 0.2);
+  background: rgba(0, 160, 255, 0.08);
+  border: 1px solid rgba(0, 180, 255, 0.2);
   animation: bubble-rise var(--duration, 8s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
@@ -635,8 +651,8 @@
 
 /* Input styles */
 .dora-input {
-  background: oklch(0.16 0.06 245 / 0.8);
-  border: 1px solid oklch(0.55 0.22 240 / 0.4);
+  background: oklch(0.1 0.08 250 / 0.85);
+  border: 1px solid rgba(0, 160, 255, 0.4);
   color: oklch(0.97 0.02 240);
   border-radius: 12px;
   padding: 12px 16px;
@@ -646,13 +662,12 @@
 }
 
 .dora-input:focus {
-  border-color: oklch(0.55 0.22 240 / 0.8);
-  box-shadow: 0 0 0 3px oklch(0.55 0.22 240 / 0.2), 0 0 20px
-    oklch(0.55 0.22 240 / 0.3);
+  border-color: rgba(0, 200, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.18), 0 0 20px rgba(0, 180, 255, 0.3);
 }
 
 .dora-input::placeholder {
-  color: oklch(0.65 0.06 240 / 0.7);
+  color: oklch(0.6 0.06 230 / 0.6);
 }
 
 /* Button styles */
@@ -691,14 +706,14 @@
 }
 
 .dora-btn-primary {
-  background: linear-gradient(135deg, oklch(0.55 0.22 240), oklch(0.45 0.2 250));
+  background: linear-gradient(135deg, rgba(0, 140, 255, 1), rgba(0, 90, 220, 1));
   color: oklch(0.97 0.02 240);
-  box-shadow: 0 4px 20px oklch(0.55 0.22 240 / 0.4);
+  box-shadow: 0 4px 20px rgba(0, 140, 255, 0.5);
 }
 
 .dora-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px oklch(0.55 0.22 240 / 0.6);
+  box-shadow: 0 8px 30px rgba(0, 180, 255, 0.7);
 }
 
 .dora-btn-red {

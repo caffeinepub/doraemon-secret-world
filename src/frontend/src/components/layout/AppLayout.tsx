@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import React, { useState } from "react";
+import doraemonStickerImg from "/assets/generated/doraemon-sticker.dim_200x200.png";
 import FloatingMusicControl from "../FloatingMusicControl";
 import StarBackground from "../StarBackground";
 
@@ -32,11 +33,20 @@ export default function AppLayout() {
   const currentPath = router.state.location.pathname;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-doraemon-sky via-doraemon-blue/20 to-doraemon-navy text-white relative">
+    <div
+      className="min-h-screen text-white relative"
+      style={{
+        background:
+          "linear-gradient(180deg, #04081a 0%, #0a102e 60%, #060d1f 100%)",
+      }}
+    >
       <StarBackground />
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-doraemon-navy/80 backdrop-blur-md border-b border-white/10">
+      <header
+        className="sticky top-0 z-40 backdrop-blur-md border-b border-blue-400/20"
+        style={{ background: "rgba(6, 14, 36, 0.92)" }}
+      >
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <button
             type="button"
@@ -44,7 +54,7 @@ export default function AppLayout() {
             className="flex items-center gap-2 font-display text-xl font-bold text-white hover:text-doraemon-yellow transition-colors"
           >
             <img
-              src="/assets/generated/doraemon-sticker.dim_200x200.png"
+              src={doraemonStickerImg}
               alt="Doraemon"
               className="w-8 h-8 object-contain"
             />
@@ -58,10 +68,10 @@ export default function AppLayout() {
                 type="button"
                 key={path}
                 onClick={() => navigate({ to: path })}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   currentPath === path
-                    ? "bg-doraemon-blue text-white"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
+                    ? "bg-blue-500/30 text-cyan-300 border border-blue-400/50 shadow-[0_0_12px_rgba(0,180,255,0.3)]"
+                    : "text-white/70 hover:text-cyan-300 hover:bg-blue-500/15 hover:border-blue-400/30 border border-transparent"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -87,7 +97,10 @@ export default function AppLayout() {
 
         {/* Mobile Nav */}
         {mobileOpen && (
-          <nav className="md:hidden bg-doraemon-navy/95 border-t border-white/10 px-4 py-3 flex flex-col gap-1">
+          <nav
+            className="md:hidden border-t border-blue-400/20 px-4 py-3 flex flex-col gap-1"
+            style={{ background: "rgba(4, 8, 26, 0.96)" }}
+          >
             {navItems.map(({ path, label, icon: Icon }) => (
               <button
                 type="button"
@@ -96,10 +109,10 @@ export default function AppLayout() {
                   navigate({ to: path });
                   setMobileOpen(false);
                 }}
-                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                   currentPath === path
-                    ? "bg-doraemon-blue text-white"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
+                    ? "bg-blue-500/30 text-cyan-300 border border-blue-400/50"
+                    : "text-white/70 hover:text-cyan-300 hover:bg-blue-500/15 border border-transparent"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -116,7 +129,10 @@ export default function AppLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/10 bg-doraemon-navy/60 backdrop-blur-md py-6 mt-12">
+      <footer
+        className="relative z-10 border-t border-blue-400/15 backdrop-blur-md py-6 mt-12"
+        style={{ background: "rgba(4, 8, 26, 0.75)" }}
+      >
         <div className="max-w-7xl mx-auto px-4 text-center text-white/50 text-sm">
           <p>
             © {new Date().getFullYear()} Doraemon Secret World. Built with ❤️

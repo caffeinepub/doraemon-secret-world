@@ -12,11 +12,11 @@ interface GlassPanelProps {
 }
 
 const glowClasses = {
-  blue: "shadow-[0_0_24px_4px_rgba(0,180,255,0.25)] border-blue-400/40",
-  red: "shadow-[0_0_24px_4px_rgba(255,60,60,0.25)] border-red-400/40",
-  yellow: "shadow-[0_0_24px_4px_rgba(255,220,0,0.25)] border-yellow-400/40",
-  cyan: "shadow-[0_0_24px_4px_rgba(0,255,220,0.25)] border-cyan-400/40",
-  none: "border-white/10",
+  blue: "shadow-[0_0_30px_6px_rgba(0,160,255,0.40)] border-blue-400/60",
+  red: "shadow-[0_0_30px_6px_rgba(255,60,60,0.35)] border-red-400/55",
+  yellow: "shadow-[0_0_30px_6px_rgba(255,210,0,0.35)] border-yellow-400/55",
+  cyan: "shadow-[0_0_30px_6px_rgba(0,220,255,0.40)] border-cyan-300/60",
+  none: "border-white/15",
 };
 
 export default function GlassPanel({
@@ -31,7 +31,8 @@ export default function GlassPanel({
   return (
     <div
       className={cn(
-        "rounded-2xl border bg-white/10 backdrop-blur-md",
+        "rounded-2xl border backdrop-blur-md",
+        "bg-[oklch(0.10_0.08_250/0.80)]",
         glowClasses[glow],
         float && "animate-float",
         hover &&

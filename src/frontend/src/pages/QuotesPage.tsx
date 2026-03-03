@@ -31,7 +31,13 @@ export default function QuotesPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       <div className="text-center mb-8">
-        <h1 className="font-display text-3xl font-bold text-white mb-2">
+        <h1
+          className="font-display text-3xl font-bold text-white mb-2"
+          style={{
+            textShadow:
+              "0 0 15px #00d4ff, 0 0 30px #0099ff, 0 0 60px rgba(0,100,255,0.4)",
+          }}
+        >
           ✨ Quotes & Fun Facts
         </h1>
         <p className="text-white/50 text-sm">

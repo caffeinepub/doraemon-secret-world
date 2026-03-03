@@ -8,7 +8,8 @@ import {
   Quote,
   Star,
 } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import doraemonHeroImg from "/assets/generated/doraemon-hero.dim_400x400.png";
 import GlassPanel from "../components/GlassPanel";
 import { useBGM } from "../hooks/useBGM";
 import { useHelloSound } from "../hooks/useHelloSound";
@@ -68,11 +69,33 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   const { play, pause } = useBGM();
   const { playHello } = useHelloSound();
+  const entrySoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     play();
+
+    // Play Dreamy sound once on home page entry
+    const entryAudio = new Audio("/assets/Dreamy.mp3.m4a");
+    entryAudio.volume = 0.7;
+    entrySoundRef.current = entryAudio;
+
+    const tryPlay = () => {
+      entryAudio.play().catch(() => {});
+      document.removeEventListener("click", tryPlay, true);
+      document.removeEventListener("touchstart", tryPlay, true);
+    };
+
+    entryAudio.play().catch(() => {
+      document.addEventListener("click", tryPlay, true);
+      document.addEventListener("touchstart", tryPlay, true);
+    });
+
     return () => {
       pause();
+      entryAudio.pause();
+      entryAudio.src = "";
+      document.removeEventListener("click", tryPlay, true);
+      document.removeEventListener("touchstart", tryPlay, true);
     };
   }, [play, pause]);
 
@@ -87,12 +110,18 @@ export default function DashboardPage() {
           aria-label="Click Doraemon to hear Hello"
         >
           <img
-            src="/assets/generated/doraemon-hero.dim_400x400.png"
+            src={doraemonHeroImg}
             alt="Doraemon"
             className="w-48 h-48 object-contain mx-auto drop-shadow-2xl"
           />
         </button>
-        <h1 className="font-display text-4xl md:text-5xl font-bold text-white mt-4 mb-2">
+        <h1
+          className="font-display text-4xl md:text-5xl font-bold text-white mt-4 mb-2"
+          style={{
+            textShadow:
+              "0 0 20px #00d4ff, 0 0 40px #0099ff, 0 0 70px rgba(0,120,255,0.5)",
+          }}
+        >
           Welcome to Doraemon's World! 🌟
         </h1>
         <p className="text-white/60 text-lg max-w-xl mx-auto">

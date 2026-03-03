@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import nobitaDoraemonImg from "/assets/generated/nobita-doraemon-friends.dim_800x500.png";
 import GlassPanel from "../components/GlassPanel";
 
 const panels = [
@@ -90,11 +91,17 @@ export default function FriendshipPage() {
     <div className="max-w-3xl mx-auto px-4 py-10">
       <div className="text-center mb-12">
         <img
-          src="/assets/generated/nobita-doraemon-friends.dim_800x500.png"
+          src={nobitaDoraemonImg}
           alt="Nobita and Doraemon"
           className="w-full max-w-lg mx-auto rounded-2xl object-cover shadow-2xl mb-6"
         />
-        <h1 className="font-display text-4xl font-bold text-white mb-3">
+        <h1
+          className="font-display text-4xl font-bold text-white mb-3"
+          style={{
+            textShadow:
+              "0 0 15px #00d4ff, 0 0 30px #0099ff, 0 0 60px rgba(0,100,255,0.4)",
+          }}
+        >
           ❤️ The Greatest Friendship
         </h1>
         <p className="text-white/60 text-lg">

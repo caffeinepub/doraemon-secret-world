@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Clock, RotateCcw, Star, Zap } from "lucide-react";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import gameHoleImg from "/assets/generated/game-hole.dim_128x128.png";
 import GlassPanel from "../../components/GlassPanel";
 
 const CHARACTERS = ["🤖", "😺", "🎩", "⭐", "🍡"];
@@ -125,7 +126,10 @@ export default function WhackADoraemonPage() {
           <ArrowLeft className="w-4 h-4 mr-1" />
           Games
         </Button>
-        <h1 className="font-display text-2xl font-bold text-white">
+        <h1
+          className="font-display text-2xl font-bold text-white"
+          style={{ textShadow: "0 0 15px #00d4ff, 0 0 30px #0099ff" }}
+        >
           🔨 Whack-a-Doraemon
         </h1>
       </div>
@@ -180,7 +184,7 @@ export default function WhackADoraemonPage() {
                 className="relative aspect-square rounded-2xl bg-black/30 border border-white/10 flex items-center justify-center overflow-hidden transition-transform hover:scale-105"
               >
                 <img
-                  src="/assets/generated/game-hole.dim_128x128.png"
+                  src={gameHoleImg}
                   alt="hole"
                   className="absolute inset-0 w-full h-full object-cover opacity-60"
                 />

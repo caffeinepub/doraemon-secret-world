@@ -110,7 +110,10 @@ export default function MemoryMatchPage() {
           <ArrowLeft className="w-4 h-4 mr-1" />
           Games
         </Button>
-        <h1 className="font-display text-2xl font-bold text-white">
+        <h1
+          className="font-display text-2xl font-bold text-white"
+          style={{ textShadow: "0 0 15px #00d4ff, 0 0 30px #0099ff" }}
+        >
           🃏 Memory Match
         </h1>
         <div className="ml-auto flex items-center gap-3">

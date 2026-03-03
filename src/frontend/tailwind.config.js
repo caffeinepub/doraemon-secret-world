@@ -88,13 +88,13 @@ export default {
         doraemon: {
           blue: 'oklch(0.55 0.22 240)',
           'blue-light': 'oklch(0.72 0.18 230)',
-          'blue-dark': 'oklch(0.35 0.20 245)',
+          'blue-dark': 'oklch(0.25 0.15 248)',
           red: 'oklch(0.58 0.22 25)',
           yellow: 'oklch(0.88 0.18 85)',
           white: 'oklch(0.98 0.01 240)',
-          navy: 'oklch(0.18 0.12 250)',
-          sky: 'oklch(0.68 0.18 220)',
-          cyan: 'oklch(0.75 0.15 210)',
+          navy: 'oklch(0.10 0.10 252)',
+          sky: 'oklch(0.65 0.20 215)',
+          cyan: 'oklch(0.82 0.20 205)',
           pink: 'oklch(0.72 0.18 355)',
         }
       },
@@ -108,12 +108,13 @@ export default {
       },
       boxShadow: {
         xs: '0 1px 2px 0 rgba(0,0,0,0.05)',
-        'glow-blue': '0 0 20px oklch(0.55 0.22 240 / 0.5), 0 0 60px oklch(0.55 0.22 240 / 0.2)',
-        'glow-red': '0 0 20px oklch(0.58 0.22 25 / 0.5), 0 0 60px oklch(0.58 0.22 25 / 0.2)',
-        'glow-yellow': '0 0 20px oklch(0.88 0.18 85 / 0.5), 0 0 60px oklch(0.88 0.18 85 / 0.2)',
-        'glow-cyan': '0 0 20px oklch(0.75 0.15 210 / 0.5), 0 0 60px oklch(0.75 0.15 210 / 0.2)',
-        'glass': '0 8px 32px oklch(0.10 0.08 250 / 0.4)',
-        'card-hover': '0 20px 60px oklch(0.55 0.22 240 / 0.3)',
+        'glow-blue': '0 0 25px rgba(0,160,255,0.65), 0 0 60px rgba(0,130,255,0.35)',
+        'glow-red': '0 0 25px oklch(0.58 0.22 25 / 0.65), 0 0 60px oklch(0.58 0.22 25 / 0.30)',
+        'glow-yellow': '0 0 25px oklch(0.88 0.18 85 / 0.65), 0 0 60px oklch(0.88 0.18 85 / 0.30)',
+        'glow-cyan': '0 0 25px rgba(0,220,255,0.65), 0 0 60px rgba(0,200,255,0.35)',
+        'glass': '0 8px 32px rgba(0,0,0,0.50)',
+        'card-hover': '0 20px 60px rgba(0,160,255,0.40)',
+        'neon-card': '0 0 40px 8px rgba(0,150,255,0.35), inset 0 0 20px rgba(0,120,255,0.05)',
       },
       keyframes: {
         'accordion-down': {

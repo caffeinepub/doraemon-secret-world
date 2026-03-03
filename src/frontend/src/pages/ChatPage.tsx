@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, Send, User } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import nobitaAvatarImg from "/assets/generated/nobita-avatar.dim_200x200.png";
 import GlassPanel from "../components/GlassPanel";
 import { useAddMessage, useGetAllMessages } from "../hooks/useQueries";
 
@@ -142,7 +143,13 @@ export default function ChatPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <div className="text-center mb-6">
-        <h1 className="font-display text-3xl font-bold text-white mb-2">
+        <h1
+          className="font-display text-3xl font-bold text-white mb-2"
+          style={{
+            textShadow:
+              "0 0 15px #00d4ff, 0 0 30px #0099ff, 0 0 60px rgba(0,100,255,0.4)",
+          }}
+        >
           💬 Chat with Nobita
         </h1>
         <p className="text-white/50 text-sm">Nobita is always ready to chat!</p>
@@ -152,7 +159,7 @@ export default function ChatPage() {
         {/* Chat Header */}
         <div className="flex items-center gap-3 p-4 border-b border-white/10">
           <img
-            src="/assets/generated/nobita-avatar.dim_200x200.png"
+            src={nobitaAvatarImg}
             alt="Nobita"
             className="w-10 h-10 rounded-full object-cover border-2 border-doraemon-yellow/50"
           />
@@ -172,7 +179,7 @@ export default function ChatPage() {
               <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 bg-white/10 flex items-center justify-center">
                 {msg.sender === "nobita" ? (
                   <img
-                    src="/assets/generated/nobita-avatar.dim_200x200.png"
+                    src={nobitaAvatarImg}
                     alt="Nobita"
                     className="w-full h-full object-cover"
                   />
@@ -183,9 +190,21 @@ export default function ChatPage() {
               <div
                 className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm ${
                   msg.sender === "user"
-                    ? "bg-doraemon-blue text-white rounded-br-sm"
-                    : "bg-white/10 text-white rounded-bl-sm"
+                    ? "text-white rounded-br-sm"
+                    : "text-white rounded-bl-sm"
                 }`}
+                style={
+                  msg.sender === "user"
+                    ? {
+                        background:
+                          "linear-gradient(135deg, rgba(0,120,255,0.85), rgba(0,70,200,0.85))",
+                        border: "1px solid rgba(0,160,255,0.35)",
+                      }
+                    : {
+                        background: "rgba(10,20,50,0.80)",
+                        border: "1px solid rgba(0,150,255,0.25)",
+                      }
+                }
               >
                 {msg.content}
               </div>
@@ -196,7 +215,7 @@ export default function ChatPage() {
             <div className="flex items-end gap-2">
               <div className="w-7 h-7 rounded-full overflow-hidden shrink-0">
                 <img
-                  src="/assets/generated/nobita-avatar.dim_200x200.png"
+                  src={nobitaAvatarImg}
                   alt="Nobita"
                   className="w-full h-full object-cover"
                 />
@@ -223,12 +242,20 @@ export default function ChatPage() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Say something to Nobita..."
-            className="bg-white/10 border-white/20 text-white placeholder:text-white/40 flex-1"
+            className="border-blue-400/40 text-white placeholder:text-white/40 flex-1 focus:border-cyan-400/70"
+            style={{ background: "rgba(4, 10, 30, 0.85)" }}
+            data-ocid="chat.input"
           />
           <Button
             onClick={handleSend}
             disabled={!input.trim()}
-            className="bg-doraemon-blue hover:bg-doraemon-blue/80 text-white shrink-0"
+            className="text-white shrink-0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(0,130,255,1), rgba(0,80,200,1))",
+              boxShadow: "0 2px 12px rgba(0,130,255,0.45)",
+            }}
+            data-ocid="chat.submit_button"
           >
             <Send className="w-4 h-4" />
           </Button>

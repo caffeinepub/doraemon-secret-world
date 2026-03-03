@@ -1,58 +1,71 @@
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
+import memPhoto1 from "/assets/generated/memory-photo-1.dim_800x1000.jpg";
+import memPhoto2 from "/assets/generated/memory-photo-2.dim_800x1000.jpg";
+import memPhoto3 from "/assets/generated/memory-photo-3.dim_800x1200.jpg";
+import memPhoto4 from "/assets/generated/memory-photo-4.dim_800x1000.jpg";
+import memPhoto5 from "/assets/generated/memory-photo-5.dim_800x1000.jpg";
+import memPhoto8 from "/assets/generated/memory-photo-8.dim_800x1200.jpg";
+import memPhoto9 from "/assets/generated/memory-photo-9.dim_800x1200.jpg";
+import uploadedPhoto2 from "/assets/uploads/IMG_20260130_230611-1.jpg";
+import uploadedPhoto4 from "/assets/uploads/IMG_20260303_044148-1-4.jpg";
+import uploadedPhoto1 from "/assets/uploads/IMG_20260303_044148-1.jpg";
+import uploadedPhoto6 from "/assets/uploads/IMG_20260303_044148-2-6.jpg";
+import uploadedPhoto5 from "/assets/uploads/IMG_20260303_044227-1-5.jpg";
+import uploadedPhoto3 from "/assets/uploads/Screenshot_2026-03-03-05-04-50-89_92460851df6f172a4592fca41cc2d2e6-3.jpg";
 import GlassPanel from "../components/GlassPanel";
 
 const photos = [
   {
-    src: "/assets/generated/memory-photo-1.dim_800x1000.jpg",
+    src: memPhoto1,
     caption: "A beautiful memory 💙",
   },
   {
-    src: "/assets/generated/memory-photo-2.dim_800x1000.jpg",
+    src: memPhoto2,
     caption: "Together always 🌟",
   },
   {
-    src: "/assets/generated/memory-photo-3.dim_800x1200.jpg",
+    src: memPhoto3,
     caption: "Precious moments ✨",
   },
   {
-    src: "/assets/generated/memory-photo-4.dim_800x1000.jpg",
+    src: memPhoto4,
     caption: "Smiles and laughter 😊",
   },
   {
-    src: "/assets/generated/memory-photo-5.dim_800x1000.jpg",
+    src: memPhoto5,
     caption: "Adventures await 🎉",
   },
   {
-    src: "/assets/generated/memory-photo-8.dim_800x1200.jpg",
+    src: memPhoto8,
     caption: "Cherished times 🎊",
   },
   {
-    src: "/assets/generated/memory-photo-9.dim_800x1200.jpg",
+    src: memPhoto9,
     caption: "Love and joy ❤️",
   },
   {
-    src: "/assets/uploads/IMG_20260303_044148-1.jpg",
+    src: uploadedPhoto1,
     caption: "Our special moment 💙",
   },
   {
-    src: "/assets/uploads/IMG_20260303_044227-2.jpg",
+    src: uploadedPhoto2,
     caption: "Beautiful memories 🌸",
   },
   {
-    src: "/assets/uploads/Screenshot_2026-03-03-05-04-50-89_92460851df6f172a4592fca41cc2d2e6-3.jpg",
+    src: uploadedPhoto3,
     caption: "Always in my heart 💫",
   },
   {
-    src: "/assets/uploads/IMG_20260303_044148-1-4.jpg",
+    src: uploadedPhoto4,
     caption: "Unforgettable times ✨",
   },
   {
-    src: "/assets/uploads/IMG_20260303_044227-1-5.jpg",
+    src: uploadedPhoto5,
     caption: "Precious moments 🌟",
   },
   {
-    src: "/assets/uploads/IMG_20260303_044148-2-6.jpg",
+    src: uploadedPhoto6,
     caption: "Forever friends 🤍",
   },
 ];
@@ -109,7 +122,13 @@ export default function OurMemoriesPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="text-center mb-10">
-        <h1 className="font-display text-4xl font-bold text-white mb-3">
+        <h1
+          className="font-display text-4xl font-bold text-white mb-3"
+          style={{
+            textShadow:
+              "0 0 15px #00d4ff, 0 0 30px #0099ff, 0 0 60px rgba(0,100,255,0.4)",
+          }}
+        >
           📸 Our Memories
         </h1>
         <p className="text-white/60 text-lg">

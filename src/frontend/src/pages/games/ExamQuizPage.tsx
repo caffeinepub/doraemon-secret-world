@@ -111,7 +111,10 @@ export default function ExamQuizPage() {
       <div className="max-w-2xl mx-auto px-4 py-10">
         <GlassPanel glow="yellow" className="p-8 text-center">
           <Trophy className="w-16 h-16 text-doraemon-yellow mx-auto mb-4" />
-          <h2 className="font-display text-3xl font-bold text-white mb-2">
+          <h2
+            className="font-display text-3xl font-bold text-white mb-2"
+            style={{ textShadow: "0 0 15px #00d4ff, 0 0 30px #0099ff" }}
+          >
             Quiz Complete!
           </h2>
           <p className="text-white/60 mb-6">
