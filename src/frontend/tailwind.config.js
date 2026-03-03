@@ -16,6 +16,7 @@ export default {
     },
     extend: {
       fontFamily: {
+        display: ['Orbitron', 'sans-serif'],
         orbitron: ['Orbitron', 'sans-serif'],
         space: ['Space Grotesk', 'sans-serif'],
         nunito: ['Nunito', 'sans-serif'],
@@ -71,7 +72,7 @@ export default {
           border: 'oklch(var(--sidebar-border))',
           ring: 'oklch(var(--sidebar-ring))'
         },
-        // Doraemon palette
+        // Doraemon palette (dora.* aliases)
         dora: {
           blue: 'oklch(0.55 0.22 240)',
           'blue-light': 'oklch(0.72 0.18 230)',
@@ -80,6 +81,19 @@ export default {
           yellow: 'oklch(0.88 0.18 85)',
           white: 'oklch(0.98 0.01 240)',
           navy: 'oklch(0.18 0.12 250)',
+          cyan: 'oklch(0.75 0.15 210)',
+          pink: 'oklch(0.72 0.18 355)',
+        },
+        // Doraemon palette (doraemon-* names used throughout components)
+        doraemon: {
+          blue: 'oklch(0.55 0.22 240)',
+          'blue-light': 'oklch(0.72 0.18 230)',
+          'blue-dark': 'oklch(0.35 0.20 245)',
+          red: 'oklch(0.58 0.22 25)',
+          yellow: 'oklch(0.88 0.18 85)',
+          white: 'oklch(0.98 0.01 240)',
+          navy: 'oklch(0.18 0.12 250)',
+          sky: 'oklch(0.68 0.18 220)',
           cyan: 'oklch(0.75 0.15 210)',
           pink: 'oklch(0.72 0.18 355)',
         }
