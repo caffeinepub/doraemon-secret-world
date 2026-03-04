@@ -2,13 +2,6 @@ import type { backendInterface } from "../backend";
 
 const SAMPLE_MEMORIES = [
   {
-    id: "mem-1",
-    title: "The Day We First Laughed Together 😄",
-    content:
-      'I still remember the first time we laughed so hard together that tears rolled down our cheeks. That moment felt like magic — like Doraemon had pulled out a "Laughter Gadget" just for us. It was the beginning of something beautiful.',
-    date: "2024-01-15",
-  },
-  {
     id: "mem-2",
     title: "Our Secret Language 🌟",
     content:

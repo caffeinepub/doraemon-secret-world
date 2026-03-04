@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
-import memPhoto1 from "/assets/generated/memory-photo-1.dim_800x1000.jpg";
 import memPhoto2 from "/assets/generated/memory-photo-2.dim_800x1000.jpg";
 import memPhoto3 from "/assets/generated/memory-photo-3.dim_800x1200.jpg";
 import memPhoto4 from "/assets/generated/memory-photo-4.dim_800x1000.jpg";
@@ -16,10 +15,6 @@ import uploadedPhoto3 from "/assets/uploads/Screenshot_2026-03-03-05-04-50-89_92
 import GlassPanel from "../components/GlassPanel";
 
 const photos = [
-  {
-    src: memPhoto1,
-    caption: "A beautiful memory 💙",
-  },
   {
     src: memPhoto2,
     caption: "Together always 🌟",

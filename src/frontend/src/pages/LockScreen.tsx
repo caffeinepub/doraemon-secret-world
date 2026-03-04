@@ -5,6 +5,7 @@ import { Lock, Unlock } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import lockScreenImg from "/assets/generated/lock-screen.dim_800x600.png";
+import nobitaSleepImg from "/assets/uploads/IMG_20260130_230611-2-1.jpg";
 import GlassPanel from "../components/GlassPanel";
 import StarBackground from "../components/StarBackground";
 import { useIsCodeCorrect } from "../hooks/useQueries";
@@ -139,6 +140,16 @@ export default function LockScreen() {
               src={lockScreenImg}
               alt="Doraemon Lock Screen"
               className="w-36 h-28 object-cover rounded-xl shadow-lg border border-blue-400/30"
+            />
+          </div>
+
+          {/* Nobita sleeping with Doraemon watching */}
+          <div className="flex justify-center mb-5">
+            <img
+              src={nobitaSleepImg}
+              alt="Doraemon watching over sleeping Nobita"
+              className="w-full rounded-2xl shadow-[0_0_24px_rgba(0,180,255,0.35)] border border-blue-400/40 object-cover"
+              style={{ maxHeight: "220px" }}
             />
           </div>
 

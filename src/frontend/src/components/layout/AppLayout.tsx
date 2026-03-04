@@ -134,18 +134,7 @@ export default function AppLayout() {
         style={{ background: "rgba(4, 8, 26, 0.75)" }}
       >
         <div className="max-w-7xl mx-auto px-4 text-center text-white/50 text-sm">
-          <p>
-            © {new Date().getFullYear()} Doraemon Secret World. Built with ❤️
-            using{" "}
-            <a
-              href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname || "doraemon-secret-world")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-doraemon-yellow hover:underline"
-            >
-              caffeine.ai
-            </a>
-          </p>
+          <p>© {new Date().getFullYear()} Doraemon Secret World 💙</p>
         </div>
       </footer>
 
