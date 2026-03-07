@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
+import dreamyUrl from "/assets/Dreamy.mp3.m4a";
 import memPhoto2 from "/assets/generated/memory-photo-2.dim_800x1000.jpg";
 import memPhoto3 from "/assets/generated/memory-photo-3.dim_800x1200.jpg";
 import memPhoto4 from "/assets/generated/memory-photo-4.dim_800x1000.jpg";
@@ -70,7 +71,7 @@ export default function OurMemoriesPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const audio = new Audio("/assets/Dreamy.mp3.m4a");
+    const audio = new Audio(dreamyUrl);
     audio.loop = true;
     audio.volume = 0.4;
     audioRef.current = audio;

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import doubleKnockUrl from "/assets/Double Knock.mp3.m4a";
 
 const POOL_SIZE = 3;
 const THROTTLE_MS = 120;
@@ -12,7 +13,7 @@ export function useDoubleKnockSound() {
     // Pre-load audio pool
     const pool: HTMLAudioElement[] = [];
     for (let i = 0; i < POOL_SIZE; i++) {
-      const audio = new Audio("/assets/Double Knock.mp3.m4a");
+      const audio = new Audio(doubleKnockUrl);
       audio.volume = 0.4;
       pool.push(audio);
     }

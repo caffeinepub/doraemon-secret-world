@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 
+import dreamyUrl from "/assets/Dreamy.mp3.m4a";
 import heroImage from "/assets/uploads/IMG_20260304_131301-1.jpg";
 import GlassPanel from "../components/GlassPanel";
 import { useBGM } from "../hooks/useBGM";
@@ -135,7 +136,7 @@ export default function DashboardPage() {
     play();
 
     // Play Dreamy sound once on home page entry
-    const entryAudio = new Audio("/assets/Dreamy.mp3.m4a");
+    const entryAudio = new Audio(dreamyUrl);
     entryAudio.volume = 0.7;
     entrySoundRef.current = entryAudio;
 

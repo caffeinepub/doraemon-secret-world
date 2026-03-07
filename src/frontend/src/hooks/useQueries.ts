@@ -3,11 +3,9 @@ import type { Memory, Message, Quote } from "../backend";
 import { useActor } from "./useActor";
 
 export function useIsCodeCorrect() {
-  const { actor } = useActor();
   return useMutation({
     mutationFn: async (code: string) => {
-      if (!actor) throw new Error("Actor not initialized");
-      return actor.isCodeCorrect(code);
+      return code.trim() === "Nobita";
     },
   });
 }

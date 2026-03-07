@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Lock, Unlock } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import dreamyUrl from "/assets/Dreamy.mp3.m4a";
 import lockScreenImg from "/assets/generated/lock-screen.dim_800x600.png";
 import nobitaSleepImg from "/assets/uploads/IMG_20260130_230611-2-1.jpg";
 import GlassPanel from "../components/GlassPanel";
@@ -19,7 +20,7 @@ export default function LockScreen() {
   const unlockSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    unlockSoundRef.current = new Audio("/assets/Dreamy.mp3.m4a");
+    unlockSoundRef.current = new Audio(dreamyUrl);
     unlockSoundRef.current.volume = 0.7;
     return () => {
       if (unlockSoundRef.current) {

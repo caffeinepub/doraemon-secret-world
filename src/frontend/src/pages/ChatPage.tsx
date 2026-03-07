@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, Send, User } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import helloUrl from "/assets/Hello.mp3.m4a";
 import nobitaAvatarImg from "/assets/generated/nobita-avatar.dim_200x200.png";
 import GlassPanel from "../components/GlassPanel";
 import { useAddMessage, useGetAllMessages } from "../hooks/useQueries";
@@ -51,7 +52,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     // Play hello sound on mount
-    const audio = new Audio("/assets/Hello.mp3.m4a");
+    const audio = new Audio(helloUrl);
     audio.volume = 0.6;
     helloAudioRef.current = audio;
 

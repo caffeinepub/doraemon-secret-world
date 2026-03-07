@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import bgmUrl from "/assets/_Doraemon_Lofi_Instrumental_Ringtone_(by Fringster.com).mp3";
 
 let globalAudio: HTMLAudioElement | null = null;
 let globalIsPlaying = false;
@@ -23,7 +24,7 @@ export function useBGM() {
 
   useEffect(() => {
     if (!globalAudio) {
-      globalAudio = new Audio("/assets/Dreamy.mp3.m4a");
+      globalAudio = new Audio(bgmUrl);
       globalAudio.loop = true;
       globalAudio.volume = 0.5;
 
